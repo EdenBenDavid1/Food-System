@@ -15,13 +15,16 @@
           <hr class="hr-style" style="width: 100%" />
 
           <table class="find-continue">
-            <td class="find-td2">אורז בסמטי<br />100 גרם<br /></td>
+            {% for ingre in ingredients %}
+
+            <td class="find-td2">{{ingre[0]}}<br />{{ingre[1]}}<br /></td>
             <td>
-              <span id="calories">קלוריות - 351</span><br />
-              <span id="carbohydrate">פחמימות- 77.4 גרם</span><br />
-              <span id="protein">חלבונים- 8.7 גרם</span><br />
-              <span id="fats">שומנים- 0.7 גרם</span>
+              <span id="calories">קלוריות - {{ingre[2]}}</span><br />
+              <span id="carbohydrate">פחמימות- {{ingre[3]}} גרם</span><br />
+              <span id="protein">חלבונים- {{ingre[4]}} גרם</span><br />
+              <span id="fats">שומנים- {{ingre[5]}} גרם</span>
             </td>
+            {% endfor %}
           </table>
         </td>
 

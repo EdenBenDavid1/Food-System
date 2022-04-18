@@ -110,7 +110,13 @@ def search():
 ## SEARCH RESULT
 @server.route("/search_result/<search_value>")
 def search_result(search_value):
-    return render_template("search_result.html", search_value=search_value)
+    ingredients = sql_manager.load_ingredient(search_value)
+    if ingredients == False:
+        ingredients = ""
+    dishes = sql_manager.load_dish(search_value)
+    if dishes == False:
+        dishes = ""
+    return render_template("search_result.html", search_value=search_value,ingredients=ingredients,dishes=dishes)
 
 ## RECIPE
 @server.route("/recipe", methods=['POST', 'GET'])

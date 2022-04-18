@@ -44,7 +44,7 @@
 #input-search {
   border-radius: 18px;
   width: 30%;
-  margin-top: auto;
+  margin: auto;
   align:center;
   height:30px;
 }
@@ -110,13 +110,13 @@
   -justify-content: center;
   -display:inline-block;
   -margin: auto;
-  width: 100%;
+  width: 150px;
   margin-top: 8px;
   border: none;
   color: white;
   padding: 5px 15px 5px;
   text-align: center;
-  align:center;
+  -align:center;
   font-size: 16px;
   cursor: pointer;
   background-color: #FFB30F;
