@@ -83,7 +83,6 @@ def load_dish(search_value):
     if result == []:
         return False
     return result
-    #return result[0][0], result[0][1], result[0][2], result[0][3], result[0][4]
 
 ingredient=load_ingredient('דבש')
 #for ing in ingredient:
@@ -92,7 +91,6 @@ ingredient=load_ingredient('דבש')
 dish = load_dish('מבושל')
 for d in dish:
     print(d[0], d[1])
-
 
 
 def load_meal(search_value):
