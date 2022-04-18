@@ -86,12 +86,12 @@ def load_dish(search_value):
     #return result[0][0], result[0][1], result[0][2], result[0][3], result[0][4]
 
 ingredient=load_ingredient('דבש')
-for ing in ingredient:
-    print(ing[0])
+#for ing in ingredient:
+#    print(ing[0])
 
 dish = load_dish('מבושל')
 for d in dish:
-    print(d[0])
+    print(d[0], d[1])
 
 
 
@@ -104,7 +104,7 @@ def load_meal(search_value):
     result = mycursor.fetchall()
     if result == []:
         return False
-    return result[0][0], result[0][1], result[0][2], result[0][3], result[0][4]
+    return result
 
 
 

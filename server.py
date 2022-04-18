@@ -99,8 +99,15 @@ def search():
         print("check")
         search_value = request.form["item"]
         if search_value != "":
-            print(search_value)
-            return redirect(url_for("search_result", search_value=search_value))
+            ingredients = sql_manager.load_ingredient(search_value)
+            dishes = sql_manager.load_dish(search_value)
+            meals = sql_manager.load_meal(search_value)
+            print(ingredients, dishes, meals)
+            if (ingredients == False) and (dishes == False) and (meals== False):
+                flash("ערך לא קיים", "info")
+                return render_template("search.html")
+            else:
+                return redirect(url_for("search_result", search_value=search_value))
         else:
             flash("יש להכניס ערך לחיפוש", "info")
             return render_template("search.html")
@@ -111,12 +118,9 @@ def search():
 @server.route("/search_result/<search_value>")
 def search_result(search_value):
     ingredients = sql_manager.load_ingredient(search_value)
-    if ingredients == False:
-        ingredients = ""
     dishes = sql_manager.load_dish(search_value)
-    if dishes == False:
-        dishes = ""
-    return render_template("search_result.html", search_value=search_value,ingredients=ingredients,dishes=dishes)
+    meals = sql_manager.load_meal(search_value)
+    return render_template("search_result.html", search_value=search_value,ingredients=ingredients,dishes=dishes, meals=meals)
 
 ## RECIPE
 @server.route("/recipe", methods=['POST', 'GET'])
