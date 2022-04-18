@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block css %} {{ url_for('static',filename='styles/my_profile.css') }} {% endblock %}
+
+{% block content %}
+
+    <div class="center" style="width: 400px">
+      <h1 class="center">הפרופיל שלי</h1>
+      <h2 id="h-decipher">עדכון משקל</h2>
+      <br>
+        <form></form>
+      <input
+        type="text"
+        placeholder="משקל מעודכן"
+        class="enter-detailes"
+      /><br /><br />
+      <button type="submit" id="button">עדכן</button>
+    </div>
+
+{% endblock %}
+

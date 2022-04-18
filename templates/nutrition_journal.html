@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/nutrition.css') }} {% endblock %}
+
+{% block content %}
+
+    <h1 class="nutrition_title">יומן תזונה</h1><br>
+    <table class="nutrition_title">
+        <tr>
+            
+            <td class="td-days" >ראשון<br><span id="date1">20.3</span></td>
+            <td class="td-days" >שני<br><span id="date2">21.3</span></td>
+            <td class="td-days" >שלישי<br><span id="date3">22.3</span></td>
+            <td class="td-days" >רביעי<br><span id="date4">23.3</span></td>
+            <td class="td-days" >חמישי<br><span id="date5">24.3</span></td>
+            <td class="td-days" >שישי<br><span id="date6">25.3</span></td>
+            <td class="td-days" >שבת<br><span id="date7">26.3</span></td>
+            
+        </tr>  
+    </table><br>
+    <hr id="nutrition_hr">
+    <table class="center">
+        <tr>
+            <td>קלוריות</td>
+            <td>פחמימות</td>
+            <td>חלבונים</td>
+            <td>שומנים</td>
+        </tr>
+        <tr>
+            <td class="td-ingredient" style="border-color: #82C7E7;" ><p id="left_Value1"></p><p>1800/</p></td>
+            <td class="td-ingredient" style="border-color: #DAC86D;" ><p id="left_Value2"></p><p>210g/</p></td>
+            <td class="td-ingredient" style="border-color: #CDAFD5;"> <p id="left_Value3"></p><p>50g/</p></td>
+            <td class="td-ingredient" style="border-color: #8DC78D;"><p id="left_Value4"></p><p>77g/</p></td>
+
+        </tr>
+
+    </table>
+    <div align=center><br>
+       <table id="class_info">
+		<tr style="padding-bottom: 30px;">
+			<td style="margin-left: 15px;" >
+                <span class="h2">ארוחת בוקר    </span>450 קלוריות
+                <hr class="hr-style">
+                <table>
+                <div class="div-hover">
+                    <td class="find-td2">חביתה<br>סלט ירקות וטחינה<br>לחם קלורי<br> </td>      
+                </div>
+                </table>
+            </td>
+        
+			<td >
+                <span class="h2">  ארוחת ביניים</span>150 קלוריות
+                <hr class="hr-style">
+                <table>
+                <div>
+                    <td class="find-td2">תפוח<br>5 שקדים <br> <br></td>        
+                </div>
+               </table>
+                
+            </td>
+		</tr>
+		<tr  style="padding-top: 15px;"  >
+			
+			<td >
+                <span class="h2"> ארוחת צהריים</span>         650 קלוריות
+                <hr class="hr-style">
+                <table>
+                    <div>
+                        <td class="find-td2">אורז מלא<br>חזה עוף<br><br></td>  
+                    </div>
+                 </table>
+            </td>
+        
+			<td >
+                <span class="h2"> ארוחת ערב</span>         550 קלוריות
+                <hr class="hr-style">
+                <table>
+                    <div>
+                        <td class="find-td2">  סלט ירקות<br>לחם<br>ביצה קשה</td>
+                    </div>
+                </table>
+            </td>
+		</tr>
+	</table>
+</div>
+
+{% endblock %}

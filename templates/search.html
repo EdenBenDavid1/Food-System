@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/search.css') }} {% endblock %}
+
+{% block content %}
+
+    <div id="find_div">
+      <h1 style="text-align: center">חיפוש רכיב/מנה/ארוחה</h1>
+        <br>
+        <form type="text" method="POST" >
+      <input name="item" type="search" placeholder="הקלד ערך לחיפוש..." id="input-search" />
+         {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    <table class="buttons" style="text-align: center">
+        <tr>
+        <td><input class="find-btn" type="submit" value="חפש רכיב"/></td>
+        <td><input class="find-btn" type="submit" value="חפש מנה"/></td>
+        <td><input class="find-btn" type="submit" value="חפש ארוחה"/></td>
+        </tr>
+    </table>
+    </div>
+    <br />
+    <br />
+    <br />
+    <h2 class="center">רכיבים/ מנות פופלריות</h2>
+    <div id="find_div_info">
+      <table>
+        <tr>
+          <td align="center" colspan="2"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="אורז" class="find-table" /></td>
+          <td><input type="text" value="אורז-מלא" class="find-table" /></td>
+          <td><input type="text" value="חזה עוף" class="find-table" /></td>
+          <td><input type="text" value="עוף בתנור" class="find-table" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="ביצה קשה" class="find-table" /></td>
+          <td><input type="text" value="חביתה" class="find-table" /></td>
+          <td><input type="text" value="מקושקשת" class="find-table" /></td>
+          <td><input type="text" value="לחם קלוי" class="find-table" /></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="סלט" class="find-table" /></td>
+          <td><input type="text" value="מוקפץ" class="find-table" /></td>
+          <td><input type="text" value="בשר" class="find-table" /></td>
+          <td><input type="text" value="סלמון" class="find-table" /></td>
+        </tr>
+      </table>
+      <input type=button class="btn" value="לפענוח מתכון לחץ כאן" onclick="window.location.href='{{ url_for( 'recipe') }}';"></input>
+    </div>
+
+{% endblock %}

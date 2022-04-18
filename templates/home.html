@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/home.css') }} {% endblock %}
+
+{% block content %}
+    <div class="welcom-text">
+      <h2>ברוך הבא</h2>
+
+      <h2></h2>
+      <a>{{user.decode('utf8')[1:-1]}}</a>
+    </div>
+    <div class="index-content">
+      <table class="index-main-table">
+        <tr>
+          <th>קלוריות נצרכו</th>
+          <th>קלוריות נותרו</th>
+          <th>יעד קלורי</th>
+        </tr>
+        <tr>
+          <td class="tdt"><p>1800</p></td>
+          <td class="tdt"><p>550</p></td>
+          <td class="tdt"><p>{{targ}}</p></td>
+        </tr>
+        <tr>
+          <td><br><br></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>פחמימות</th>
+          <th>חלבונים</th>
+          <th>שומנים</th>
+        </tr>
+        <tr>
+          <td class="tdt"><p style="border-color: #DAC86D;">150/210g</p></td>
+          <td class="tdt"><p style="border-color: #CDAFD5;">50/60g</p></td>
+          <td class="tdt"><p style="border-color: #8DC78D;">40/77g</p></td>
+        </tr>
+      </table>
+    </div>
+
+{% endblock %}

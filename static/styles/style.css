@@ -1,0 +1,232 @@
+* {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 0;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: #2F2E2E;
+  height: 2.5rem;
+}
+.navbar-brand {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  align-items: center;
+  text-align: center;
+  margin-left: 12px;
+  height: 100%;
+  padding: 6px;
+}
+.navbar-brand:hover {
+  text-shadow: 2px 1px 2px rgb(249,181,66);
+  font-weight: bold;
+}
+
+.enter-detailes {
+  width: 200px;
+  border-radius: 15px;
+}
+
+#div-find-search {
+  width: 40%;
+}
+#div-find-search input {
+  width: 65%;
+  height: 30px;
+  padding: 8px;
+}
+
+.find-big-table-td {
+  width: 33%;
+  padding-left: 15px;
+}
+.find-big-table-td hr {
+  margin-bottom: 4px;
+}
+.td {
+  border-radius: 15px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: rgb(242,241,239);
+  margin: 25px;
+  text-align: center;
+  width: 33%;
+}
+
+.h2 {
+  text-decoration-color: rgb(98, 157, 68);
+  color: #369AA5;
+  font-size: x-large;
+  margin-left: 15px;
+  font-weight: bold;
+}
+
+.hr-style {
+  align: center
+  width: 30%;
+  border-top: 3px solid black;
+}
+#daily_div {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.find-td {
+  border-radius: 10px;
+  width: 140px;
+  height: 70px;
+  padding-right: 10px;
+  background-color: rgb(242,241,239);
+  font-size: 17px;
+  padding: 10px;
+  -spacing: 15px;
+}
+.link{
+  color: black;
+}
+.find-td2 {
+  text-align: right;
+  background-color: rgb(242,241,239);
+  border-radius: 15px;
+  border-width: 1px;
+  width: 40%;
+  padding-top: 0px;
+}
+
+#button-find {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.center {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.find-continue {
+  border-radius: 15px;
+  border-width: 1px;
+  width: 16rem;
+  height: 6rem;
+  background-color: rgb(242,241,239);
+  padding-right: 4px;
+}
+
+.head-find {
+  text-align: right;
+  padding-right: 4px;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.find-td-ingre {
+  margin-left: 0px;
+  padding-left: 14px;
+}
+#h-decipher {
+  text-decoration-color: rgb(98, 157, 68);
+  color: rgb(54, 154, 165);
+  font-size: x-large;
+  margin-left: 15px;
+  font-weight: bold;
+  margin: 0 auto;
+  text-align: right;
+  width: 30%;
+}
+
+.div-decipher-center {
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#button-decopher {
+  width: 50%;
+  margin-top: 8px;
+  border: none;
+  color: white;
+  padding: 5px 15px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #FFB30F;
+  border-radius: 4px;
+}
+
+#table-decipher2 {
+  height: 300px;
+  width: 800px;
+  margin: 0 auto;
+  border-width: 2px;
+  border: 5px solid rgb(54, 154, 165);
+  overflow: hidden;
+}
+
+.th-decipher {
+  background-color: aliceblue;
+  width: 33%;
+}
+.data:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 15px #aaa;
+  -text-align: center;
+  text-decoration: underline;
+}
+.user_name {
+  text-align: center;
+}
+
+.col-container {
+  display: grid; /* Make the container element behave like a table */
+  width: 100%;
+}
+.style_img {
+  float: left;
+  padding-top: 6px;
+}
+
+#div_scroll {
+  overflow: scroll;
+  width: 30%;
+  height: 300px;
+  margin: 0 auto;
+}
+
+#txtComment {
+  height: 300px;
+  width: 800px;
+}
+#table_choosen_meal {
+  margin: 0 auto;
+  margin: 0 auto;
+  width: 60%;
+}
+#choose-meal {
+  border-radius: 18px;
+  background-color: rgb(233,177,64);
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.td_choosen_meal {
+  padding-right: 15px;
+  margin-top: 0px;
+  width: 80px;
+  margin-left: 15px;
+}
+.cal{
+  color: rgb(223,32,143)
+}
+
+.td-ate {
+  padding-right: 50px;
+}

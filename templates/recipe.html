@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/style.css') }} {% endblock %}
+
+{% block content %}
+
+    <div style="width: 30%" class="center">
+      <h1 style="text-align: center">פענוח מתכון</h1>
+      <span
+        >ניתן לקבל את הערך התזונתי של כל מתכון.<br />העתיקו את המצרכים של המתכון
+        לתיבה,<br />.ונציג לכם פלט של הערך התזונתי</span
+      >
+      <hr class="hr-style" />
+    </div>
+    <h2 id="h-decipher">מצרכי המתכון:</h2>
+    <br />
+    <form type="text" method="POST" >
+    <div id="div_scroll">
+      <textarea id="txtComment" name="text"></textarea>
+    </div>
+    <br />
+    <div style="width: 30%" class="center">
+      <span class="center"> כמות מנות שנוצרות:</span>
+      <input type="number" id="number" name="number" min="1" max="100" /> כמות
+      <br /><br />
+      <input type="submit" id="button-decopher" value="פענוח מתכון"></input>
+    </div>
+        <br><br>
+        <div>
+        {% block recipe_result %}
+        {% endblock %}
+        </div>
+
+{% endblock %}

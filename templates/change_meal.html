@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/style.css') }} {% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align: center">ארוחות ערב חלופיות</h1>
+
+    <h2 id="choose-meal" style="text-align: center">הארוחה שנבחרה להחלפה: 550 קלוריות</h2>
+
+    <br /><br />
+    <table id="table_choosen_meal">
+      <tr>
+        <td>
+          <table>
+            <td class="find-td">
+              חביתה<br />סלט ירקות <br /><br /><a class="cal">500 קלוריות</a>
+            </td>
+
+            <td class="td_choosen_meal">
+              <a class="link" href="/#">בחר ארוחה</a>
+            </td>
+          </table>
+        </td>
+
+        <td>
+          <table>
+            <div>
+              <td class="find-td">
+                טוסט<br />עם ביצה קשה <br /><br /><a class="cal">600 קלוריות</a>
+              </td>
+            </div>
+            <td class="td_choosen_meal">
+              <a class="link" href="/#">בחר ארוחה</a>
+            </td>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <div>
+              <td class="find-td">
+                פשטידת פטריות<br />סלט ירוק<br /><br /><a class="cal">500 קלורית</a>
+              </td>
+            </div>
+            <td class="td_choosen_meal">
+              <a class="link" href="/#">בחר ארוחה</a>
+            </td>
+          </table>
+        </td>
+
+        <td>
+          <table>
+            <div>
+              <td class="find-td">
+                שקשוקה<br />סלט ירקות<br /><br /><a class="cal">550 קלוריות</a>
+              </td>
+            </div>
+            <td class="td_choosen_meal">
+              <a class="link" href="/#">בחר ארוחה</a>
+            </td>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/search.css') }} {% endblock %}
+
+{% block content %}
+
+    <div id="find_div">
+      <h1 style="text-align: center">חיפוש רכיב/מנה/ארוחה</h1>
+      <input type="search" placeholder="הקלד ערך לחיפוש..." id="input-search" value="{{search_value if search_value}}"/>
+    </div>
+    <br /><br />
+    <table style="margin: 0 auto">
+      <tr id="find-table-first-row">
+        <td class="find-big-table-td">
+          <span class="head-find">רכיב</span>
+          <hr class="hr-style" style="width: 100%" />
+
+          <table class="find-continue">
+            <td class="find-td2">אורז בסמטי<br />100 גרם<br /></td>
+            <td>
+              <span id="calories">קלוריות - 351</span><br />
+              <span id="carbohydrate">פחמימות- 77.4 גרם</span><br />
+              <span id="protein">חלבונים- 8.7 גרם</span><br />
+              <span id="fats">שומנים- 0.7 גרם</span>
+            </td>
+          </table>
+        </td>
+
+        <td class="find-big-table-td">
+          <span class="head-find">מנה</span>
+          <hr class="hr-style" style="width: 100%" />
+
+          <table class="find-continue">
+            <td class="find-td2">אורז בסמטי מבושל<br />100 גרם<br /></td>
+            <td>
+              <span id="calories">קלוריות- 123</span><br />
+              <span id="carbohydrate">פחמימות- 28.2 גרם</span><br />
+              <span id="protein">חלבונים- 2.7 גרם</span><br />
+              <span id="fats">שומנים- 0.3 גרם</span>
+            </td>
+          </table>
+        </td>
+
+        <td class="find-big-table-td">
+          <span class="head-find">ארוחה</span>
+          <hr class="hr-style" style="width: 100%" />
+          <table class="find-continue">
+            <td class="find-td2">
+              אורז מוקפץ עם פרגית<br />ארוחה 409 גרם<br />
+            </td>
+
+            <td class="find-td-ingre">
+              <span id="calories">קלוריות- 355</span><br />
+              <span id="carbohydrate">פחמימות- 63 גרם</span><br />
+              <span id="protein">חלבונים- 36.51 גרם</span><br />
+              <span id="fats">שומנים- 18.31 גרם</span>
+            </td>
+          </table>
+        </td>
+      </tr>
+      <tr id="find-table-first-row">
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2">אורז בר<br />100 גרם<br /></td>
+
+            <td>
+              <span id="calories">קלוריות- 375</span><br />
+              <span id="carbohydrate">פחמימות- 75 גרם</span><br />
+              <span id="protein">חלבונים- 14.7 גרם</span><br />
+              <span id="fats">שומנים- 1 גרם</span>
+            </td>
+          </table>
+        </td>
+
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2">אורז בר מבושל<br />100 גרם<br /></td>
+
+            <td>
+              <span id="calories">קלוריות- 101</span><br />
+              <span id="carbohydrate">פחמימות- 21.3גרם</span><br />
+              <span id="protein">חלבונים- 4 גרם</span><br />
+              <span id="fats">שומנים- 0.3 גרם</span>
+            </td>
+          </table>
+        </td>
+
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2">
+              אורז עם עוף ותפוחי אדמה<br />ארוחה 462 גרם<br />
+            </td>
+
+            <td class="find-td-ingre">
+              <span id="calories">קלוריות- 451</span><br />
+              <span id="carbohydrate">פחמימות- 70 גרם</span><br />
+              <span id="protein">חלבונים- 29.56 גרם</span><br />
+              <span id="fats">שומנים- 6.81 גרם</span>
+            </td>
+          </table>
+        </td>
+      </tr>
+      <tr id="find-table-first-row">
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2" style="padding-left: 15px">
+              אורז מלא עגול<br />100 גרם
+            </td>
+
+            <td>
+              <span id="calories">קלוריות- 375</span><br />
+              <span id="carbohydrate">פחמימות- 75 גרם</span><br />
+              <span id="protein">חלבונים- 14.7 גרם</span><br />
+              <span id="fats">שומנים- 1 גרם</span>
+            </td>
+          </table>
+        </td>
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2">
+              אורז עם ערמונים ופטריות<br />מנה 282 גרם<br />
+            </td>
+
+            <td>
+              <span id="calories">קלוריות- 265</span><br />
+              <span id="carbohydrate">פחמימות- 51 גרם</span><br />
+              <span id="protein">חלבונים- 6.52 גרם</span><br />
+              <span id="fats">שומנים- 5.34 גרם</span>
+            </td>
+          </table>
+        </td>
+        <td class="find-big-table-td">
+          <table class="find-continue">
+            <td class="find-td2">
+              אורז אדום עם נקינקיות <br />ושעועית ירוקה<br />
+              ארוחה 349 גרם <br />
+            </td>
+
+            <td class="find-td-ingre">
+              <span id="calories">קלוריות- 411</span><br />
+              <span id="carbohydrate">פחמימות- 49 גרם</span><br />
+              <span id="protein">חלבונים- 15.97 גרם</span><br />
+              <span id="fats">שומנים- 17.87 גרם</span>
+            </td>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+{% endblock %}

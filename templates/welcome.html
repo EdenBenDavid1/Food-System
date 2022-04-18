@@ -1,0 +1,33 @@
+{% extends 'baseStart.html' %}
+
+{% block css %} {{ url_for('static',filename='styles/welcome.css') }} {% endblock %}
+
+{% block content %}
+
+      <div class="welcome" >ברוכים הבאים</div>
+     
+     <div style="text-align: center">
+      <img src="{{url_for('static', filename='styles/health2U.png')}}" id="welcome_image" >
+      <br>
+
+      <form type="text" method="POST" >
+      <input name="email" type="text" placeholder="אימייל" class="enter-detailes"><br><br>
+
+      <input name="password" type="password" placeholder="סיסמה" class="enter-detailes"><br><br>
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+          {% endif %}
+      {% endwith %}
+          <br>
+      <input type="radio" id="remember" value=/>זכור אותי<br>
+    <br>
+      <input id="button" type="submit" value="התחבר"/>
+        <br><br>
+      אין לך משתמש? <a href="{{url_for('sign_up')}}" >לחץ כאן </a>
+         </form>
+
+
+{% endblock %}

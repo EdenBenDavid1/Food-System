@@ -1,0 +1,175 @@
+* {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 0;
+}
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: #2F2E2E;
+  height: 2.5rem;
+}
+
+.navbar-brand {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  align-items: center;
+  text-align: center;
+  margin-left: 12px;
+  height: 100%;
+  padding: 6px;
+}
+
+.navbar-brand:hover {
+  text-shadow: 2px 1px 2px rgb(249,181,66);
+  font-weight: bold;
+}
+
+#header {
+  text-align: center !important;
+  font-size: larger;
+  width: 50%;
+  justify-content: center;
+}
+
+#find_div {
+  display: flex;
+  flex-direction: column;
+  -width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  text-align:center;
+}
+
+#input-search {
+  border-radius: 18px;
+  width: 30%;
+  margin-top: auto;
+  align:center;
+  height:30px;
+}
+#input-search-ing {
+  width: 40%;
+  margin: auto;
+  border-radius: 18px;
+  -background-color: gainsboro;
+}
+.buttons{
+  width: 150px;
+}
+#find_div_info {
+  width: 30%;
+  margin: 0 auto;
+  text-align:center;
+}
+
+.center {
+  margin: 0 auto;
+  text-align: center;
+  align: center;
+}
+
+.find-table {
+  border-radius: 15px;
+  border-width: 0.5px;
+  text-align: center;
+  border-style: solid;
+  width: 90%;
+  margin-left: 3px;
+}
+
+.find-table:hover {
+  background-color: azure;
+}
+
+#button_style {
+  margin: 0 auto;
+  border-radius: 15px;
+  background-color: aliceblue;
+}
+
+#div_overflow {
+  overflow-x: auto;
+  margin: 0 auto;
+}
+
+#find_div_info {
+  -display: flex;
+  -flex-direction: column;
+  width: 400px;
+  margin: 0 auto;
+  -padding-left: 12px;
+}
+.div_buttons{
+  text-align:center;
+  width:150px;
+}
+
+.find-btn {
+  -margin: 150px;
+  -justify-content: center;
+  -display:inline-block;
+  -margin: auto;
+  width: 100%;
+  margin-top: 8px;
+  border: none;
+  color: white;
+  padding: 5px 15px 5px;
+  text-align: center;
+  align:center;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #FFB30F;
+  border-radius: 4px;
+}
+.btn {
+  width: 50%;
+  margin-top: 8px;
+  border: none;
+  color: white;
+  padding: 5px 15px 5px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #FFB30F;
+  border-radius: 4px;
+}
+
+.find-big-table-td {
+  width: 33%;
+  padding-left: 15px;
+}
+.find-big-table-td hr {
+  margin-bottom: 4px;
+}
+.head-find {
+  text-align: right;
+  padding-right: 4px;
+  font-size: x-large;
+  font-weight: bold;
+}
+.hr-style {
+  width: 65%;
+  border-top: 3px solid black;
+}
+.find-td2 {
+  text-align: right;
+  background-color: gainsboro;
+  border-radius: 15px;
+  border-width: 1px;
+  width: 40%;
+  padding-top: 0px;
+}
+.find-continue {
+  border-radius: 15px;
+  border-width: 1px;
+  width: 16rem;
+  height: 6rem;
+  background-color: gainsboro;
+  padding-right: 4px;
+}
+
+.find-td-ingre {
+  margin-left: 0px;
+  padding-left: 14px;
+}

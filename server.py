@@ -1,0 +1,148 @@
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, url_for
+from flask import request, redirect, session, flash
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+import flask_cors
+from flask_cors import CORS
+import sql_manager
+import json
+
+
+# Settings
+server = Flask(__name__, template_folder='templates')
+CORS(server)
+server.secret_key = "program"
+
+## WELCOME
+@server.route("/welcome", methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form["email"]
+        session["email"] = email
+        password = request.form["password"]
+        session["password"] = password
+        return redirect(url_for("get_user"))
+    else:
+        if "email" in session:
+            return redirect(url_for("get_user"))
+        return render_template("welcome.html")
+
+## SIGN UP - WTF........ OR REGULAR........NOT WORKING.......
+@server.route("/sign_up", methods=['POST', 'GET'])
+def sign_up():
+    if request.method == 'POST':
+        result = request.form["fname"]
+        return redirect(url_for("home", fname=result))
+    else:
+        return render_template("sign_up.html")
+
+## HOME PAGE
+@server.route("/")
+def get_user():
+    if "email" in session and "password" in session:
+        email = session["email"]
+        password = session["password"]
+        check = sql_manager.check_login_user(email, password)
+        if check == True:
+            first_name, last_name, targ = sql_manager.load_user(email)
+            user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
+            return render_template("home.html", user=user, targ=targ)
+        else:
+            session.pop("email", None)
+            session.pop("password", None)
+            flash("Wrong email or password", "info")
+            return redirect(url_for("login"))
+    else:
+        return redirect(url_for("login"))
+
+@server.route("/logout")
+def logout():
+    session.pop("email", None)
+    session.pop("password", None)
+    return redirect(url_for("login"))
+
+## PROFILE
+@server.route("/my_profile")
+def my_profile():
+    first_name, last_name, gender, age, height, weight, activity, targ = sql_manager.load_user_profile()
+    print(first_name, last_name, gender, age, height, weight, activity, targ)
+    user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
+    activity = json.dumps(activity, ensure_ascii=False).encode('utf8')
+    if gender == 'F':
+        gender = 'נקבה'
+    else:
+        gender ='זכר'
+    return render_template('my_profile.html', user=user, age=age, height=height, weight=weight,
+                           gender=gender, activity=activity, targ=targ)
+
+## UPDATE WEIGHT
+@server.route("/update_weight")
+def update_weight():
+    return render_template("update_weight.html")
+
+## DAILY MENU
+@server.route("/daily_menu")
+def daily_menu():
+    return render_template("daily_menu.html")
+
+## CHANGE MEAL
+@server.route("/change_meal")
+def change_meal():
+    return render_template("change_meal.html")
+
+## SEARCH
+@server.route("/search", methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        print("check")
+        search_value = request.form["item"]
+        if search_value != "":
+            print(search_value)
+            return redirect(url_for("search_result", search_value=search_value))
+        else:
+            flash("יש להכניס ערך לחיפוש", "info")
+            return render_template("search.html")
+    else:
+        return render_template("search.html")
+
+## SEARCH RESULT
+@server.route("/search_result/<search_value>")
+def search_result(search_value):
+    return render_template("search_result.html", search_value=search_value)
+
+## RECIPE
+@server.route("/recipe", methods=['POST', 'GET'])
+def recipe():
+    if request.method == 'POST':
+        ingredients = request.form["text"]
+        meal_number = request.form["number"]
+        print(ingredients)
+        # calc the calories:
+        return redirect(url_for("recipe_result"))
+    else:
+        return render_template("recipe.html")
+
+## RECIPE RESULT
+@server.route("/recipe_result")
+def recipe_result():
+    return render_template("recipe_result.html")
+
+## NUTRITION JOURNAL
+@server.route("/nutrition_journal")
+def nutrition_journal():
+    return render_template("nutrition_journal.html")
+
+
+
+#------------------------------
+# Barak Example
+@server.route("/getDataFromMyDb", methods=['GET'])
+def get_data_from_my_db():
+    sql_data = sql_manager.load_data_example()
+    dumped_sql_data = json.dumps(sql_data)
+    return render_template('show_list.html', title="page",ochel_list=dumped_sql_data)
+
+
+server.run()

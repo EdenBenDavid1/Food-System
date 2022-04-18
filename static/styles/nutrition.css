@@ -1,0 +1,101 @@
+* {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 0;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: #2F2E2E;
+  height: 2.5rem;
+}
+.navbar-brand {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  align-items: center;
+  text-align: center;
+  margin-left: 12px;
+  height: 100%;
+  padding: 6px;
+}
+.navbar-brand:hover {
+  text-shadow: 2px 1px 2px rgb(249,181,66);
+  font-weight: bold;
+}
+
+.style_img {
+  float: left;
+  padding-top: 6px;
+}
+
+.nutrition_title {
+  margin: 0 auto;
+  text-align: center;
+  width: 400px;
+}
+
+.td-days {
+  font-size:18px;
+}
+
+.td-days:hover {
+  border-radius: 15px;
+  background-color: rgb(235, 211, 235);
+  border-width: 1px;
+  width: 20%;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#nutrition_hr {
+  width: 500px;
+  border-top: 3px solid black;
+  margin: auto;
+  text-align: center;
+}
+
+.td-ingredient {
+  font-size:18px;
+  border-radius: 15px;
+  border-width: 3px;
+  text-align: center;
+  border-style: solid;
+  width: 105px;
+}
+#class_info{
+    width: 60%;
+}
+.center {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hr-style {
+  border-top: 2px solid black;
+  width: 85%;
+  margin: 0px;
+}
+#nutrition_div_info {
+  align: center;
+  margin: auto;
+}
+
+.find-td2 {
+  border-radius: 10px;
+  width: 140px;
+  height: 70px;
+  padding-right: 10px;
+  background-color: rgb(238,238,238);
+  font-size: 17px;
+  padding: 10px;
+  -spacing: 15px;
+}
+
+.h2 {
+  text-decoration-color: rgb(98, 157, 68);
+  color: #369AA5;
+  font-size: large;
+  margin-left: 15px;
+  font-weight: bold;
+}

@@ -1,0 +1,182 @@
+{% extends 'baseStart.html' %}
+
+{% block css %} {{ url_for('static',filename='styles/sign_up.css') }} {% endblock %}
+
+{% block content %}
+
+    <div style="text-align: center">
+      <br>
+      <h1 style="margin-bottom: 0px">רישום למערכת</h1>
+      <p style="margin-top: 0px; margin-bottom: 0px">
+        על מנת לחשב את היעד הקלורי שלך,<br />אנו צריכות את המידע הבסיסי הזה
+      </p>
+    </div>
+
+    <div style="text-align: center">
+      <form  method="POST">
+      <br />
+      <table
+        align="center"
+        cellspacing="10"
+        dir="rtl"
+        style="
+          max-width: 650px;
+          border-collapse: collapse;
+          width: 100%;
+          float: middle;
+          margin: 0 auto;
+        "
+      >
+        <tr>
+          <td>
+            <input
+              name="fname"
+              type="text"
+              placeholder="שם פרטי"
+              style="width: 70%; margin-bottom: 6px"
+              border-radius:5px
+            />
+          </td>
+          <td align="center">
+            <select id="cars" style="min-width: 155px; width: 50%">
+              <option value="regular">סוג תזונה</option>
+              <option value="regular">רגילה</option>
+              <option value="regular">פליאו</option>
+              <option value="vege">צמחוני</option>
+              <option value="vegan">טבעוני</option>
+              <option value="regular">קיטוגני</option>
+              <option value="regular">חלבונים</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              name="lname"
+              type="text"
+              placeholder="שם משפחה"
+              style="width: 70%; margin-bottom: 6px"
+              border-radius:50px
+            />
+          </td>
+          <td align="center">
+            <select id="activity" style="min-width: 155px; width: 50%">
+              <option value="">רמת פעילות שבועית</option>
+              <option value="0">ללא אימונים</option>
+              <option value="1">1-3 אימונים בשבוע</option>
+              <option value="2">4-5 אימונים בשבוע</option>
+              <option value="3">6-7 אימונים בשבוע</option>
+              <option value="4">עבודה פיזית</option>
+            </select>
+          </td>
+        </tr>
+        <tr style="margin-bottom: 0px">
+          <td>
+            <input
+              type="text"
+              placeholder="אימייל"
+              style="width: 70%; margin-bottom: 6px"
+              border-radius:50px
+            />
+          </td>
+          <td align="center">
+            <select id="weightgoal" style="min-width: 155px; width: 50%">
+              <option value="0">מטרת משקל</option>
+              <option value="1">עליה במשקל</option>
+              <option value="2">לשמור על המשקל</option>
+              <option value="3">להוריד במשקל</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="סיסמה"
+              style="width: 70%; margin-bottom: 6px; margin-top: 0px"
+              border-radius:50px
+            /><br />
+            <input
+              type="text"
+              placeholder="משקל"
+              style="width: 70%; margin-bottom: 6px"
+              border-radius:50px
+            /><br />
+            <input
+              type="text"
+              placeholder="גובה"
+              style="width: 70%; margin-bottom: 6px"
+              border-radius:50px
+            /><br />
+          </td>
+          <td align="center">
+            <table>
+              <tr>
+                <td colspan="4">
+                  <p
+                    style="font-size: 14px; margin-bottom: 0px; margin-top: 0px"
+                    align="right"
+                  >
+                    בחר אלרגיות/רגישויות אם יש לך:
+                  </p>
+                </td>
+              </tr>
+              <tr align="right">
+                <td><input type="checkbox" />בוטנים</td>
+                <td><input type="checkbox" />אגוזים</td>
+                <td><input type="checkbox" />לקטוז</td>
+                <td><input type="checkbox" />סכרת</td>
+              </tr>
+              <tr align="right">
+                <td><input type="checkbox" />שומשום</td>
+                <td><input type="checkbox" />גלוטן</td>
+                <td><input type="checkbox" />דגים</td>
+                <td><input type="checkbox" />ביצים</td>
+              </tr>
+              <tr align="right">
+                <td><input type="checkbox" />אצות</td>
+                <td><input type="checkbox" />קטניות</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="radio" name="m" style="margin-bottom: 6px" >זכר
+            <input type="radio" name="f">נקבה
+            <br />
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <p
+              align="right"
+              style="
+                font-size: 14px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+                margin-right: 14%;
+              "
+            >
+              תאריך לידה
+            </p>
+            <input
+              type="date"
+              required
+              pattern="\d{4}-\d{2}-\d{2}"
+              style="margin-bottom: 6px; width: 70%"
+            />
+          </td>
+          <td></td>
+        </tr>
+      </table>
+      <br />
+      <input
+        id="button"
+        type="submit"
+        value="רישום"
+      />
+      </form>
+    </div>
+{% endblock %}

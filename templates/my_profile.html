@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block css %} {{ url_for('static',filename='styles/my_profile.css') }} {% endblock %}
+
+{% block content %}
+    <div ><a class="link" href="{{url_for('logout')}}">התנתק</a></div>
+    <div class="my-profile-head-content" style="width: 400px">
+      <h1>הפרופיל שלי</h1>
+      <h2 class="my-profile-username">{{user.decode('utf8')[1:-1]}}</h2>
+      <div class="my-profile-icons-bar">
+        <table>
+          <tr>
+            <td class="my_profile_td">
+              <div>
+                <h4>תזונה<br /><br /></h4>
+                <img class="my-profile-icon" src="{{url_for('static', filename='styles/fork_icon.png')}}" />
+                <span id="amount_of_cal"><b>הכל</b></span>
+              </div>
+            </td>
+            <br><br>
+            <td class="my_profile_td">
+              <div>
+                <h4>כמות קלוריות<br />יומית</h4>
+                <img class="my-profile-icon" src="{{url_for('static', filename='styles/fire.png')}}" />
+                <span id="amount_of_cal"><b>{{targ}}</b></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a class="link" href="#" id="type_of_food">שנה תזונה</a>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br>
+    <div align="center">
+      <hr class="hr-style">
+    </div>
+    <br>
+    <div class="my-profile-main-content">
+      <table>
+        <tr>
+          <td class="first-col-td">
+            <a class="link" href="{{url_for('update_weight')}}"> משקל </a>
+            <a class="From_db">{{weight}}</a>
+          </td>
+        </tr>
+        <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+        <tr>
+          <td class="first-col-td">
+            <span> גובה </span>
+            <span class="From_db">{{height}}</span>
+          </td>
+        </tr>
+        <tr>
+         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+          <td class="first-col-td">
+            <span> תאריך לידה </span>
+            <span class="From_db">none</span>
+          </td>
+        <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+        <tr>
+          <td class="first-col-td">
+            <span> מגדר </span>
+            <span class="From_db">{{gender}}</span>
+          </td>
+        </tr>
+        <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+        <tr>
+          <td class="first-col-td">
+            <span> רמת פעילות </span>
+            <span class="From_db">{{activity.decode('utf8')}}</span>
+          </td>
+        </tr>
+        <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+        <tr>
+          <td class="first-col-td">
+            <span> אלרגיות </span>
+            <span class="From_db">none</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+{% endblock %}
