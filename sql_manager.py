@@ -89,7 +89,7 @@ def load_today_menu(menu):
 #print(l)
 
 ## NUTRITION JOURNAL
-def loat_ate_meals(menu):
+def load_ate_meals(menu):
     pass
 
 def load_journal(email):
@@ -111,7 +111,6 @@ def load_journal(email):
         meals = load_today_menu(menu)
         info[date.strftime("%A %d.%m")] = (update_values, parameters,meals)
     return info
-
 
 journal = load_journal('roni_zarfati@gmail.com')
 print(journal)

@@ -75,6 +75,7 @@ def daily_menu():
         return redirect(url_for("login"))
     email = session["email"]
     meals = sql_manager.load_today_menu(1)
+    print(meals)
     return render_template("daily_menu.html", meals=meals)
 
 ## CHANGE MEAL
@@ -135,9 +136,21 @@ def nutrition_journal():
     if "email" not in session:
         return redirect(url_for("login"))
     email = session["email"]
+    today = date.today().strftime("%A %d.%m")
+    print(today)
     info = sql_manager.load_journal(email)
-    print(info)
-    return render_template("nutrition_journal.html", info=info)
+    print('infi', info)
+    return render_template("nutrition_journal.html", info=info,today=today)
+
+@server.route("/nutrition_info/<key>")
+def nutrition_info(key):
+    if "email" not in session:
+        return redirect(url_for("login"))
+    email = session["email"]
+    info = sql_manager.load_journal(email)
+    meals_values = key
+    print(meals_values)
+    return render_template("nutrition_info.html", info=info)
 
 ## PROFILE
 @server.route("/my_profile")

@@ -6,13 +6,12 @@
     <h1 style="text-align: center">תפריט יומי</h1>
     <br /><br />
     <div id="daily_div">
-
+      {% for meal in meals %}
       <table align="center" style="width: 500px">
         <tr>
           <td>
-            {% for meal in meals %}
             {% if meal[2] == 'בוקר' %}
-            <span class="h2">ארוחת {{meal[2]}}</span> {{meal[1]}} קלוריות
+            <span class="h2">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
             <hr class="hr-style" />
             <table>
               <div class="daily_div">

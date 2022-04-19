@@ -1,19 +1,8 @@
-{% extends 'base.html' %}
-{% block css %} {{ url_for('static',filename='styles/nutrition.css') }} {% endblock %}
+{% extends 'nutrition_journal.html' %}
 
-{% block content %}
+{% block nutrition_info %}
 
-    <h1 class="nutrition_title">יומן תזונה</h1><br>
-    <table class="nutrition_title">
-        <tr>
-            {% for key in info %}
-            <td class="td-days"><span id="date1" onclick="window.location.href='{{ url_for( 'nutrition_info', key=key) }}';">{{key}}</span></td>
-            {% endfor %}
-        </tr>  
-    </table><br>
 
-    <hr id="nutrition_hr">
-    {% block nutrition_info %}
     <table class="center">
         <tr>
             <td>קלוריות</td>
@@ -22,16 +11,13 @@
             <td>שומנים</td>
         </tr>
         <tr>
-        {% for value in info[today] %}
-            {% for value in info[today] %}
-            <td class="td-ingredient" style="border-color: #82C7E7;" ><p>{{value[1][0]/value[0][0]}}g</p></td>
-            <td class="td-ingredient" style="border-color: #DAC86D;" ><p>{{value[0][1]}}</p></td>
-            <td class="td-ingredient" style="border-color: #CDAFD5;"></p>{{value[0][2]}}<p></p></td>
-            <td class="td-ingredient" style="border-color: #8DC78D;"></p>{{value[0][3]}}<p></p></td>
+            <td class="td-ingredient" style="border-color: #82C7E7;" ><p>900/1800</p></td>
+            <td class="td-ingredient" style="border-color: #DAC86D;" ><p>210/210g</p></td>
+            <td class="td-ingredient" style="border-color: #CDAFD5;"></p><p>50/50g</p></td>
+            <td class="td-ingredient" style="border-color: #8DC78D;"></p><p>77/77g</p></td>
         </tr>
-            {% endfor %}
-        {% endfor %}
-        </table>
+
+    </table>
     <div align=center><br>
        <table id="class_info">
 		<tr style="padding-bottom: 30px;">
@@ -40,34 +26,34 @@
                 <hr class="hr-style">
                 <table>
                 <div class="div-hover">
-                    <td class="find-td2">חביתה<br>סלט ירקות וטחינה<br>לחם קלורי<br> </td>
+                    <td class="find-td2">חביתה<br>סלט ירקות וטחינה<br>לחם קלורי<br> </td>      
                 </div>
                 </table>
             </td>
-
+        
 			<td >
                 <span class="h2">  ארוחת ביניים</span>150 קלוריות
                 <hr class="hr-style">
                 <table>
                 <div>
-                    <td class="find-td2">תפוח<br>5 שקדים <br> <br></td>
+                    <td class="find-td2">תפוח<br>5 שקדים <br> <br></td>        
                 </div>
                </table>
-
+                
             </td>
 		</tr>
 		<tr  style="padding-top: 15px;"  >
-
+			
 			<td >
                 <span class="h2"> ארוחת צהריים</span>         650 קלוריות
                 <hr class="hr-style">
                 <table>
                     <div>
-                        <td class="find-td2">אורז מלא<br>חזה עוף<br><br></td>
+                        <td class="find-td2">אורז מלא<br>חזה עוף<br><br></td>  
                     </div>
                  </table>
             </td>
-
+        
 			<td >
                 <span class="h2"> ארוחת ערב</span>         550 קלוריות
                 <hr class="hr-style">
@@ -76,11 +62,9 @@
                         <td class="find-td2">  סלט ירקות<br>לחם<br>ביצה קשה</td>
                     </div>
                 </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    {% endblock %}
+            </td>
+		</tr>
+	</table>
+</div>
 
 {% endblock %}
