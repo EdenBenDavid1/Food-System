@@ -6,15 +6,18 @@
     <h1 style="text-align: center">תפריט יומי</h1>
     <br /><br />
     <div id="daily_div">
+
       <table align="center" style="width: 500px">
         <tr>
           <td>
-            <span class="h2">ארוחת בוקר</span>450 קלוריות
+            {% for meal in meals %}
+            {% if meal[2] == 'בוקר' %}
+            <span class="h2">ארוחת {{meal[2]}}</span> {{meal[1]}} קלוריות
             <hr class="hr-style" />
             <table>
               <div class="daily_div">
                 <td class="find-td">
-                  חביתה<br />סלט ירקות וטחינה<br />לחם קלוי<br />
+                  {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
                 </td>
               </div>
@@ -27,15 +30,17 @@
             </table>
           </td>
         </tr>
+        {% endif %}
         <tr><td></td></tr>
         <tr>
           <td>
-            <span class="h2">ארוחת צהריים</span>650 קלוריות
+            {% if meal[2] == 'צהריים' %}
+            <span class="h2">ארוחת {{meal[2]}}</span> {{meal[1]}} קלוריות
             <hr class="hr-style" />
             <table>
               <div>
                 <td class="find-td">
-                  אורז מלא<br />חזה עוף<br />
+                  {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
                 </td>
               </div>
@@ -48,15 +53,17 @@
             </table>
           </td>
         </tr>
+        {% endif %}
         <tr><td></td></tr>
         <tr>
           <td>
-            <span class="h2">ארוחת ביניים</span>150 קלוריות
+            {% if meal[2] == 'ביניים' %}
+            <span class="h2">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
             <hr class="hr-style" />
             <table>
               <div class="daily_div">
                 <td class="find-td">
-                  תפוח<br />5 שקדים <br />
+                  {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
                 </td>
               </div>
@@ -64,23 +71,28 @@
             </table>
           </td>
         </tr>
+        {% endif %}
         <tr><td></td></tr>
         <tr>
           <td>
-            <span class="h2">ארוחת ערב</span>550 קלוריות
+            {% if meal[2] == 'ערב' %}
+            <span class="h2">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
             <hr class="hr-style" />
             <table>
               <div>
                 <td class="find-td">
-                  סלט ירקות<br />לחם<br />ביצה קשה<br />
+                  {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
                 </td>
               </div>
               <td class="td-ate"><input type="checkbox" />אכלתי</td>
+
             </table>
           </td>
         </tr>
+        {% endif %}
       </table>
+      {% endfor %}
     </div>
 
 {% endblock %}

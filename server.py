@@ -8,6 +8,7 @@ import flask_cors
 from flask_cors import CORS
 import sql_manager
 import json
+from datetime import date
 
 
 # Settings
@@ -49,7 +50,8 @@ def get_user():
             first_name, last_name = sql_manager.load_user(email)
             user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
             parameters = sql_manager.load_parameters_from_menu(1)
-            values = sql_manager.load_update_values()
+            today = date.today().strftime("%Y-%m-%d")
+            values = sql_manager.load_update_values(today)
             remain_cal = round(parameters[0][0] - values[0][0],2)
             return render_template("home.html", user=user, parameters=parameters, values=values,remain_cal=remain_cal)
         else:
@@ -69,7 +71,11 @@ def logout():
 ## DAILY MENU
 @server.route("/daily_menu")
 def daily_menu():
-    return render_template("daily_menu.html")
+    if "email" not in session:
+        return redirect(url_for("login"))
+    email = session["email"]
+    meals = sql_manager.load_today_menu(1)
+    return render_template("daily_menu.html", meals=meals)
 
 ## CHANGE MEAL
 @server.route("/change_meal")
@@ -126,6 +132,8 @@ def recipe_result():
 ## NUTRITION JOURNAL
 @server.route("/nutrition_journal")
 def nutrition_journal():
+    if "email" not in session:
+        return redirect(url_for("login"))
     email = session["email"]
     info = sql_manager.load_journal(email)
     print(info)
@@ -134,6 +142,8 @@ def nutrition_journal():
 ## PROFILE
 @server.route("/my_profile")
 def my_profile():
+    if "email" not in session:
+        return redirect(url_for("login"))
     email = session["email"]
     first_name, last_name, gender, age, height, weight, activity, targ, diet, allergies = sql_manager.load_user_profile(email)
     user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
@@ -153,17 +163,6 @@ def update_weight():
     return render_template("update_weight.html")
 
 
-
-
-
-
-#------------------------------
-# Barak Example
-@server.route("/getDataFromMyDb", methods=['GET'])
-def get_data_from_my_db():
-    sql_data = sql_manager.load_data_example()
-    dumped_sql_data = json.dumps(sql_data)
-    return render_template('show_list.html', title="page",ochel_list=dumped_sql_data)
 
 
 server.run()

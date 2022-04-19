@@ -75,8 +75,11 @@ def load_update_values(date):
 def load_today_menu(menu):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "SELECT mealsInMenu_meal_id FROM foodSystem.menus mn " \
-          "join foodSystem.meals_in_menu mim on mn.menu_id=mim.mealsInMenu_menu_id" \
+    sql = "SELECT ml.meal_name,ml.meal_cal,mt.type_name " \
+          "FROM (((foodSystem.menus as mn " \
+          "join foodSystem.meals_in_menu as mim on mn.menu_id=mim.mealsInMenu_menu_id)" \
+          "join foodSystem.meals as ml on ml.meal_id=mim.mealsInMenu_meal_id)" \
+          "join foodSystem.meal_type as mt on mim.mealsInMenu_meal_type_id=mt.type_id)" \
           "where menu_id=%s;"
     mycursor.execute(sql, (menu,))
     result = mycursor.fetchall()
@@ -86,6 +89,9 @@ def load_today_menu(menu):
 #print(l)
 
 ## NUTRITION JOURNAL
+def loat_ate_meals(menu):
+    pass
+
 def load_journal(email):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -102,9 +108,8 @@ def load_journal(email):
         menu = history[1]
         parameters = load_parameters_from_menu(menu)
         update_values = load_update_values(date)
-        info[date.strftime("%A %d.%m")] = (update_values, parameters)
-        #meals = load_today_menu(menu)
-        #print(date, parameters, update_values)
+        meals = load_today_menu(menu)
+        info[date.strftime("%A %d.%m")] = (update_values, parameters,meals)
     return info
 
 
