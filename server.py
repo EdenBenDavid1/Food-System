@@ -48,7 +48,7 @@ def get_user():
         if check == True:
             first_name, last_name = sql_manager.load_user(email)
             user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
-            parameters = sql_manager.loat_parameters_from_menu(1)
+            parameters = sql_manager.load_parameters_from_menu(1)
             values = sql_manager.load_update_values()
             remain_cal = round(parameters[0][0] - values[0][0],2)
             return render_template("home.html", user=user, parameters=parameters, values=values,remain_cal=remain_cal)
@@ -126,30 +126,26 @@ def recipe_result():
 ## NUTRITION JOURNAL
 @server.route("/nutrition_journal")
 def nutrition_journal():
-    return render_template("nutrition_journal.html")
+    email = session["email"]
+    info = sql_manager.load_journal(email)
+    print(info)
+    return render_template("nutrition_journal.html", info=info)
 
 ## PROFILE
 @server.route("/my_profile")
 def my_profile():
-    if "email" in session and "password" in session:
-        email = session["email"]
-        password = session["password"]
-        check = sql_manager.check_login_user(email, password)
-        if check == True:
-            first_name, last_name, gender, age, height, weight, activity, targ, diet, allergies = sql_manager.load_user_profile(email)
-            user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
-            activity = json.dumps(activity, ensure_ascii=False).encode('utf8')
-            diet = json.dumps(diet, ensure_ascii=False).encode('utf8')
-            s_allergy=""
-            for allergy in allergies:
-                s_allergy += allergy + ","
-            allergy_val = json.dumps(s_allergy, ensure_ascii=False).encode('utf8')
-            return render_template('my_profile.html', user=user, age=age, height=height, weight=weight,
-                           gender=gender, activity=activity, targ=targ, diet=diet, allergy_val=allergy_val)
-        else:
-            return redirect(url_for("login"))
-    else:
-        return redirect(url_for("login"))
+    email = session["email"]
+    first_name, last_name, gender, age, height, weight, activity, targ, diet, allergies = sql_manager.load_user_profile(email)
+    user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
+    activity = json.dumps(activity, ensure_ascii=False).encode('utf8')
+    diet = json.dumps(diet, ensure_ascii=False).encode('utf8')
+    s_allergy=""
+    for allergy in allergies:
+        s_allergy += allergy + ","
+    allergy_val = json.dumps(s_allergy, ensure_ascii=False).encode('utf8')
+    return render_template('my_profile.html', user=user, age=age, height=height, weight=weight,
+                   gender=gender, activity=activity, targ=targ, diet=diet, allergy_val=allergy_val)
+
 
 ## UPDATE WEIGHT
 @server.route("/update_weight")

@@ -6,15 +6,9 @@
     <h1 class="nutrition_title">יומן תזונה</h1><br>
     <table class="nutrition_title">
         <tr>
-            
-            <td class="td-days" >ראשון<br><span id="date1">20.3</span></td>
-            <td class="td-days" >שני<br><span id="date2">21.3</span></td>
-            <td class="td-days" >שלישי<br><span id="date3">22.3</span></td>
-            <td class="td-days" >רביעי<br><span id="date4">23.3</span></td>
-            <td class="td-days" >חמישי<br><span id="date5">24.3</span></td>
-            <td class="td-days" >שישי<br><span id="date6">25.3</span></td>
-            <td class="td-days" >שבת<br><span id="date7">26.3</span></td>
-            
+            {% for key in info %}
+            <td class="td-days" ><span id="date1">{{key}}</span></td>
+            {% endfor %}
         </tr>  
     </table><br>
     <hr id="nutrition_hr">
@@ -26,11 +20,10 @@
             <td>שומנים</td>
         </tr>
         <tr>
-            <td class="td-ingredient" style="border-color: #82C7E7;" ><p id="left_Value1"></p><p>1800/</p></td>
-            <td class="td-ingredient" style="border-color: #DAC86D;" ><p id="left_Value2"></p><p>210g/</p></td>
-            <td class="td-ingredient" style="border-color: #CDAFD5;"> <p id="left_Value3"></p><p>50g/</p></td>
-            <td class="td-ingredient" style="border-color: #8DC78D;"><p id="left_Value4"></p><p>77g/</p></td>
-
+            <td class="td-ingredient" style="border-color: #82C7E7;" ><p>900/1800</p></td>
+            <td class="td-ingredient" style="border-color: #DAC86D;" ><p>210/210g</p></td>
+            <td class="td-ingredient" style="border-color: #CDAFD5;"></p><p>50/50g</p></td>
+            <td class="td-ingredient" style="border-color: #8DC78D;"></p><p>77/77g</p></td>
         </tr>
 
     </table>

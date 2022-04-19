@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 
 # CONNECT TO DB
 def connect():
@@ -39,7 +40,7 @@ def load_user(email):
 
 # After the algorithm suggest a daily menu, show the menu value:
 # Lets say the menu is 1:
-def loat_parameters_from_menu(menu):
+def load_parameters_from_menu(menu):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT round(menu_cal,2),round(menu_carb,2),round(menu_protein,2),round(menu_fat,2) " \
@@ -49,25 +50,66 @@ def loat_parameters_from_menu(menu):
     return result
 
 #parameters = loat_parameters_from_menu(1)
+#print(parameters)
 #for para in parameters:
-#    print(parameters)
+#    print(para)
 
 # After the algorithm suggest a daily menu, show the update values, according to what the user ate:
-def load_update_values():
+def load_update_values(date):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "select round(sum(meal_cal),2),round(sum(meal_carb),2),round(sum(meal_protein),2),round(sum(meal_fat),2) " \
-          "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=current_date();"
-    mycursor.execute(sql)
+          "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=%s;"
+    mycursor.execute(sql,(date,))
     result = mycursor.fetchall()
     # id the user didn't eat anything yet:
     if result == [(None, None, None, None)]:
         result = [(0,0,0,0)]
     return result
 
-#values = load_update_values()
+#values = load_update_values('2022-04-18')
 #for val in values:
 #print(values)
+
+## DAILY MENU
+def load_today_menu(menu):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT mealsInMenu_meal_id FROM foodSystem.menus mn " \
+          "join foodSystem.meals_in_menu mim on mn.menu_id=mim.mealsInMenu_menu_id" \
+          "where menu_id=%s;"
+    mycursor.execute(sql, (menu,))
+    result = mycursor.fetchall()
+    return result
+
+#l = load_today_menu(1)
+#print(l)
+
+## NUTRITION JOURNAL
+def load_journal(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT user_id FROM FoodSystem.users WHERE email=%s;"
+    mycursor.execute(sql1, (email,))
+    user_id = mycursor.fetchall()
+    sql2 = "SELECT date, history_menu_id FROM foodSystem.menu_history " \
+           "where (date between (current_date()-6) and current_date()) and (history_user_id=%s);"
+    mycursor.execute(sql2, (user_id[0][0],))
+    result = mycursor.fetchall()
+    info = {}
+    for history in result:
+        date = history[0]
+        menu = history[1]
+        parameters = load_parameters_from_menu(menu)
+        update_values = load_update_values(date)
+        info[date.strftime("%A %d.%m")] = (update_values, parameters)
+        #meals = load_today_menu(menu)
+        #print(date, parameters, update_values)
+    return info
+
+
+journal = load_journal('roni_zarfati@gmail.com')
+print(journal)
 
 ## MY_PROFILE
 # load all parameters
