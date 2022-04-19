@@ -14,7 +14,7 @@
               <div>
                 <h4>תזונה<br /><br /></h4>
                 <img class="my-profile-icon" src="{{url_for('static', filename='styles/fork_icon.png')}}" />
-                <span id="amount_of_cal"><b>הכל</b></span>
+                <span id="amount_of_cal"><b>{{diet.decode('utf8')[1:-1]}}</b></span>
               </div>
             </td>
             <br><br>
@@ -58,8 +58,8 @@
         <tr>
          <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
           <td class="first-col-td">
-            <span> תאריך לידה </span>
-            <span class="From_db">none</span>
+            <span> גיל </span>
+            <span class="From_db">{{age}}</span>
           </td>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
@@ -72,14 +72,14 @@
         <tr>
           <td class="first-col-td">
             <span> רמת פעילות </span>
-            <span class="From_db">{{activity.decode('utf8')}}</span>
+            <span class="From_db">{{activity.decode('utf8')[1:-1]}}</span>
           </td>
         </tr>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
           <td class="first-col-td">
             <span> אלרגיות </span>
-            <span class="From_db">none</span>
+            <span class="From_db">{{allergy_val.decode('utf8')[1:-2]}}</span>
           </td>
         </tr>
       </table>

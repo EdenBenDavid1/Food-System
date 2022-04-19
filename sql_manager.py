@@ -21,7 +21,10 @@ def load_data_example():
     return result
 
 email = 'roni_zarfati@gmail.com'
-
+#gender = {'F':'נקבה', 'M':'זכר'}
+#activity = {'Inactivity': 'ללא אימונים', 'slightly_active': '1-3 אימונים בשבוע', 'moderate_activity':'4-5 אימונים בשבוע'
+#                   ,'very_active':'6-7 אימונים בשבוע','extremely_active':'עבודה פיזית'}
+#diets = {'all':'הכל', 'M':'זכר'}
 
 ## WELCOME
 # Check if email and password are exist
@@ -58,9 +61,9 @@ def loat_parameters_from_menu(menu):
     result = mycursor.fetchall()
     return result
 
-parameters = loat_parameters_from_menu(1)
-for para in parameters:
-    print(parameters)
+#parameters = loat_parameters_from_menu(1)
+#for para in parameters:
+#    print(parameters)
 
 
 def load_update_values():
@@ -72,19 +75,42 @@ def load_update_values():
     result = mycursor.fetchall()
     return result
 
-values = load_update_values()
-for val in values:
-    print(val)
+#values = load_update_values()
+#for val in values:
+#    print(val)
 
 ## MY_PROFILE
-def load_user_profile():
+
+def load_profile_values():
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "SELECT user_fname, user_lname, gender, age,height, weight, activity_level, cal_targ" \
-          " FROM FoodSystem.users WHERE user_id=1;"
-    mycursor.execute(sql)
-    result = mycursor.fetchall()
-    return result[0][0], result[0][1], result[0][2], result[0][3], result[0][4], result[0][5], result[0][6], result[0][7]
+    sql = "SELECT user_fname, user_lname, gender, age, height, weight, activity_level, cal_targ, diet_id" \
+          " FROM FoodSystem.users WHERE email=%s;"
+
+
+
+def load_user_profile(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT user_fname, user_lname, gender, age, height, weight, activity_level, cal_targ, diet_id, user_id" \
+          " FROM FoodSystem.users WHERE email=%s;"
+    mycursor.execute(sql1, (email,))
+    basic_info = mycursor.fetchall()
+    sql2 = "SELECT diet_name FROM foodSystem.diets where diet_id=%s;"
+    mycursor.execute(sql2, (basic_info[0][8],))
+    diet = mycursor.fetchall()
+    sql3 = "SELECT allergy_name FROM foodSystem.user_allergies ua join " \
+           "foodSystem.allergies_or_sensitivity aos on ua.allergy_id=aos.allergy_id where user_id=%s;"
+    mycursor.execute(sql3, (basic_info[0][9],))
+    all_allergies = mycursor.fetchall()
+    allergies =[]
+    for al in all_allergies:
+        allergies.append(al[0])
+    return basic_info[0][0], basic_info[0][1], basic_info[0][2], basic_info[0][3], basic_info[0][4], basic_info[0][5],\
+           basic_info[0][6], basic_info[0][7], diet[0][0], allergies
+
+user=load_user_profile('roni_zarfati@gmail.com')
+print(user)
 
 ## SEARCH
 def load_ingredient(search_value):
