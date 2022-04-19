@@ -46,9 +46,12 @@ def get_user():
         password = session["password"]
         check = sql_manager.check_login_user(email, password)
         if check == True:
-            first_name, last_name, targ = sql_manager.load_user(email)
+            first_name, last_name = sql_manager.load_user(email)
             user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
-            return render_template("home.html", user=user, targ=targ)
+            parameters = sql_manager.loat_parameters_from_menu(1)
+            values = sql_manager.load_update_values()
+            remain_cal = round(parameters[0][0] - values[0][0],2)
+            return render_template("home.html", user=user, parameters=parameters, values=values,remain_cal=remain_cal)
         else:
             session.pop("email", None)
             session.pop("password", None)

@@ -42,11 +42,39 @@ def check_login_user(email,password):
 def load_user(email):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "SELECT user_fname, user_lname, cal_targ, email FROM FoodSystem.users WHERE email=%s;"
+    sql = "SELECT user_fname, user_lname, email FROM FoodSystem.users WHERE email=%s;"
     mycursor.execute(sql, (email,))
     result = mycursor.fetchall()
-    return result[0][0], result[0][1], result[0][2]
+    return result[0][0], result[0][1]
 
+# After the algorithm suggest a daily menu:
+# Lets say the menu is 1:
+def loat_parameters_from_menu(menu):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT round(menu_cal,2),round(menu_carb,2),round(menu_protein,2),round(menu_fat,2) " \
+          "FROM foodSystem.menus WHERE menu_id=%s;"
+    mycursor.execute(sql, (menu,))
+    result = mycursor.fetchall()
+    return result
+
+parameters = loat_parameters_from_menu(1)
+for para in parameters:
+    print(parameters)
+
+
+def load_update_values():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "select round(sum(meal_cal),2),round(sum(meal_carb),2),round(sum(meal_protein),2),round(sum(meal_fat),2) " \
+          "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=current_date();"
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    return result
+
+values = load_update_values()
+for val in values:
+    print(val)
 
 ## MY_PROFILE
 def load_user_profile():
@@ -84,13 +112,13 @@ def load_dish(search_value):
         return False
     return result
 
-ingredient=load_ingredient('דבש')
+#ingredient=load_ingredient('דבש')
 #for ing in ingredient:
 #    print(ing[0])
 
-dish = load_dish('מבושל')
-for d in dish:
-    print(d[0], d[1])
+#dish = load_dish('מבושל')
+#for d in dish:
+#    print(d[0], d[1])
 
 
 def load_meal(search_value):

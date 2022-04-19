@@ -13,12 +13,14 @@
         <tr>
           <th>קלוריות נצרכו</th>
           <th>קלוריות נותרו</th>
-          <th>יעד קלורי</th>
+          <th>קלוריות התפריט</th>
         </tr>
         <tr>
-          <td class="tdt"><p>1800</p></td>
-          <td class="tdt"><p>550</p></td>
-          <td class="tdt"><p>{{targ}}</p></td>
+          {% for parameter in parameters %}
+          {% for val in values %}
+          <td class="tdt"><p>{{val[0]}}</p></td>
+          <td class="tdt"><p>{{remain_cal}}</p></td>
+          <td class="tdt"><p>{{parameter[0]}}</p></td>
         </tr>
         <tr>
           <td><br><br></td>
@@ -31,9 +33,11 @@
           <th>שומנים</th>
         </tr>
         <tr>
-          <td class="tdt"><p style="border-color: #DAC86D;">150/210g</p></td>
-          <td class="tdt"><p style="border-color: #CDAFD5;">50/60g</p></td>
-          <td class="tdt"><p style="border-color: #8DC78D;">40/77g</p></td>
+          <td class="tdt"><p style="border-color: #DAC86D;">{{val[1]}}/{{parameter[1]}}g</p></td>
+          <td class="tdt"><p style="border-color: #CDAFD5;">{{val[2]}}/{{parameter[2]}}g</p></td>
+          <td class="tdt"><p style="border-color: #8DC78D;">{{val[3]}}/{{parameter[3]}}g</p></td>
+          {% endfor %}
+          {% endfor %}
         </tr>
       </table>
     </div>
