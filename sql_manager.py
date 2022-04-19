@@ -9,22 +9,8 @@ def connect():
         database='FoodSystem')
     return mydb
 
-# ------ EXAMPLE
-def load_data_example():
-    mydb = connect()
-    mycursor = mydb.cursor()
-    mycursor.execute(
-        "SELECT sum(fi_cal*amount), sum(fi_carb*amount), sum(fi_fat*amount), sum(fi_protein*amount), sum(fi_sugar*amount)"
-        "FROM FoodSystem.food_ingredients join FoodSystem.ingredients_in_dish on(food_ingredients.fi_id=ingredients_in_dish.fi_id) "
-        "WHERE dish_id=1;")
-    result = mycursor.fetchall()
-    return result
-
 email = 'roni_zarfati@gmail.com'
-#gender = {'F':'נקבה', 'M':'זכר'}
-#activity = {'Inactivity': 'ללא אימונים', 'slightly_active': '1-3 אימונים בשבוע', 'moderate_activity':'4-5 אימונים בשבוע'
-#                   ,'very_active':'6-7 אימונים בשבוע','extremely_active':'עבודה פיזית'}
-#diets = {'all':'הכל', 'M':'זכר'}
+
 
 ## WELCOME
 # Check if email and password are exist
@@ -42,6 +28,7 @@ def check_login_user(email,password):
         return True
 
 ## HOME:
+# load full name to first page:
 def load_user(email):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -50,7 +37,7 @@ def load_user(email):
     result = mycursor.fetchall()
     return result[0][0], result[0][1]
 
-# After the algorithm suggest a daily menu:
+# After the algorithm suggest a daily menu, show the menu value:
 # Lets say the menu is 1:
 def loat_parameters_from_menu(menu):
     mydb = connect()
@@ -65,7 +52,7 @@ def loat_parameters_from_menu(menu):
 #for para in parameters:
 #    print(parameters)
 
-
+# After the algorithm suggest a daily menu, show the update values, according to what the user ate:
 def load_update_values():
     mydb = connect()
     mycursor = mydb.cursor()
@@ -73,22 +60,17 @@ def load_update_values():
           "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=current_date();"
     mycursor.execute(sql)
     result = mycursor.fetchall()
+    # id the user didn't eat anything yet:
+    if result == [(None, None, None, None)]:
+        result = [(0,0,0,0)]
     return result
 
 #values = load_update_values()
 #for val in values:
-#    print(val)
+#print(values)
 
 ## MY_PROFILE
-
-def load_profile_values():
-    mydb = connect()
-    mycursor = mydb.cursor()
-    sql = "SELECT user_fname, user_lname, gender, age, height, weight, activity_level, cal_targ, diet_id" \
-          " FROM FoodSystem.users WHERE email=%s;"
-
-
-
+# load all parameters
 def load_user_profile(email):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -109,8 +91,8 @@ def load_user_profile(email):
     return basic_info[0][0], basic_info[0][1], basic_info[0][2], basic_info[0][3], basic_info[0][4], basic_info[0][5],\
            basic_info[0][6], basic_info[0][7], diet[0][0], allergies
 
-user=load_user_profile('roni_zarfati@gmail.com')
-print(user)
+#user=load_user_profile('roni_zarfati@gmail.com')
+#print(user)
 
 ## SEARCH
 def load_ingredient(search_value):
