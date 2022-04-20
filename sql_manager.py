@@ -89,6 +89,17 @@ def load_today_menu(menu):
 #l = load_today_menu(1)
 #print(l)
 
+def insert_meal_to_db():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
+    val = (1,1,5)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "record inserted.")
+
+#insert_meal_to_db()
+
 ## NUTRITION JOURNAL
 def load_rated_meals(date,user_id):
     mydb = connect()
@@ -104,7 +115,7 @@ def load_rated_meals(date,user_id):
         return result
 
 f = load_rated_meals('2022-04-20',1)
-print(f)
+#print(f)
 
 
 def load_journal(email):
@@ -141,8 +152,6 @@ def load_journal(email):
     info_meals[today.strftime("%d.%m %A")] = load_rated_meals(today, user_id)
 
     return(info_values, info_parameters, info_meals)
-
-
 
 #load_journal('roni_zarfati@gmail.com')
 #print(sort_info_values)

@@ -23,7 +23,9 @@
   text-shadow: 2px 1px 2px rgb(249,181,66);
   font-weight: bold;
 }
-
+.show-div{
+   display:none
+}
 .enter-detailes {
   width: 200px;
   border-radius: 15px;

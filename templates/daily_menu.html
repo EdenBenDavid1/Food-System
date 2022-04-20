@@ -21,10 +21,14 @@
                 </td>
               </div>
               <td class="td-ate">
-                <input type="checkbox" />אכלתי<br />
+                <form type="text" method="POST" >
+                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
+                <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
                 <a class="link" href="/#">שמור דירוג</a>
+                </div>
+                </form>
               </td>
             </table>
           </td>
@@ -45,9 +49,11 @@
               </div>
               <td class="td-ate">
                 <input type="checkbox" />אכלתי<br />
+                <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
                 <a class="link" href="/#">שמור דירוג</a>
+                  </div>
               </td>
             </table>
           </td>
@@ -67,6 +73,11 @@
                 </td>
               </div>
               <td class="td-ate"><input type="checkbox" />אכלתי<br /></td>
+                <div class="show-div">
+                <span> דירוג מנה</span>
+                <br />
+                <a class="link" href="/#">שמור דירוג</a>
+                </div>
             </table>
           </td>
         </tr>
@@ -82,6 +93,11 @@
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
+                <div class="show-div">
+                <span> דירוג מנה</span>
+                <br />
+                <a class="link" href="/#">שמור דירוג</a>
+                </div>
                 </td>
               </div>
               <td class="td-ate"><input type="checkbox" />אכלתי</td>

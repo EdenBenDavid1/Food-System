@@ -62,26 +62,12 @@ def get_user():
     else:
         return redirect(url_for("login"))
 
+## LOGOUT
 @server.route("/logout")
 def logout():
     session.pop("email", None)
     session.pop("password", None)
     return redirect(url_for("login"))
-
-## DAILY MENU
-@server.route("/daily_menu")
-def daily_menu():
-    if "email" not in session:
-        return redirect(url_for("login"))
-    email = session["email"]
-    meals = sql_manager.load_today_menu(1)
-    print(meals)
-    return render_template("daily_menu.html", meals=meals)
-
-## CHANGE MEAL
-@server.route("/change_meal")
-def change_meal():
-    return render_template("change_meal.html")
 
 ## SEARCH
 @server.route("/search", methods=['POST', 'GET'])
@@ -145,17 +131,41 @@ def nutrition_info(key):
         return redirect(url_for("login"))
     email = session["email"]
     info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    print(info_values)
-    print(info_parameters)
-    print(info_meals)
-    print(info_meals.keys())
-    print(info_meals[key])
+    #print(info_values)
+    #print(info_parameters)
+    #print(info_meals)
+    #print(info_meals.keys())
+    #print(info_meals[key])
     if (info_meals[key] == []):
-        flash("אין ארוחות להיום", "info") ## NOT WORKING
+        flash("אין ארוחות להיום", "info")
         return render_template("nutrition_info.html",info_values=info_values,info_meals=[])
     else:
         return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
                            info_meals=info_meals, key=key)
+
+## DAILY MENU
+@server.route("/daily_menu")
+def daily_menu():
+    if "email" not in session:
+        return redirect(url_for("login"))
+    email = session["email"]
+    meals = sql_manager.load_today_menu(1)
+    #print(meals)
+    return render_template("daily_menu.html", meals=meals)
+
+@server.route("/display_div", methods=['POST', 'GET'])
+def disply_div():
+    if request.method == 'POST':
+        d = request.form.get('checkB')
+        print(d)
+        return redirect(url_for("daily_menu"))
+    else:
+        return redirect(url_for("daily_menu"))
+
+## CHANGE MEAL
+@server.route("/change_meal")
+def change_meal():
+    return render_template("change_meal.html")
 
 ## PROFILE
 @server.route("/my_profile")
