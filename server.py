@@ -138,19 +138,20 @@ def nutrition_journal():
     email = session["email"]
     today = date.today().strftime("%A %d.%m")
     print(today)
-    info = sql_manager.load_journal(email)
-    print('infi', info)
-    return render_template("nutrition_journal.html", info=info,today=today)
+    info_values, info_parameters, info_meals = sql_manager.load_journal(email)
+    return render_template("nutrition_journal.html", info_values=info_values, info_parameters=info_parameters,
+                           info_meals=info_meals,today=today)
 
 @server.route("/nutrition_info/<key>")
 def nutrition_info(key):
     if "email" not in session:
         return redirect(url_for("login"))
     email = session["email"]
-    info = sql_manager.load_journal(email)
+    info_values, info_parameters, info_meals = sql_manager.load_journal(email)
     meals_values = key
     print(meals_values)
-    return render_template("nutrition_info.html", info=info)
+    return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
+                           info_meals=info_meals, key=key)
 
 ## PROFILE
 @server.route("/my_profile")

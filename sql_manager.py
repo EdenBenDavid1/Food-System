@@ -102,18 +102,30 @@ def load_journal(email):
            "where (date between (current_date()-6) and current_date()) and (history_user_id=%s);"
     mycursor.execute(sql2, (user_id[0][0],))
     result = mycursor.fetchall()
-    info = {}
+    info_values = {}
+    info_parameters = {}
+    info_meals = {}
     for history in result:
         date = history[0]
         menu = history[1]
         parameters = load_parameters_from_menu(menu)
         update_values = load_update_values(date)
         meals = load_today_menu(menu)
-        info[date.strftime("%A %d.%m")] = (update_values, parameters,meals)
-    return info
+        # add to dictionary and sort:
+        info_values[date.strftime("%d.%m %A")] = (update_values)
+        sort_info_values = dict(sorted(info_values.items(), key=lambda item: item[0]))
 
-journal = load_journal('roni_zarfati@gmail.com')
-print(journal)
+        info_parameters[date.strftime("%d.%m %A")] = (parameters)
+        sort_info_parameters = dict(sorted(info_parameters.items(), key=lambda item: item[0]))
+
+        info_meals[date.strftime("%d.%m %A")] = (meals)
+        sort_info_meals = dict(sorted(info_meals.items(), key=lambda item: item[0]))
+    return sort_info_values, sort_info_parameters, sort_info_meals
+
+#journal = load_journal('roni_zarfati@gmail.com')
+#print(journal)
+#for value in journal['Tuesday 19.04']:
+#    print (value)
 
 ## MY_PROFILE
 # load all parameters
