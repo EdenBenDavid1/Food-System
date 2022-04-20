@@ -2,7 +2,16 @@
 
 {% block nutrition_info %}
 
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <h3 align="center">{{msg}}</h3>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
+        {% for value_v in info_values[key] %}
+            {% for value_p in info_parameters[key] %}
     <table class="center">
         <tr>
             <td>קלוריות</td>
@@ -10,19 +19,19 @@
             <td>חלבונים</td>
             <td>שומנים</td>
         </tr>
-        <tr>
-        {% for value_v in info_values[key] %}
-            {% for value_p in info_parameters[key] %}
+        <tr></tr>
             <td class="td-ingredient" style="border-color: #82C7E7;" ><p>{{value_v[0]}}/{{value_p[0]}}g</p></td>
             <td class="td-ingredient" style="border-color: #DAC86D;" ><p>{{value_v[1]}}/{{value_p[1]}}g</p></td>
             <td class="td-ingredient" style="border-color: #CDAFD5;"></p>{{value_v[2]}}/{{value_p[2]}}g<p></p></td>
             <td class="td-ingredient" style="border-color: #8DC78D;"></p>{{value_v[3]}}/{{value_p[3]}}g<p></p></td>
             {% endfor %}
         {% endfor %}
+
         </tr>
 
         </table>
     <div align=center><br>
+
         {% for value_m in info_meals[key] %}
        <table id="class_info" align="center" style="width: 600px">
 		<tr style="padding-bottom: 30px;">
@@ -38,6 +47,7 @@
 
 		</tr>
            {% endfor %}
+
 	</table>
     </div>
 

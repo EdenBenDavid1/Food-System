@@ -14,45 +14,8 @@
 
     <hr id="nutrition_hr">
     <br>
+
     {% block nutrition_info %}
-    <table class="center">
-        <tr>
-            <td>קלוריות</td>
-            <td>פחמימות</td>
-            <td>חלבונים</td>
-            <td>שומנים</td>
-        </tr>
-        <tr>
-        {% for value_v in info_values[today] %}
-            {% for value_p in info_parameters[today] %}
-            <td class="td-ingredient" style="border-color: #82C7E7;" ><p>{{value_v[0]}}/{{value_p[0]}}g</p></td>
-            <td class="td-ingredient" style="border-color: #DAC86D;" ><p>{{value_v[1]}}/{{value_p[1]}}g</p></td>
-            <td class="td-ingredient" style="border-color: #CDAFD5;"></p>{{value_v[2]}}/{{value_p[2]}}g<p></p></td>
-            <td class="td-ingredient" style="border-color: #8DC78D;"></p>{{value_v[3]}}/{{value_p[3]}}g<p></p></td>
-            {% endfor %}
-        {% endfor %}
-        </tr>
-
-        </table>
-    <div align=center><br>
-        {% for value_m in info_meals[today] %}
-       <table id="class_info" align="center" style="width: 600px">
-		<tr style="padding-bottom: 30px;">
-			<td style="margin-left: 15px;" >
-                <span class="h2">ארוחת {{value_m[2]}} </span> {{value_m[1]}} קלוריות
-                <hr class="hr-style">
-                <table>
-                <div class="div-hover">
-                    <td class="find-td2"><br>{{value_m[0]}}<br><br> </td>
-                </div>
-                </table>
-            </td>
-
-		</tr>
-           {% endfor %}
-	</table>
-    </div>
-
     {% endblock %}
 
 {% endblock %}

@@ -136,11 +136,8 @@ def nutrition_journal():
     if "email" not in session:
         return redirect(url_for("login"))
     email = session["email"]
-    today = date.today().strftime("%A %d.%m")
-    print(today)
     info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    return render_template("nutrition_journal.html", info_values=info_values, info_parameters=info_parameters,
-                           info_meals=info_meals,today=today)
+    return render_template("nutrition_journal.html", info_values=info_values)
 
 @server.route("/nutrition_info/<key>")
 def nutrition_info(key):
@@ -148,9 +145,16 @@ def nutrition_info(key):
         return redirect(url_for("login"))
     email = session["email"]
     info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    meals_values = key
-    print(meals_values)
-    return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
+    print(info_values)
+    print(info_parameters)
+    print(info_meals)
+    print(info_meals.keys())
+    print(info_meals[key])
+    if (info_meals[key] == []):
+        flash("אין ארוחות להיום", "info") ## NOT WORKING
+        return render_template("nutrition_info.html",info_values=info_values,info_meals=[])
+    else:
+        return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
                            info_meals=info_meals, key=key)
 
 ## PROFILE

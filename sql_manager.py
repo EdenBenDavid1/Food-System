@@ -1,5 +1,6 @@
 import mysql.connector
 from datetime import datetime
+from datetime import date
 
 # CONNECT TO DB
 def connect():
@@ -22,7 +23,7 @@ def check_login_user(email,password):
     user = (email,password)
     mycursor.execute(sql, user)
     result = mycursor.fetchall()
-    # if result is empty- Not found:
+    # if result is empty (Not found) return False:
     if result == []:
         return False
     else:
@@ -89,41 +90,64 @@ def load_today_menu(menu):
 #print(l)
 
 ## NUTRITION JOURNAL
-def load_ate_meals(menu):
-    pass
+def load_rated_meals(date,user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "select meal_name, meal_cal from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id " \
+          "where date=%s and r.rates_user_id=%s;;"
+    mycursor.execute(sql,(date,user_id))
+    result = mycursor.fetchall()
+    # id the user didn't eat anything yet:
+    if result == []:
+        return []
+    else:
+        return result
+
+f = load_rated_meals('2022-04-20',1)
+print(f)
+
 
 def load_journal(email):
     mydb = connect()
     mycursor = mydb.cursor()
     sql1 = "SELECT user_id FROM FoodSystem.users WHERE email=%s;"
     mycursor.execute(sql1, (email,))
-    user_id = mycursor.fetchall()
+    user_id = mycursor.fetchall()[0][0]
+    # load meals history, 7 days back:
     sql2 = "SELECT date, history_menu_id FROM foodSystem.menu_history " \
            "where (date between (current_date()-6) and current_date()) and (history_user_id=%s);"
-    mycursor.execute(sql2, (user_id[0][0],))
+    mycursor.execute(sql2, (user_id,))
     result = mycursor.fetchall()
     info_values = {}
     info_parameters = {}
     info_meals = {}
+    today = date.today()
+    # for older dates:
     for history in result:
-        date = history[0]
+        h_date = history[0]
         menu = history[1]
-        parameters = load_parameters_from_menu(menu)
-        update_values = load_update_values(date)
-        meals = load_today_menu(menu)
         # add to dictionary and sort:
-        info_values[date.strftime("%d.%m %A")] = (update_values)
-        sort_info_values = dict(sorted(info_values.items(), key=lambda item: item[0]))
+        info_values[h_date.strftime("%d.%m %A")] = load_update_values(h_date)
+        info_values = dict(sorted(info_values.items(), key=lambda item: item[0]))
 
-        info_parameters[date.strftime("%d.%m %A")] = (parameters)
-        sort_info_parameters = dict(sorted(info_parameters.items(), key=lambda item: item[0]))
+        info_parameters[h_date.strftime("%d.%m %A")] = load_parameters_from_menu(menu)
+        info_parameters = dict(sorted(info_parameters.items(), key=lambda item: item[0]))
 
-        info_meals[date.strftime("%d.%m %A")] = (meals)
-        sort_info_meals = dict(sorted(info_meals.items(), key=lambda item: item[0]))
-    return sort_info_values, sort_info_parameters, sort_info_meals
+        info_meals[h_date.strftime("%d.%m %A")] = load_today_menu(menu)
+        info_meals = dict(sorted(info_meals.items(), key=lambda item: item[0]))
 
-#journal = load_journal('roni_zarfati@gmail.com')
-#print(journal)
+    info_values[today.strftime("%d.%m %A")] = load_update_values(today)
+    info_parameters[today.strftime("%d.%m %A")] = load_parameters_from_menu(1)
+    info_meals[today.strftime("%d.%m %A")] = load_rated_meals(today, user_id)
+
+    return(info_values, info_parameters, info_meals)
+
+
+
+#load_journal('roni_zarfati@gmail.com')
+#print(sort_info_values)
+#print(sort_info_parameters)
+#print(sort_info_meals)
 #for value in journal['Tuesday 19.04']:
 #    print (value)
 
