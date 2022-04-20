@@ -4,7 +4,11 @@
 {% block content %}
 
     <h1 style="text-align: center">תפריט יומי</h1>
-    <br /><br />
+    <br />
+    {% if mes != None %}
+    <h3 align="center">{{mes}}</h3>
+    {% endif %}
+    <br />
     <div id="daily_div">
       {% for meal in meals %}
       <table align="center" style="width: 500px">
@@ -22,11 +26,17 @@
               </div>
               <td class="td-ate">
                 <form type="text" method="POST" >
-                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}" />אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
-                <br />
-                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
+                  <br>
+                  <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
+                  <input type="radio" name="rate" value="2">2
+                  <input type="radio" name="rate" value="3">3
+                  <input type="radio" name="rate" value="4">4
+                  <input type="radio" name="rate" value="5">5
+                  <br />
+                <button class="rate-btn" type="submit">שמור דירוג</button>
                 </div>
                 </form>
               </td>
@@ -49,11 +59,17 @@
               </div>
               <td class="td-ate">
                 <form type="text" method="POST" >
-                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
-                <br />
-                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
+                  <br>
+                  <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
+                  <input type="radio" name="rate" value="2">2
+                  <input type="radio" name="rate" value="3">3
+                  <input type="radio" name="rate" value="4">4
+                  <input type="radio" name="rate" value="5">5
+                  <br />
+                <button class="rate-btn" type="submit">שמור דירוג</button>
                 </div>
                 </form>
               </td>
@@ -76,11 +92,17 @@
               </div>
               <td class="td-ate">
                 <form type="text" method="POST" >
-                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
-                <br />
-                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
+                  <br>
+                  <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
+                  <input type="radio" name="rate" value="2">2
+                  <input type="radio" name="rate" value="3">3
+                  <input type="radio" name="rate" value="4">4
+                  <input type="radio" name="rate" value="5">5
+                  <br />
+                <button class="rate-btn" type="submit">שמור דירוג</button>
                 </div>
                 </form>
             </table>
@@ -102,11 +124,17 @@
               </div>
               <td class="td-ate">
                 <form type="text" method="POST" >
-                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
-                <br />
-                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
+                  <br>
+                  <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
+                  <input type="radio" name="rate" value="2">2
+                  <input type="radio" name="rate" value="3">3
+                  <input type="radio" name="rate" value="4">4
+                  <input type="radio" name="rate" value="5">5
+                  <br />
+                <button class="rate-btn" type="submit">שמור דירוג</button>
                 </div>
                 </form>
             </table>

@@ -131,11 +131,6 @@ def nutrition_info(key):
         return redirect(url_for("login"))
     email = session["email"]
     info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    #print(info_values)
-    #print(info_parameters)
-    #print(info_meals)
-    #print(info_meals.keys())
-    #print(info_meals[key])
     if (info_meals[key] == []):
         flash("אין ארוחות להיום", "info")
         return render_template("nutrition_info.html",info_values=info_values,info_meals=[])
@@ -144,23 +139,31 @@ def nutrition_info(key):
                            info_meals=info_meals, key=key)
 
 ## DAILY MENU
-@server.route("/daily_menu")
-def daily_menu():
+@server.route("/daily_menu", methods = ['POST', 'GET'], defaults={'mes': None})
+@server.route("/daily_menu/<mes>", methods = ['POST', 'GET'])
+def daily_menu(mes):
     if "email" not in session:
         return redirect(url_for("login"))
-    email = session["email"]
-    meals = sql_manager.load_today_menu(1)
-    #print(meals)
-    return render_template("daily_menu.html", meals=meals)
-
-@server.route("/display_div", methods=['POST', 'GET'])
-def disply_div():
-    if request.method == 'POST':
-        d = request.form.get('checkB')
-        print(d)
-        return redirect(url_for("daily_menu"))
     else:
-        return redirect(url_for("daily_menu"))
+        meals = sql_manager.load_today_menu(1)
+        # print(meals)
+        if request.method == 'POST':
+            meal = request.form["checkMeal"]
+            print('m',meal)
+            rate = request.form["rate"]
+            print('r',rate)
+            return redirect(url_for("insert_rate", rate=rate, meal=meal))
+        else:
+            return render_template("daily_menu.html", meals=meals, mes=mes)
+
+@server.route("/insert_rate/<meal>/<rate>")
+def insert_rate(meal,rate):
+    if "email" not in session:
+        return redirect(url_for("login"))
+    else:
+        email = session["email"]
+        mes = sql_manager.insert_rate_to_db(email,meal,rate)
+        return redirect(url_for("daily_menu", mes=mes))
 
 ## CHANGE MEAL
 @server.route("/change_meal")

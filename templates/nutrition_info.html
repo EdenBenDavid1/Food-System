@@ -5,7 +5,9 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for msg in messages %}
+                    {% if msg != None %}
                     <h3 align="center">{{msg}}</h3>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         {% endwith %}

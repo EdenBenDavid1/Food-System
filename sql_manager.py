@@ -55,6 +55,15 @@ def load_parameters_from_menu(menu):
 #for para in parameters:
 #    print(para)
 
+def load_user_id(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT user_id FROM FoodSystem.users WHERE email=%s;"
+    mycursor.execute(sql1, (email,))
+    user_id = mycursor.fetchall()[0][0]
+    return user_id
+
+
 # After the algorithm suggest a daily menu, show the update values, according to what the user ate:
 def load_update_values(date):
     mydb = connect()
@@ -89,16 +98,36 @@ def load_today_menu(menu):
 #l = load_today_menu(1)
 #print(l)
 
-def insert_meal_to_db():
+def insert_rate_to_db(email,meal_name,rate):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
-    val = (1,1,5)
-    mycursor.execute(sql, val)
-    mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
+    user_id = load_user_id(email)
+    sql1 = "select meal_id from meals where meal_name=%s;"
+    mycursor.execute(sql1, (meal_name,))
+    meal_id = mycursor.fetchall()[0][0]
+    sql2 = "SELECT rates_user_id, rates_meal_id, rate, date FROM foodSystem.rates " \
+           "where rates_user_id=%s and rates_meal_id=%s and date=current_date();"
+    val2 = (user_id, meal_id)
+    mycursor.execute(sql2, val2)
+    exist = mycursor.fetchall()
+    #print(exist)
+    # there is no such row:
+    if exist == []:
+        sql3 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
+        val3 = (user_id, meal_id, rate)
+        mycursor.execute(sql3, val3)
+        mydb.commit()
+        return "דירוג נשמר"
+    else:
+        if (int(rate) == (exist[0][2])):
+            return "כבר דירגת ארוחה זו"
+        else:
+            return "קיים דירוג אחר עבור ארוחה זו"
 
-#insert_meal_to_db()
+
+#rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
+#print(rate)
+#insert_rate_to_db()
 
 ## NUTRITION JOURNAL
 def load_rated_meals(date,user_id):
@@ -121,13 +150,11 @@ f = load_rated_meals('2022-04-20',1)
 def load_journal(email):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql1 = "SELECT user_id FROM FoodSystem.users WHERE email=%s;"
-    mycursor.execute(sql1, (email,))
-    user_id = mycursor.fetchall()[0][0]
+    user_id = load_user_id(email)
     # load meals history, 7 days back:
-    sql2 = "SELECT date, history_menu_id FROM foodSystem.menu_history " \
+    sql1 = "SELECT date, history_menu_id FROM foodSystem.menu_history " \
            "where (date between (current_date()-6) and current_date()) and (history_user_id=%s);"
-    mycursor.execute(sql2, (user_id,))
+    mycursor.execute(sql1, (user_id,))
     result = mycursor.fetchall()
     info_values = {}
     info_parameters = {}

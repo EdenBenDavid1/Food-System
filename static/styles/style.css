@@ -64,7 +64,15 @@
   margin-left: 15px;
   font-weight: bold;
 }
-
+.rate-btn{
+  background-color: #99E4EC;
+  border-radius: 4px;
+  margin-top: 5px;
+  padding: 5px 15px 5px;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+}
 .hr-style {
   align: center
   width: 30%;
