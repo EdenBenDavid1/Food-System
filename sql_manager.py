@@ -212,6 +212,18 @@ def load_user_profile(email):
 #user=load_user_profile('roni_zarfati@gmail.com')
 #print(user)
 
+def update_wegiht(email, weight):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    user_id = load_user_id(email)
+    sql = "UPDATE foodSystem.users SET weight = %s WHERE user_id=%s;"
+    mycursor.execute(sql, (weight,user_id))
+    mydb.commit()
+
+
+#update_wegiht('roni_zarfati@gmail.com',57)
+
+
 ## SEARCH
 def load_ingredient(search_value):
     mydb = connect()

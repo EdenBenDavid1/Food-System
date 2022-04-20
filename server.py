@@ -189,9 +189,19 @@ def my_profile():
 
 
 ## UPDATE WEIGHT
-@server.route("/update_weight")
+@server.route("/update_weight", methods = ['POST', 'GET'])
 def update_weight():
-    return render_template("update_weight.html")
+    if "email" not in session:
+        return redirect(url_for("login"))
+    else:
+        email = session["email"]
+        if request.method == 'POST':
+            weight = request.form["weight"]
+            print(weight)
+            sql_manager.update_wegiht(email, weight)
+            return redirect(url_for("my_profile"))
+        else:
+            return render_template("update_weight.html")
 
 
 
