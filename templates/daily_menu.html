@@ -26,7 +26,7 @@
                 <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
-                <a class="link" href="/#">שמור דירוג</a>
+                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
                 </div>
                 </form>
               </td>
@@ -48,12 +48,14 @@
                 </td>
               </div>
               <td class="td-ate">
-                <input type="checkbox" />אכלתי<br />
+                <form type="text" method="POST" >
+                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
                 <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
-                <a class="link" href="/#">שמור דירוג</a>
-                  </div>
+                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
+                </div>
+                </form>
               </td>
             </table>
           </td>
@@ -72,12 +74,15 @@
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
                 </td>
               </div>
-              <td class="td-ate"><input type="checkbox" />אכלתי<br /></td>
+              <td class="td-ate">
+                <form type="text" method="POST" >
+                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
                 <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
-                <a class="link" href="/#">שמור דירוג</a>
+                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
                 </div>
+                </form>
             </table>
           </td>
         </tr>
@@ -93,15 +98,17 @@
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
                   <a class="link" href="{{url_for('change_meal')}}"> החלף ארוחה</a>
+                </td>
+              </div>
+              <td class="td-ate">
+                <form type="text" method="POST" >
+                <input name="checkB" type="checkbox" value="brakfest" onchange="window.location.href='{{ url_for( 'disply_div') }}';"/>אכלתי<br />
                 <div class="show-div">
                 <span> דירוג מנה</span>
                 <br />
-                <a class="link" href="/#">שמור דירוג</a>
+                <button class="link" oncick="window.location.href='/#';">שמור דירוג</button>
                 </div>
-                </td>
-              </div>
-              <td class="td-ate"><input type="checkbox" />אכלתי</td>
-
+                </form>
             </table>
           </td>
         </tr>

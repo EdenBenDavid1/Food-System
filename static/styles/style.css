@@ -24,7 +24,7 @@
   font-weight: bold;
 }
 .show-div{
-   display:none
+   -display:none
 }
 .enter-detailes {
   width: 200px;
