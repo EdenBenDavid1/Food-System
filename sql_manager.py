@@ -11,6 +11,79 @@ def connect():
         database='FoodSystem')
     return mydb
 
+## CALC NUTRITION VALUES:
+def calc_dishes_table():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT dish_name, round(SUM(amount*fi_cal),2), round(SUM(amount*fi_carb),2)," \
+          "round(SUM(amount*fi_fat),2), round(SUM(amount*fi_protein),2), round(SUM(amount*fi_sugar),2)" \
+          "FROM ((foodSystem.food_ingredients fi " \
+          "join foodSystem.ingredients_in_dish iid on fi.fi_id=iid.fi_id)" \
+          "join foodSystem.dishes d on d.dish_id=iid.dish_id)" \
+          "group by dish_name;"
+    mycursor.execute(sql1)
+    dishes = mycursor.fetchall()
+    print(dishes)
+    for dish in dishes:
+        sql2 = "select dish_id from foodSystem.dishes where dish_name=%s;"
+        dish_name = [dish[0]]
+        mycursor.execute(sql2, dish_name)
+        dish_id = mycursor.fetchall()[0][0]
+        sql3 = "UPDATE foodSystem.dishes SET dish_cal =%s, dish_carb=%s, dish_fat=%s, dish_protein=%s, dish_sugar=%s" \
+               "WHERE dish_id = %s;"
+        val = (dish[1],dish[2],dish[3],dish[4],dish[5],dish_id)
+        mycursor.execute(sql3, val)
+        mydb.commit()
+
+
+def calc_meals_table():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT meal_name, round(sum(dish_cal),2), round(sum(dish_carb),2), round(sum(dish_fat),2), round(sum(dish_protein),2), round(sum(dish_sugar),2)" \
+           "FROM ((foodSystem.dishes d " \
+           "join foodSystem.dish_in_meal dim on d.dish_id=dim.dishInMeal_dish_id)" \
+           "join foodSystem.meals m on m.meal_id=dim.dishInMeal_meal_id)" \
+           "group by meal_name;"
+    mycursor.execute(sql1)
+    meals = mycursor.fetchall()
+    print(meals)
+    for meal in meals:
+        sql2 = "select meal_id from foodSystem.meals where meal_name=%s;"
+        meal_name = [meal[0]]
+        mycursor.execute(sql2, meal_name)
+        meal_id = mycursor.fetchall()[0][0]
+        sql3 = "UPDATE foodSystem.meals SET meal_cal =%s, meal_carb=%s, meal_fat=%s, meal_protein=%s, meal_sugar=%s" \
+               "WHERE meal_id = %s;"
+        val = (meal[1],meal[2],meal[3],meal[4],meal[5],meal_id)
+        mycursor.execute(sql3, val)
+        mydb.commit()
+
+def calc_menus_table():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT menu_name, round(sum(meal_cal),2), round(sum(meal_carb),2), round(sum(meal_fat),2), round(sum(meal_protein),2), round(sum(meal_sugar),2)" \
+           "FROM ((foodSystem.meals " \
+           "join foodSystem.meals_in_menu mim on meals.meal_id=mim.mealsInMenu_meal_id)" \
+           "join foodSystem.menus on menus.menu_id=mim.mealsInMenu_menu_id)" \
+           "group by menu_name;"
+    mycursor.execute(sql1)
+    menus = mycursor.fetchall()
+    print(menus)
+    for menu in menus:
+        sql2 = "select menu_id from foodSystem.menus where menu_name=%s;"
+        menu_name = [menu[0]]
+        mycursor.execute(sql2, menu_name)
+        menu_id = mycursor.fetchall()[0][0]
+        sql3 = "UPDATE foodSystem.menus SET menu_cal =%s, menu_carb=%s, menu_fat=%s, menu_protein=%s, menu_sugar=%s" \
+               "WHERE menu_id = %s;"
+        val = (menu[1],menu[2],menu[3],menu[4],menu[5],menu_id)
+        mycursor.execute(sql3, val)
+        mydb.commit()
+
+calc_dishes_table()
+calc_meals_table()
+calc_menus_table()
+
 email = 'roni_zarfati@gmail.com'
 
 
