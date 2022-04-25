@@ -53,7 +53,7 @@ def get_user():
             today = date.today().strftime("%Y-%m-%d")
             values = sql_manager.load_update_values(today)
             remain_cal = round(parameters[0][0] - values[0][0],2)
-            return render_template("home.html", user=user, parameters=parameters, values=values,remain_cal=remain_cal)
+            return render_template("home.html", user=user, parameters=parameters, values=values, remain_cal=remain_cal)
         else:
             session.pop("email", None)
             session.pop("password", None)

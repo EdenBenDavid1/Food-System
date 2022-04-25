@@ -15,7 +15,7 @@ email = 'roni_zarfati@gmail.com'
 
 
 ## WELCOME
-# Check if email and password are exist
+# Check if email and password are exist and true
 def check_login_user(email,password):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -23,11 +23,57 @@ def check_login_user(email,password):
     user = (email,password)
     mycursor.execute(sql, user)
     result = mycursor.fetchall()
-    # if result is empty (Not found) return False:
+    # if result is empty (not found) return False:
     if result == []:
         return False
     else:
         return True
+
+def check_if_email_exist(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT email FROM FoodSystem.users WHERE email=%s;"
+    mycursor.execute(sql, (email,))
+    result = mycursor.fetchall()
+    # if result is empty (not found) return False:
+    if result == []:
+        return False
+    else:
+        return True
+
+#s = check_if_email_exist('liri_viyner@gmail.com')
+#print(s)
+
+## SIGN_UP:
+def create_new_user(user_fname,user_lname,email,password,gender,age,height,weight,diet_id,gain_keep_lose,activity_level):
+    activity_level_dict = {'ללא אימונים': 1.2, '1-3 אימונים בשבוע': 1.375, '4-5 אימונים בשבוע': 1.55,
+                           '6-7 אימונים בשבוע': 1.725, 'עבודה פיזית': 1.9}
+    weight_goal_dict = {'להוריד במשקל': 0.8, 'לשמור על המשקל': 1, 'לעלות במשקל': 1.2}
+    mydb = connect()
+    mycursor = mydb.cursor()
+    # check if the email exist - so the user is already exist.
+    email_exist = check_if_email_exist(email)
+    if email_exist == True:
+        return 'המשתמש קיים במערכת'
+    # Add new user:
+    else:
+        # calc cal_targ:
+        if gender == 'נקבה':
+            cal_targ = (9.247*weight + 3.098*height - 4.330*age + 447.593) * activity_level_dict[activity_level] *weight_goal_dict[gain_keep_lose]
+        else:
+            cal_targ = (13.397*weight + 4.799*height - 5.677*age + 88.362) * activity_level_dict[activity_level] *weight_goal_dict[gain_keep_lose]
+
+        sql = "INSERT INTO foodSystem.users (user_fname,user_lname,email,password,gender,age,height,weight,diet_id," \
+              "gain_keep_lose,activity_level,cal_targ) " \
+              "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
+        val = (user_fname,user_lname,email,password,gender,age,height,weight,diet_id,gain_keep_lose,activity_level,cal_targ)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        return "המשתמש נוצר בהצלחה"
+
+#user = create_new_user('עדן', 'בן דוד', 'eden2802@gmail.com', '444','נקבה',26,153,50,1,'להוריד במשקל','1-3 אימונים בשבוע')
+#print(user)
+
 
 ## HOME:
 # load full name to first page:
