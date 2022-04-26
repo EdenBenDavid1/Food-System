@@ -68,7 +68,7 @@ def calc_menus_table():
            "group by menu_name;"
     mycursor.execute(sql1)
     menus = mycursor.fetchall()
-    print(menus)
+    #print(menus)
     for menu in menus:
         sql2 = "select menu_id from foodSystem.menus where menu_name=%s;"
         menu_name = [menu[0]]
@@ -260,6 +260,33 @@ def load_today_menu(menu):
 
 #l = load_today_menu(1)
 #print(l)
+# after the user ate meal, he can't check "ate" again and can't change this meal:
+def eaten_meals(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    user_id = load_user_id(email)
+    sql = "SELECT meal_name FROM (foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id)" \
+           "where rates_user_id=%s and date=current_date();"
+    mycursor.execute(sql, (user_id,))
+    result = mycursor.fetchall()
+    meals_name = []
+    for meal in result:
+        meals_name.append(meal[0])
+    #print(meals_name)
+    if meals_name == []: #there is no rates for today
+        return []
+    else:
+        return meals_name
+meal = '2 פרוסות לחם עם קוטג, תפוח ושקדים'
+meal2 = '150 גרם חזה עוף צלוי עם אפונה ושעועית מוקפצת'
+meals_name = eaten_meals('roni_zarfati@gmail.com')
+if meals_name == []:
+    print("all")
+else:
+    if meal2 in meals_name:
+        print("checke")
+    else:
+        print("all2")
 
 def insert_rate_to_db(email,meal_name,rate):
     mydb = connect()
@@ -274,8 +301,7 @@ def insert_rate_to_db(email,meal_name,rate):
     mycursor.execute(sql2, val2)
     exist = mycursor.fetchall()
     #print(exist)
-    # there is no such row:
-    if exist == []:
+    if exist == []: # there is no such row:
         sql3 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
         val3 = (user_id, meal_id, rate)
         mycursor.execute(sql3, val3)
@@ -287,10 +313,67 @@ def insert_rate_to_db(email,meal_name,rate):
         else:
             return "קיים דירוג אחר עבור ארוחה זו"
 
-
 #rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
 #print(rate)
 #insert_rate_to_db()
+
+# insert menu to history table:
+def insert_menu_to_history(email):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    user_id = load_user_id(email)
+    # check if there are 4 meals today:
+    sql1 = "SELECT rates_meal_id, rate FROM foodSystem.rates where rates_user_id=%s and date=current_date();"
+    mycursor.execute(sql1, (user_id,))
+    meals = mycursor.fetchall()
+    print(meals)
+    if len(meals) == 4:
+        avg_rate = (meals[0][1] + meals[1][1] + meals[2][1] + meals[3][1]) / 4
+        sql2 = "SELECT mealsInMenu_menu_id, count(*) count " \
+               "FROM (foodSystem.meals_in_menu)" \
+               "WHERE (mealsInMenu_meal_id IN (%s,%s,%s,%s))" \
+               "GROUP BY (mealsInMenu_menu_id);"
+        val = (meals[0][0], meals[1][0], meals[2][0], meals[3][0])
+        mycursor.execute(sql2, val)
+        menus = mycursor.fetchall()
+        print(menus)
+        menu_exist = False
+        for menu in menus:
+            if menu[1] == 4: # there is a menu with the 4 meals that eaten
+                menu_exist = True
+                sql3 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
+                      "VALUES (%s,%s,current_date(),%s)"
+                val3 = (user_id,menu[0],avg_rate)
+                mycursor.execute(sql3, val3)
+                mydb.commit()
+                print("תפריט רגיל נכנס להיסטוריה")
+        if menu_exist == False: # there is not exist a menu with this 4 meals
+            sql4 = "SELECT menu_id FROM foodSystem.menus ORDER BY menu_id DESC LIMIT 1;"
+            mycursor.execute(sql4)
+            last_menu_id = mycursor.fetchall()[0][0]
+            new_menu_id = last_menu_id+1
+            sql5 = "insert into foodSystem.menus (menu_name) VALUES (%s);" # create a new menu
+            new_menu_name = ['תפריט מספר' + ' ' + str(new_menu_id)]
+            mycursor.execute(sql5,new_menu_name)
+            mydb.commit()
+            for type,meal in enumerate(meals): # insert meals in menu
+                sql6 = "insert into foodSystem.meals_in_menu (mealsInMenu_menu_id,mealsInMenu_meal_id,mealsInMenu_meal_type_id) " \
+                "VALUES (%s,%s,%s);"
+                val6 = ((last_menu_id+1),meal[0],(type+1))
+                mycursor.execute(sql6,val6)
+                mydb.commit()
+            calc_menus_table() # calc the nutrition values for the new menu
+            # insert the new menu to history table
+            sql7 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
+                   "VALUES (%s,%s,current_date(),%s)"
+            val7 = (user_id, new_menu_id, avg_rate)
+            mycursor.execute(sql7, val7)
+            mydb.commit()
+            print("תפריט לאחר שינוי נכנס להיסטוריה")
+    else:
+        print("עוד לא נאכלו 4 ארוחות")
+
+insert_menu_to_history('roni_zarfati@gmail.com')
 
 ## NUTRITION JOURNAL
 # load the meals the user ate today

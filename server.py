@@ -156,12 +156,12 @@ def nutrition_info(key):
                            info_meals=info_meals, key=key)
 
 ## DAILY MENU
-@server.route("/daily_menu", methods = ['POST', 'GET'], defaults={'mes': None})
-@server.route("/daily_menu/<mes>", methods = ['POST', 'GET'])
-def daily_menu(mes):
+@server.route("/daily_menu", methods = ['POST', 'GET'])
+def daily_menu():
     if "email" not in session:
         return redirect(url_for("login"))
     else:
+        email = session["email"]
         meals = sql_manager.load_today_menu(1)
         # print(meals)
         if request.method == 'POST':
@@ -169,9 +169,11 @@ def daily_menu(mes):
             print('m',meal)
             rate = request.form["rate"]
             print('r',rate)
-            return redirect(url_for("insert_rate", rate=rate, meal=meal))
+            return redirect(url_for("insert_rate", meal=meal, rate=rate))
         else:
-            return render_template("daily_menu.html", meals=meals, mes=mes)
+            meals_name = sql_manager.eaten_meals(email)
+            print(meals_name)
+            return render_template("daily_menu.html", meals=meals, meals_name=meals_name)
 
 @server.route("/insert_rate/<meal>/<rate>")
 def insert_rate(meal,rate):
@@ -180,7 +182,8 @@ def insert_rate(meal,rate):
     else:
         email = session["email"]
         mes = sql_manager.insert_rate_to_db(email,meal,rate)
-        return redirect(url_for("daily_menu", mes=mes))
+        sql_manager.insert_menu_to_history(email)
+        return redirect(url_for("daily_menu"))
 
 ## CHANGE MEAL
 @server.route("/change_meal/<meal_type>/<meal_cal>")
