@@ -34,7 +34,12 @@
 .my-profile-head-content {
   margin: 0 auto;
   text-align: center;
-  align-items: center;
+  -align-items: center;
+  -display: flex;
+  flex-direction: column;
+  -width: 100%;
+
+
 }
 
 .my-profile-username {
@@ -89,10 +94,13 @@
 .my-profile-main-content {
   display: flex;
   justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  text-align:center;
 }
 
 .my-profile-main-content table {
-  width: 40%;
+  width: 35%;
 }
 
 .first-col-td {

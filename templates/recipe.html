@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block css %} {{ url_for('static',filename='styles/style.css') }} {% endblock %}
+{% block title %}RECIPE{% endblock %}
 
 {% block content %}
 
@@ -7,9 +8,10 @@
       <h1 style="text-align: center">פענוח מתכון</h1>
       <span
         >ניתן לקבל את הערך התזונתי של כל מתכון.<br />העתיקו את המצרכים של המתכון
-        לתיבה,<br />.ונציג לכם פלט של הערך התזונתי</span
-      >
+        לתיבה,<br />ונציג לכם פלט של הערך התזונתי.</span>
+        <br>
       <hr class="hr-style" />
+        <br>
     </div>
     <h2 id="h-decipher">מצרכי המתכון:</h2>
     <br />

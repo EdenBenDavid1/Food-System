@@ -35,7 +35,6 @@
 #find_div {
   display: flex;
   flex-direction: column;
-  -width: 500px;
   width: 100%;
   margin: 0 auto;
   text-align:center;
@@ -67,6 +66,10 @@
   margin: 0 auto;
   text-align: center;
   align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align:center;
 }
 
 .find-table {
@@ -76,10 +79,11 @@
   border-style: solid;
   width: 90%;
   margin-left: 3px;
+  font-size: 17px;
 }
 
 .find-table:hover {
-  background-color: azure;
+  background-color: #369AA5;
 }
 
 #button_style {

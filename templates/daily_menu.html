@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block css %} {{ url_for('static',filename='styles/style.css') }} {% endblock %}
+{% block title %}DAILY MENU{% endblock %}
 
 {% block content %}
-
-    <h1 style="text-align: center">תפריט יומי</h1>
+    <div class="daily_div">
+      <br>
+    <h1 style="text-align:center" >תפריט יומי</h1>
     <br />
     {% if mes != None %}
-    <h3 align="center">{{mes}}</h3>
+    <h3 align="center" style="color:#B30412">{{mes}}</h3>
     {% endif %}
     <br />
-    <div id="daily_div">
       {% for meal in meals %}
       <table align="center" style="width: 500px">
         <tr>
@@ -25,7 +26,7 @@
                 </td>
               </div>
               <td class="td-ate">
-                <form type="text" method="POST" >
+                <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}" />אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
@@ -58,7 +59,7 @@
                 </td>
               </div>
               <td class="td-ate">
-                <form type="text" method="POST" >
+                <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
@@ -91,7 +92,7 @@
                 </td>
               </div>
               <td class="td-ate">
-                <form type="text" method="POST" >
+                <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>
@@ -123,7 +124,7 @@
                 </td>
               </div>
               <td class="td-ate">
-                <form type="text" method="POST" >
+                <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
                 <div class="show-div">
                 <span> דירוג מנה</span>

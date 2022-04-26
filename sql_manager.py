@@ -35,7 +35,6 @@ def calc_dishes_table():
         mycursor.execute(sql3, val)
         mydb.commit()
 
-
 def calc_meals_table():
     mydb = connect()
     mycursor = mydb.cursor()

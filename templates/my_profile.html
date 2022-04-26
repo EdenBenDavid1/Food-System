@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-
 {% block css %} {{ url_for('static',filename='styles/my_profile.css') }} {% endblock %}
+{% block title %}MY PROFILE{% endblock %}
 
 {% block content %}
-    <div ><a class="link" href="{{url_for('logout')}}">התנתק</a></div>
     <div class="my-profile-head-content" style="width: 400px">
+      <br>
       <h1>הפרופיל שלי</h1>
-      <h2 class="my-profile-username">{{user.decode('utf8')[1:-1]}}</h2>
+      <h2 class="my-profile-username">{{user.decode('utf8')[1:-1]}}</h2><br>
       <div class="my-profile-icons-bar">
         <table>
           <tr>
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td>
-              <a class="link" href="#" id="type_of_food">שנה תזונה</a>
+
             </td>
             <td></td>
           </tr>
@@ -83,6 +83,7 @@
           </td>
         </tr>
       </table>
-    </div>
-
+      </div>
+        <br><br><br>
+        <div class="my-profile-main-content"><a class="link" href="{{url_for('logout')}}" style="font-size:23px;">התנתק</a></div>
 {% endblock %}

@@ -100,3 +100,11 @@
   margin-left: 15px;
   font-weight: bold;
 }
+#nutrition-div{
+  display: flex;
+  flex-direction: column;
+  -width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  text-align:center;
+}
