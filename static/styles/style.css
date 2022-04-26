@@ -222,11 +222,11 @@
 #table_choosen_meal {
   margin: 0 auto;
   margin: 0 auto;
-  width: 60%;
+  width: 45%;
 }
 #choose-meal {
   border-radius: 18px;
-  background-color: rgb(233,177,64);
+  background-color: #75BCC4;
   width: 35%;
   margin: 0 auto;
   margin-top: 10px;
@@ -239,7 +239,7 @@
   margin-left: 15px;
 }
 .cal{
-  color: rgb(223,32,143)
+  color: #25939F;
 }
 
 .td-ate {

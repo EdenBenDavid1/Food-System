@@ -3,11 +3,10 @@
 {% block title %}CHANGE MEAL{% endblock %}
 
 {% block content %}
-
-    <h1 style="text-align: center">ארוחות ערב חלופיות</h1>
-
-    <h2 id="choose-meal" style="text-align: center">הארוחה שנבחרה להחלפה: 550 קלוריות</h2>
-
+    <div align="center">
+    <h1 style="text-align: center;">ארוחות {{meal_type}} חלופיות</h1>
+    <h2 id="choose-meal" style="text-align: center;">הארוחה שנבחרה להחלפה: {{meal_cal}} קלוריות</h2>
+    </div>
     <br /><br />
     <table id="table_choosen_meal">
       <tr>

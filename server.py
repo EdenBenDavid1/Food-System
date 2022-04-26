@@ -183,9 +183,9 @@ def insert_rate(meal,rate):
         return redirect(url_for("daily_menu", mes=mes))
 
 ## CHANGE MEAL
-@server.route("/change_meal")
-def change_meal():
-    return render_template("change_meal.html")
+@server.route("/change_meal/<meal_type>/<meal_cal>")
+def change_meal(meal_type,meal_cal):
+    return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal)
 
 ## PROFILE
 @server.route("/my_profile")
