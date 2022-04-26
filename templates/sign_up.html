@@ -7,142 +7,97 @@
     <div style="text-align: center">
       <br>
       <h1 style="margin-bottom: 0px">רישום למערכת</h1>
-      <p style="margin-top: 0px; margin-bottom: 0px">
-        על מנת לחשב את היעד הקלורי שלך,<br />אנו צריכות את המידע הבסיסי הזה
-      </p>
+      <br>
+      {% if mes != None %}
+        <h3 align="center" style="color:#B30412">{{mes}}</h3><br>
+      {% endif %}
+      <h4 style="margin-top: 0px; margin-bottom: 0px">
+      יש למלא את המידע מטה,<br> על מנת שנוכל לחשב את היעד הקלורי שלך</h4>
     </div>
 
-    <div style="text-align: center">
-      <form  method="POST">
-      <br />
-      <table
-        align="center"
-        cellspacing="10"
-        dir="rtl"
-        style="
-          max-width: 650px;
-          border-collapse: collapse;
-          width: 100%;
-          float: middle;
-          margin: 0 auto;
-        "
-      >
+    <div id="sign-up-div">
+
+      <form  type="text" method="POST"><br />
+      <table align="center" cellspacing="10" dir="rtl" id="sign-up-form-table">
         <tr>
           <td>
-            <input
-              name="fname"
-              type="text"
-              placeholder="שם פרטי"
-              style="width: 70%; margin-bottom: 6px"
-              border-radius:5px
-            />
+            <input name="fname" class="input_fill" type="text" placeholder="שם פרטי" required/>
           </td>
           <td align="center">
-            <select id="cars" style="min-width: 155px; width: 50%">
-              <option value="regular">סוג תזונה</option>
-              <option value="regular">רגילה</option>
-              <option value="regular">פליאו</option>
-              <option value="vege">צמחוני</option>
-              <option value="vegan">טבעוני</option>
-              <option value="regular">קיטוגני</option>
-              <option value="regular">חלבונים</option>
+            <select name="diet_id" class="option-choose" required>
+              <option value="">סוג תזונה</option>
+              <option value="1">רגילה</option>
+              <option value="2">פליאו</option>
+              <option value="3">צמחוני</option>
+              <option value="4">טבעוני</option>
+              <option value="5">קיטוגני</option>
+              <option value="6">חלבונים</option>
             </select>
           </td>
         </tr>
         <tr>
           <td>
-            <input
-              name="lname"
-              type="text"
-              placeholder="שם משפחה"
-              style="width: 70%; margin-bottom: 6px"
-              border-radius:50px
-            />
+            <input name="lname" class="input_fill" name="lname" type="text" placeholder="שם משפחה" required/>
           </td>
           <td align="center">
-            <select id="activity" style="min-width: 155px; width: 50%">
+            <select name="activity_level" class="option-choose" required>
               <option value="">רמת פעילות שבועית</option>
-              <option value="0">ללא אימונים</option>
-              <option value="1">1-3 אימונים בשבוע</option>
-              <option value="2">4-5 אימונים בשבוע</option>
-              <option value="3">6-7 אימונים בשבוע</option>
-              <option value="4">עבודה פיזית</option>
-            </select>
-          </td>
-        </tr>
-        <tr style="margin-bottom: 0px">
-          <td>
-            <input
-              type="text"
-              placeholder="אימייל"
-              style="width: 70%; margin-bottom: 6px"
-              border-radius:50px
-            />
-          </td>
-          <td align="center">
-            <select id="weightgoal" style="min-width: 155px; width: 50%">
-              <option value="0">מטרת משקל</option>
-              <option value="1">לעלות במשקל</option>
-              <option value="2">לשמור על המשקל</option>
-              <option value="3">להוריד במשקל</option>
+              <option value="ללא אימונים">ללא אימונים</option>
+              <option value="1-3 אימונים בשבוע">1-3 אימונים בשבוע</option>
+              <option value="4-5 אימונים בשבוע">4-5 אימונים בשבוע</option>
+              <option value="6-7 אימונים בשבוע">6-7 אימונים בשבוע</option>
+              <option value="עבודה פיזית">עבודה פיזית</option>
             </select>
           </td>
         </tr>
         <tr>
           <td>
-            <input
-              type="text"
-              placeholder="סיסמה"
-              style="width: 70%; margin-bottom: 6px; margin-top: 0px"
-              border-radius:50px
-            /><br />
-            <input
-              type="text"
-              placeholder="משקל"
-              style="width: 70%; margin-bottom: 6px"
-              border-radius:50px
-            /><br />
-            <input
-              type="text"
-              placeholder="גובה"
-              style="width: 70%; margin-bottom: 6px"
-              border-radius:50px
-            /><br />
+            <input name="email" class="input_fill" type="text" placeholder="אימייל" required/>
           </td>
           <td align="center">
-            <table>
+            <select name="weight_goal" class="option-choose" required>
+              <option value="">מטרת משקל</option>
+              <option value="להוריד במשקל">להוריד במשקל</option>
+              <option value="לשמור על המשקל">לשמור על המשקל</option>
+              <option value="לעלות במשקל">לעלות במשקל</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input name="password" class="input_fill" type="text" placeholder="סיסמה" required/><br/><br>
+            <input name="weight" class="input_fill" type="text" placeholder="משקל" required/><br/>
+            <input name="height" class="input_fill" type="text" placeholder="גובה בס״מ" required/><br/>
+          </td>
+          <td align="center">
+            <table id="small-table">
               <tr>
                 <td colspan="4">
-                  <p
-                    style="font-size: 14px; margin-bottom: 0px; margin-top: 0px"
-                    align="right"
-                  >
-                    בחר אלרגיות/רגישויות אם יש לך:
-                  </p>
+                  <p id="small-header" align=right;>בחר אלרגיות/רגישויות אם יש לך:</p>
                 </td>
               </tr>
               <tr align="right">
-                <td><input type="checkbox" />בוטנים</td>
-                <td><input type="checkbox" />אגוזים</td>
-                <td><input type="checkbox" />לקטוז</td>
-                <td><input type="checkbox" />סכרת</td>
+                <td><input name="allergies" type="checkbox" value="2"/>בוטנים</td>
+                <td><input name="allergies" type="checkbox" value="3"/>אגוזים</td>
+                <td><input name="allergies" type="checkbox" value="4"/>לקטוז</td>
+                <td><input name="allergies" type="checkbox" value="5"/>סכרת</td>
               </tr>
               <tr align="right">
-                <td><input type="checkbox" />שומשום</td>
-                <td><input type="checkbox" />גלוטן</td>
-                <td><input type="checkbox" />דגים</td>
-                <td><input type="checkbox" />ביצים</td>
+                <td><input name="allergies" type="checkbox" value="6"/>גלוטן</td>
+                <td><input name="allergies" type="checkbox" value="7"/>דגים</td>
+                <td><input name="allergies" type="checkbox" value="8"/>שומשום</td>
+                <td><input name="allergies" type="checkbox" value="9"/>ביצים</td>
               </tr>
               <tr align="right">
-                <td><input type="checkbox" />אצות</td>
-                <td><input type="checkbox" />קטניות</td>
+                <td><input name="allergies" type="checkbox" value="10"/>אצות</td>
+                <td><input name="allergies" type="checkbox" value="11"/>קטניות</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
           <td>
-            <input type="radio" name="gender" value="זכר" style="margin-bottom: 6px" >זכר
+            <input type="radio" name="gender" value="זכר">זכר
             <input type="radio" name="gender" value="נקבה">נקבה
             <br />
           </td>
@@ -150,33 +105,14 @@
         </tr>
         <tr>
           <td>
-            <p
-              align="right"
-              style="
-                font-size: 14px;
-                margin-top: 0px;
-                margin-bottom: 0px;
-                margin-right: 14%;
-              "
-            >
-              תאריך לידה
-            </p>
-            <input
-              type="date"
-              required
-              pattern="\d{4}-\d{2}-\d{2}"
-              style="margin-bottom: 6px; width: 70%"
-            />
+            <p align="right" id="birth-header">תאריך לידה</p>
+            <input name="birth_date" id="option-birth" type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" min="1942-01-01" max="2030-12-31" required/>
           </td>
           <td></td>
         </tr>
       </table>
       <br />
-      <input
-        id="button"
-        type="submit"
-        value="רישום"
-      />
+      <input id="button" type="submit" value="רישום"/>
       </form>
     </div>
 {% endblock %}

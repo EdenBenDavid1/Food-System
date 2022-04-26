@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, url_for
 from flask import request, redirect, session, flash
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-import flask_cors
 from flask_cors import CORS
 import sql_manager
 import json
@@ -30,14 +26,35 @@ def login():
             return redirect(url_for("get_user"))
         return render_template("welcome.html")
 
-## SIGN UP - WTF........ OR REGULAR........NOT WORKING.......
+## SIGN UP
 @server.route("/sign_up", methods=['POST', 'GET'])
 def sign_up():
     if request.method == 'POST':
-        result = request.form["fname"]
-        return redirect(url_for("home", fname=result))
+        fname = request.form["fname"]
+        lname = request.form["lname"]
+        email = request.form["email"]
+        session["email"] = email
+        password = request.form["password"]
+        session["password"] = password
+        weight = request.form["weight"]
+        height = request.form["height"]
+        gender = request.form["gender"]
+        birth_date = request.form["birth_date"]
+        diet_id = request.form["diet_id"]
+        activity_level = request.form["activity_level"]
+        weight_goal = request.form["weight_goal"]
+        allergies = request.form.getlist("allergies")
+        if allergies == []:
+            allergies.append('1') # none allergy
+        print(allergies)
+        user = sql_manager.create_new_user(fname,lname,email,password,gender,birth_date,height,weight,diet_id,weight_goal,activity_level,allergies)
+        if user == True: ## A new user was created
+            return redirect(url_for("get_user"))
+        else: ## the email is already exist
+            mes = "המייל קיים, יש לבחור מייל אחר"
+            return render_template("sign_up.html", mes=mes)
     else:
-        return render_template("sign_up.html")
+        return render_template("sign_up.html",mes=None)
 
 ## HOME PAGE
 @server.route("/")
@@ -176,7 +193,8 @@ def my_profile():
     if "email" not in session:
         return redirect(url_for("login"))
     email = session["email"]
-    first_name, last_name, gender, age, height, weight, activity, targ, diet, allergies = sql_manager.load_user_profile(email)
+    first_name, last_name, gender, birth_date, height, weight, activity, targ, diet, allergies = sql_manager.load_user_profile(email)
+    birth_date = birth_date.strftime("%d.%m.%Y")
     user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
     activity = json.dumps(activity, ensure_ascii=False).encode('utf8')
     diet = json.dumps(diet, ensure_ascii=False).encode('utf8')
@@ -184,7 +202,7 @@ def my_profile():
     for allergy in allergies:
         s_allergy += allergy + ","
     allergy_val = json.dumps(s_allergy, ensure_ascii=False).encode('utf8')
-    return render_template('my_profile.html', user=user, age=age, height=height, weight=weight,
+    return render_template('my_profile.html', user=user, birth_date=birth_date, height=height, weight=weight,
                    gender=gender, activity=activity, targ=targ, diet=diet, allergy_val=allergy_val)
 
 
@@ -202,8 +220,5 @@ def update_weight():
             return redirect(url_for("my_profile"))
         else:
             return render_template("update_weight.html")
-
-
-
 
 server.run()
