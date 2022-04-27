@@ -221,8 +221,7 @@
 }
 #table_choosen_meal {
   margin: 0 auto;
-  margin: 0 auto;
-  width: 45%;
+  width: 55%;
 }
 #choose-meal {
   border-radius: 18px;
@@ -230,11 +229,12 @@
   width: 35%;
   margin: 0 auto;
   margin-top: 10px;
+  margin-right: 550px;
 }
 
 .td_choosen_meal {
   padding-right: 15px;
-  margin-top: 0px;
+  margin-top: 5px;
   width: 80px;
   margin-left: 15px;
 }

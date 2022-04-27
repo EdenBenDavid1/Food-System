@@ -66,7 +66,7 @@ def get_user():
         if check == True:
             first_name, last_name = sql_manager.load_user(email)
             user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
-            parameters = sql_manager.load_parameters_from_menu(1)
+            parameters = sql_manager.load_parameters_from_menu(2)
             today = date.today().strftime("%Y-%m-%d")
             values = sql_manager.load_update_values(today)
             remain_cal = round(parameters[0][0] - values[0][0],2)
@@ -154,26 +154,47 @@ def nutrition_info(key):
     else:
         return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
                            info_meals=info_meals, key=key)
+## SEGGEST ALGORITHEM:
+@server.route("/seggest_algorithm")
+def seggest_algorithm():
+    #menu = sql_manager.seggest()
+    list_of_meals = sql_manager.load_today_menu(2)
+    session['list_of_meals'] = list_of_meals
+    return redirect(url_for("get_user"))
 
 ## DAILY MENU
-@server.route("/daily_menu", methods = ['POST', 'GET'])
-def daily_menu():
+@server.route("/daily_menu", methods=['POST', 'GET'], defaults={'new_meal':None,'meal_cal':None,'meal_type':None}) #after relaod the page / after rate
+@server.route("/daily_menu/<new_meal>/<meal_cal>/<meal_type>", methods = ['POST', 'GET']) #after change meal
+def daily_menu(new_meal,meal_cal,meal_type):
     if "email" not in session:
         return redirect(url_for("login"))
     else:
         email = session["email"]
-        meals = sql_manager.load_today_menu(1)
-        # print(meals)
-        if request.method == 'POST':
+        if request.method == 'POST': #the user press save rate
             meal = request.form["checkMeal"]
             print('m',meal)
             rate = request.form["rate"]
             print('r',rate)
             return redirect(url_for("insert_rate", meal=meal, rate=rate))
         else:
-            meals_name = sql_manager.eaten_meals(email)
-            print(meals_name)
-            return render_template("daily_menu.html", meals=meals, meals_name=meals_name)
+            meal_name_that_eaten = sql_manager.eaten_meals(email)
+            print('the new', new_meal, meal_cal)
+            # replace the old meal with new one
+            if meal_type != None:
+                meal_type_dict = {'בוקר': 0, 'צהריים': 1, 'ביניים': 2, 'ערב': 3}
+                list_of_meals = session['list_of_meals']
+                print('after list', type(list_of_meals))
+                for meal in list_of_meals:
+                    print(meal)
+                    if meal[2] == meal_type:
+                        index = meal_type_dict[meal_type]
+                        list_of_meals[index] = (new_meal, meal_cal, meal_type)
+                        print('the meals', list_of_meals)
+                        session['list_of_meals'] = list_of_meals
+            if meal_type == None:
+                list_of_meals = session['list_of_meals']
+                print(list_of_meals)
+            return render_template("daily_menu.html", list_of_meals=list_of_meals, meal_name_that_eaten=meal_name_that_eaten)
 
 @server.route("/insert_rate/<meal>/<rate>")
 def insert_rate(meal,rate):
@@ -188,7 +209,13 @@ def insert_rate(meal,rate):
 ## CHANGE MEAL
 @server.route("/change_meal/<meal_type>/<meal_cal>")
 def change_meal(meal_type,meal_cal):
-    return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal)
+    if "email" not in session:
+        return redirect(url_for("login"))
+    else:
+        email = session["email"]
+        list_of_suggest_meals = sql_manager.suggest_other_meals(email,meal_cal,meal_type)
+        print(list_of_suggest_meals)
+        return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal,list_of_suggest_meals=list_of_suggest_meals)
 
 ## PROFILE
 @server.route("/my_profile")

@@ -3,65 +3,31 @@
 {% block title %}CHANGE MEAL{% endblock %}
 
 {% block content %}
-    <div align="center">
+    <div align="center" >
     <h1 style="text-align: center;">ארוחות {{meal_type}} חלופיות</h1>
     <h2 id="choose-meal" style="text-align: center;">הארוחה שנבחרה להחלפה: {{meal_cal}} קלוריות</h2>
     </div>
     <br /><br />
-    <table id="table_choosen_meal">
+    <div class="daily_div">
+    <table align="center" id="table_choosen_meal">
       <tr>
         <td>
+          {% for meal in list_of_suggest_meals %}
           <table>
             <td class="find-td">
-              חביתה<br />סלט ירקות <br /><br /><a class="cal">500 קלוריות</a>
+              <br />{{meal[0]}} <br /><br /><a class="cal">{{meal[1]}} קלוריות</a>
             </td>
 
             <td class="td_choosen_meal">
-              <a class="link" href="/#">בחר ארוחה</a>
+              <a class="link" href="{{url_for('daily_menu',new_meal=meal[0],meal_cal=meal[1],meal_type=meal_type) }}">בחר ארוחה</a>
             </td>
+              <br>
           </table>
+          {% endfor %}
         </td>
 
-        <td>
-          <table>
-            <div>
-              <td class="find-td">
-                טוסט<br />עם ביצה קשה <br /><br /><a class="cal">600 קלוריות</a>
-              </td>
-            </div>
-            <td class="td_choosen_meal">
-              <a class="link" href="/#">בחר ארוחה</a>
-            </td>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table>
-            <div>
-              <td class="find-td">
-                פשטידת פטריות<br />סלט ירוק<br /><br /><a class="cal">500 קלורית</a>
-              </td>
-            </div>
-            <td class="td_choosen_meal">
-              <a class="link" href="/#">בחר ארוחה</a>
-            </td>
-          </table>
-        </td>
-
-        <td>
-          <table>
-            <div>
-              <td class="find-td">
-                שקשוקה<br />סלט ירקות<br /><br /><a class="cal">550 קלוריות</a>
-              </td>
-            </div>
-            <td class="td_choosen_meal">
-              <a class="link" href="/#">בחר ארוחה</a>
-            </td>
-          </table>
-        </td>
       </tr>
     </table>
+    </div>
 
 {% endblock %}

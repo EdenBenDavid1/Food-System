@@ -11,18 +11,18 @@
     <h3 align="center" style="color:#B30412">{{mes}}</h3>
     {% endif %}
     <br />
-      {% for meal in meals %}
+      {% for meal in list_of_meals %}
       <table align="center" style="width: 500px">
         <tr>
           <td>
             {% if meal[2] == 'בוקר' %}
             <span class="h2">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
-            <hr class="hr-style" />
+              <hr class="hr-style" />
             <table>
               <div class="daily_div">
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                {% if meals_name == [] %}
+                {% if meal_name_that_eaten == [] %}
                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                 </td>
               </div>
@@ -46,7 +46,7 @@
               </td>
             </tr>
                   {% else %}
-                    {% if meal[0] in meals_name %}
+                    {% if meal[0] in meal_name_that_eaten %}
                   <td class="td-ate">
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
                   </td>
@@ -89,7 +89,7 @@
               <div>
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meals_name == [] %}
+                  {% if meal_name_that_eaten == [] %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                   </td>
                 </div>
@@ -113,7 +113,7 @@
               </td>
             </tr>
                 {% else %}
-                    {% if meal[0] in meals_name %}
+                    {% if meal[0] in meal_name_that_eaten %}
                   <td class="td-ate">
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
                   </td>
@@ -156,7 +156,7 @@
               <div class="daily_div">
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meals_name == [] %}
+                  {% if meal_name_that_eaten == [] %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                 </td>
               </div>
@@ -180,7 +180,7 @@
               </td>
             </tr>
               {% else %}
-                    {% if meal[0] in meals_name %}
+                    {% if meal[0] in meal_name_that_eaten %}
                   <td class="td-ate">
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
                   </td>
@@ -223,7 +223,7 @@
               <div>
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meals_name == [] %}
+                  {% if meal_name_that_eaten == [] %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                   </td>
                 </div>
@@ -247,7 +247,7 @@
               </td>
             </tr>
               {% else %}
-                    {% if meal[0] in meals_name %}
+                    {% if meal[0] in meal_name_that_eaten %}
                   <td class="td-ate">
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
                   </td>

@@ -2,7 +2,6 @@ import mysql.connector
 from datetime import datetime
 from datetime import date
 
-
 # CONNECT TO DB
 def connect():
     mydb = mysql.connector.connect(
@@ -280,13 +279,8 @@ def eaten_meals(email):
 meal = '2 פרוסות לחם עם קוטג, תפוח ושקדים'
 meal2 = '150 גרם חזה עוף צלוי עם אפונה ושעועית מוקפצת'
 meals_name = eaten_meals('roni_zarfati@gmail.com')
-if meals_name == []:
-    print("all")
-else:
-    if meal2 in meals_name:
-        print("checke")
-    else:
-        print("all2")
+
+
 
 def insert_rate_to_db(email,meal_name,rate):
     mydb = connect()
@@ -373,7 +367,36 @@ def insert_menu_to_history(email):
     else:
         print("עוד לא נאכלו 4 ארוחות")
 
-insert_menu_to_history('roni_zarfati@gmail.com')
+#insert_menu_to_history('roni_zarfati@gmail.com')
+
+## CHANGE MEAL
+def suggest_other_meals(email, meal_cal, meal_type):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT diet_id FROM foodSystem.users where email=%s;"
+    mycursor.execute(sql1, (email,))
+    diet_id = mycursor.fetchall()[0][0]
+    print(diet_id)
+    sql2 = "SELECT meal_name,meal_cal FROM (((foodSystem.diet_for_meal dfm " \
+          "join foodSystem.meals m on dfm.mealDiet_meal_id=m.meal_id)" \
+          "join foodSystem.meal_classification mc on m.meal_id=mc.mealClass_meal_id)" \
+          "join foodSystem.meal_type mt on mc.mealClass_type_id=mt.type_id)" \
+          "where (mealDiet_diet_id=%s)" \
+          "and (meal_cal between %s-100 and %s+100)" \
+          "and (type_name = %s);"
+    val2 = (diet_id, meal_cal, meal_cal, meal_type)
+    mycursor.execute(sql2, val2)
+    list_of_meals = mycursor.fetchall()
+    return list_of_meals
+
+
+#suggest_other_meals('roni_zarfati@gmail.com',350,'בוקר')
+
+
+
+
+
+
 
 ## NUTRITION JOURNAL
 # load the meals the user ate today
