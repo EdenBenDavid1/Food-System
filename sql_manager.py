@@ -322,10 +322,32 @@ def insert_rate_to_db(email,meal_name,rate):
 #rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
 #print(rate)
 #insert_rate_to_db()
-now = datetime.now()
-current_time = now.strftime("%H:%M:%S")
-print(current_time)
+#now = datetime.now()
+#current_time = now.strftime("%H:%M:%S")
+#print(current_time)
 
+def create_new_menu_in_db():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT menu_id FROM foodSystem.menus ORDER BY menu_id DESC LIMIT 1;" # get the last menu number
+    mycursor.execute(sql1)
+    last_menu_id = mycursor.fetchall()[0][0]
+    new_menu_id = last_menu_id + 1
+    sql2 = "insert into foodSystem.menus (menu_id,menu_name) VALUES (%s,%s);"  # create a new menu
+    new_menu_name = ('תפריט מספר' + ' ' + str(new_menu_id))
+    mycursor.execute(sql2, (new_menu_id,new_menu_name))
+    mydb.commit()
+    return new_menu_id
+
+
+def insert_into_menu_history(user_id, menu, avg_rate):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql3 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
+           "VALUES (%s,%s,current_date(),%s)"
+    val3 = (user_id, menu, avg_rate)
+    mycursor.execute(sql3, val3)
+    mydb.commit()
 
 # insert menu to history table:
 def insert_menu_to_history(email):
@@ -351,34 +373,19 @@ def insert_menu_to_history(email):
         for menu in menus:
             if menu[1] == 4: # there is a menu with the 4 meals that eaten
                 menu_exist = True
-                sql3 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
-                      "VALUES (%s,%s,current_date(),%s)"
-                val3 = (user_id,menu[0],avg_rate)
-                mycursor.execute(sql3, val3)
-                mydb.commit()
+                insert_into_menu_history(user_id,menu[0],avg_rate)
                 print("תפריט רגיל נכנס להיסטוריה")
         if menu_exist == False: # there is not exist a menu with this 4 meals
-            sql4 = "SELECT menu_id FROM foodSystem.menus ORDER BY menu_id DESC LIMIT 1;"
-            mycursor.execute(sql4)
-            last_menu_id = mycursor.fetchall()[0][0]
-            new_menu_id = last_menu_id+1
-            sql5 = "insert into foodSystem.menus (menu_name) VALUES (%s);" # create a new menu
-            new_menu_name = ['תפריט מספר' + ' ' + str(new_menu_id)]
-            mycursor.execute(sql5,new_menu_name)
-            mydb.commit()
+            new_menu_id = create_new_menu_in_db()
             for type,meal in enumerate(meals): # insert meals in menu
-                sql6 = "insert into foodSystem.meals_in_menu (mealsInMenu_menu_id,mealsInMenu_meal_id,mealsInMenu_meal_type_id) " \
+                sql3 = "insert into foodSystem.meals_in_menu (mealsInMenu_menu_id,mealsInMenu_meal_id,mealsInMenu_meal_type_id) " \
                 "VALUES (%s,%s,%s);"
-                val6 = ((last_menu_id+1),meal[0],(type+1))
-                mycursor.execute(sql6,val6)
+                val3 = ((new_menu_id),meal[0],(type+1))
+                mycursor.execute(sql3,val3)
                 mydb.commit()
             calc_menus_table() # calc the nutrition values for the new menu
             # insert the new menu to history table
-            sql7 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
-                   "VALUES (%s,%s,current_date(),%s)"
-            val7 = (user_id, new_menu_id, avg_rate)
-            mycursor.execute(sql7, val7)
-            mydb.commit()
+            insert_into_menu_history(user_id, new_menu_id, avg_rate)
             print("תפריט לאחר שינוי נכנס להיסטוריה")
     else:
         print("עוד לא נאכלו 4 ארוחות")
@@ -398,7 +405,7 @@ def suggest_other_meals(email, meal_cal, meal_type):
           "join foodSystem.meal_classification mc on m.meal_id=mc.mealClass_meal_id)" \
           "join foodSystem.meal_type mt on mc.mealClass_type_id=mt.type_id)" \
           "where (mealDiet_diet_id=%s)" \
-          "and (meal_cal between %s-100 and %s+100)" \
+          "and (meal_cal between %s-70 and %s+70)" \
           "and (type_name = %s);"
     val2 = (diet_id, meal_cal, meal_cal, meal_type)
     mycursor.execute(sql2, val2)

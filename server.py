@@ -154,9 +154,9 @@ def nutrition_info(key):
     else:
         return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
                            info_meals=info_meals, key=key)
-## SEGGEST ALGORITHEM:
-@server.route("/seggest_algorithm")
-def seggest_algorithm():
+## SEGGEST ALGORITHM:
+@server.route("/suggest_algorithm")
+def suggest_algorithm():
     #menu = sql_manager.seggest()
     list_of_meals = sql_manager.load_today_menu(2)
     session['list_of_meals'] = list_of_meals
