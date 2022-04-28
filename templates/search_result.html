@@ -8,7 +8,7 @@
       <input type="search" placeholder="הקלד ערך לחיפוש..." id="input-search" value="{{search_value if search_value}}"/>
     </div>
     <br /><br />
-    <table style="margin: 0 auto">
+    <table id="big-table" style="margin: 0 auto">
       <tr id="find-table-first-row">
         <td class="find-big-table-td">
           <span class="head-find">רכיב</span>
@@ -17,14 +17,15 @@
           <table class="find-continue">
             {% if ingredients != False %}
             {% for ingre in ingredients %}
+            <tr>
             <td class="find-td2">{{ingre[0]}}<br />{{ingre[1]}}<br /></td>
-            <td>
+            <td class="find-td-ingre">
               <span id="calories">קלוריות - {{ingre[2]}}</span><br />
               <span id="carbohydrate">פחמימות- {{ingre[3]}} גרם</span><br />
               <span id="protein">חלבונים- {{ingre[4]}} גרם</span><br />
-              <span id="fats">שומנים- {{ingre[5]}} גרם</span>
+              <span id="fats">שומנים- {{ingre[5]}} גרם</span><br>
             </td>
-            <tr></tr>
+            </tr>
             {% endfor %}
             {% endif %}
           </table>
@@ -37,14 +38,16 @@
           <table class="find-continue">
             {% if dishes != False %}
             {% for dish in dishes %}
+            <tr>
             <td class="find-td2">{{dish[0]}}<br />1 מנה<br /></td>
-            <td>
+            <td class="find-td-ingre">
               <span id="calories">קלוריות- {{dish[1]}}</span><br />
               <span id="carbohydrate">פחמימות- {{dish[2]}} גרם</span><br />
               <span id="protein">חלבונים- {{dish[3]}} גרם</span><br />
-              <span id="fats">שומנים- {{dish[4]}} גרם</span>
+              <span id="fats">שומנים- {{dish[4]}} גרם</span><br>
+            <br>
             </td>
-            <tr></tr>
+            </tr>
             {% endfor %}
             {% endif %}
           </table>
@@ -56,15 +59,16 @@
           <table class="find-continue">
             {% if meals != False %}
             {% for meal in meals %}
+            <tr>
             <td class="find-td2">{{meal[0]}}<br />1 ארוחה<br />
             </td>
             <td class="find-td-ingre">
               <span id="calories">קלוריות- {{meal[1]}}</span><br />
               <span id="carbohydrate">פחמימות- {{meal[2]}} גרם</span><br />
               <span id="protein">חלבונים- {{meal[3]}} גרם</span><br />
-              <span id="fats">שומנים- {{meal[4]}} גרם</span>
+              <span id="fats">שומנים- {{meal[4]}} גרם</span><br><br>
             </td>
-            <tr></tr>
+            </tr>
             {% endfor %}
             {% endif %}
           </table>

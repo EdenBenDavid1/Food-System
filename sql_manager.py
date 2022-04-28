@@ -2,6 +2,8 @@ import mysql.connector
 from datetime import datetime
 from datetime import date
 
+# A few function that will help:
+
 # CONNECT TO DB
 def connect():
     mydb = mysql.connector.connect(
@@ -10,6 +12,46 @@ def connect():
         host='localhost',
         database='FoodSystem')
     return mydb
+
+# get meal_id from meal_name
+def get_meal_id(meal_name):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "select meal_id from meals where meal_name=%s;"
+    mycursor.execute(sql1, (meal_name,))
+    meal_id = mycursor.fetchall()[0][0]
+    return meal_id
+
+def get_user_new_cal_targ(user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT gender,birth_date,height,weight,gain_keep_lose,activity_level FROM foodSystem.users where user_id=%s;"
+    mycursor.execute(sql, (user_id,))
+    user_parameters = mycursor.fetchall()[0]
+    cal_targ = calc_user_calories(user_parameters[0], user_parameters[1], user_parameters[2], user_parameters[3],
+                                  user_parameters[4], user_parameters[5])
+    return cal_targ
+
+def update_user_cal_targ(cal_targ,user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql2 = "update foodSystem.users set cal_targ =%s WHERE user_id = %s;"
+    val = (cal_targ, user_id)
+    mycursor.execute(sql2, val)
+    mydb.commit()
+
+# calc all users calories
+def calc_all_users_calories():
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT user_id FROM foodSystem.users;"
+    mycursor.execute(sql1)
+    all_users_id = mycursor.fetchall()
+    for user in all_users_id:
+        cal_targ = get_user_new_cal_targ(user)
+        update_user_cal_targ(cal_targ,user)
+
+#calc_all_users_calories()
 
 ## CALC NUTRITION VALUES:
 def calc_dishes_table():
@@ -47,10 +89,7 @@ def calc_meals_table():
     meals = mycursor.fetchall()
     print(meals)
     for meal in meals:
-        sql2 = "select meal_id from foodSystem.meals where meal_name=%s;"
-        meal_name = [meal[0]]
-        mycursor.execute(sql2, meal_name)
-        meal_id = mycursor.fetchall()[0][0]
+        meal_id = get_meal_id(meal[0])
         sql3 = "UPDATE foodSystem.meals SET meal_cal =%s, meal_carb=%s, meal_fat=%s, meal_protein=%s, meal_sugar=%s" \
                "WHERE meal_id = %s;"
         val = (meal[1],meal[2],meal[3],meal[4],meal[5],meal_id)
@@ -67,7 +106,7 @@ def calc_menus_table():
            "group by menu_name;"
     mycursor.execute(sql1)
     menus = mycursor.fetchall()
-    #print(menus)
+    print(menus)
     for menu in menus:
         sql2 = "select menu_id from foodSystem.menus where menu_name=%s;"
         menu_name = [menu[0]]
@@ -82,9 +121,6 @@ def calc_menus_table():
 #calc_dishes_table()
 #calc_meals_table()
 #calc_menus_table()
-
-email = 'roni_zarfati@gmail.com'
-
 
 ## WELCOME
 # Check if email and password are exist and true
@@ -115,7 +151,6 @@ def check_if_email_exist(email):
 
 #s = check_if_email_exist('liri_viyner@gmail.com')
 #print(s)
-
 
 ## SIGN_UP:
 def calc_age(birth_str):
@@ -170,26 +205,6 @@ def create_new_user(user_fname,user_lname,email,password,gender,birth_date,heigh
 
 #user = create_new_user('עדן', 'בן דוד', 'eden2802@gmail.com', '444','נקבה','1996-02-28',153,50,1,'להוריד במשקל','1-3 אימונים בשבוע')
 #print(user)
-
-# calc all users calories
-def calc_all_users_calories():
-    mydb = connect()
-    mycursor = mydb.cursor()
-    sql1 = "SELECT user_id FROM foodSystem.users;"
-    mycursor.execute(sql1)
-    all_users_id = mycursor.fetchall()
-    for user in all_users_id:
-        sql2= "SELECT gender,birth_date,height,weight,gain_keep_lose,activity_level FROM foodSystem.users where user_id=%s;"
-        mycursor.execute(sql2, (user[0],))
-        user_parameters = mycursor.fetchall()[0]
-        cal_targ = calc_user_calories(user_parameters[0],user_parameters[1],user_parameters[2],user_parameters[3],
-                                        user_parameters[4],user_parameters[5])
-        sql3 = "update foodSystem.users set cal_targ =%s WHERE user_id = %s;"
-        val = (cal_targ, user[0])
-        mycursor.execute(sql3, val)
-        mydb.commit()
-
-#calc_all_users_calories()
 
 ## HOME:
 # load full name to first page:
@@ -281,24 +296,21 @@ meal2 = '150 גרם חזה עוף צלוי עם אפונה ושעועית מוק
 meals_name = eaten_meals('roni_zarfati@gmail.com')
 
 
-
 def insert_rate_to_db(email,meal_name,rate):
     mydb = connect()
     mycursor = mydb.cursor()
     user_id = load_user_id(email)
-    sql1 = "select meal_id from meals where meal_name=%s;"
-    mycursor.execute(sql1, (meal_name,))
-    meal_id = mycursor.fetchall()[0][0]
-    sql2 = "SELECT rates_user_id, rates_meal_id, rate, date FROM foodSystem.rates " \
+    meal_id = get_meal_id(meal_name)
+    sql1 = "SELECT rates_user_id, rates_meal_id, rate, date FROM foodSystem.rates " \
            "where rates_user_id=%s and rates_meal_id=%s and date=current_date();"
     val2 = (user_id, meal_id)
-    mycursor.execute(sql2, val2)
+    mycursor.execute(sql1, val2)
     exist = mycursor.fetchall()
     #print(exist)
     if exist == []: # there is no such row:
-        sql3 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
-        val3 = (user_id, meal_id, rate)
-        mycursor.execute(sql3, val3)
+        sql2 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
+        val2 = (user_id, meal_id, rate)
+        mycursor.execute(sql2, val2)
         mydb.commit()
         return "דירוג נשמר"
     else:
@@ -310,6 +322,10 @@ def insert_rate_to_db(email,meal_name,rate):
 #rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
 #print(rate)
 #insert_rate_to_db()
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+print(current_time)
+
 
 # insert menu to history table:
 def insert_menu_to_history(email):
@@ -393,11 +409,6 @@ def suggest_other_meals(email, meal_cal, meal_type):
 #suggest_other_meals('roni_zarfati@gmail.com',350,'בוקר')
 
 
-
-
-
-
-
 ## NUTRITION JOURNAL
 # load the meals the user ate today
 def load_rated_meals(date,user_id):
@@ -450,7 +461,8 @@ def load_journal(email):
 
     return(info_values, info_parameters, info_meals)
 
-#load_journal('roni_zarfati@gmail.com')
+#p = load_journal('roni_zarfati@gmail.com')
+#print(p)
 #print(sort_info_values)
 #print(sort_info_parameters)
 #print(sort_info_meals)
@@ -482,13 +494,16 @@ def load_user_profile(email):
 #user=load_user_profile('roni_zarfati@gmail.com')
 #print(user)
 
+# change the weight and calculate new calory target
 def update_wegiht(email, weight):
     mydb = connect()
     mycursor = mydb.cursor()
     user_id = load_user_id(email)
-    sql = "UPDATE foodSystem.users SET weight = %s WHERE user_id=%s;"
-    mycursor.execute(sql, (weight,user_id))
+    sql1 = "UPDATE foodSystem.users SET weight = %s WHERE user_id=%s;"
+    mycursor.execute(sql1, (weight,user_id))
     mydb.commit()
+    cal_targ = get_user_new_cal_targ(user_id)
+    update_user_cal_targ(cal_targ, user_id)
 
 #update_wegiht('roni_zarfati@gmail.com',57)
 
@@ -498,14 +513,15 @@ def load_ingredient(search_value):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT fi_name,fi_amount,fi_cal,fi_carb,fi_fat,fi_protein,fi_sugar" \
-          " FROM foodSystem.food_ingredients where fi_name=%s;"
-    mycursor.execute(sql, (search_value,))
+          " FROM foodSystem.food_ingredients where fi_name like %s;"
+    search_value = ['%' + search_value + '%']
+    mycursor.execute(sql, search_value)
     result = mycursor.fetchall()
     if result == []:
         return False
     return result
 
-#g=load_ingredient('דבש')
+#g=load_ingredient('אורז')
 #print(g[0])
 
 def load_dish(search_value):
@@ -538,6 +554,3 @@ def load_meal(search_value):
     if result == []:
         return False
     return result
-
-
-

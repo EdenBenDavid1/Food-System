@@ -52,7 +52,7 @@ def sign_up():
             return redirect(url_for("get_user"))
         else: ## the email is already exist
             mes = "המייל קיים, יש לבחור מייל אחר"
-            return render_template("sign_up.html", mes=mes)
+            return render_template("sign_up.html",mes=mes)
     else:
         return render_template("sign_up.html",mes=None)
 

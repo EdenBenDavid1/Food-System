@@ -45,7 +45,8 @@
   width: 30%;
   margin: auto;
   align:center;
-  height:30px;
+  height:35px;
+  font-size: 18px;
 }
 #input-search-ing {
   width: 40%;
@@ -142,6 +143,7 @@
 .find-big-table-td {
   width: 33%;
   padding-left: 15px;
+  -height: 1000px;
 }
 .find-big-table-td hr {
   margin-bottom: 4px;
@@ -152,28 +154,32 @@
   font-size: x-large;
   font-weight: bold;
 }
+#big-table{
+  height:90px;
+}
 .hr-style {
   width: 65%;
   border-top: 3px solid black;
 }
 .find-td2 {
   text-align: right;
-  background-color: gainsboro;
+  background-color: #F1C583;
   border-radius: 15px;
   border-width: 1px;
-  width: 40%;
+  width: 80px;
   padding-top: 0px;
 }
 .find-continue {
-  border-radius: 15px;
-  border-width: 1px;
-  width: 16rem;
-  height: 6rem;
-  background-color: gainsboro;
+  width: 280px;
+  -height: 6rem;
   padding-right: 4px;
+  margin-left: 0px;
+  padding-left: 14px;
 }
 
 .find-td-ingre {
-  margin-left: 0px;
-  padding-left: 14px;
+  background-color: #D5D5D5;
+  border-radius: 15px;
+  border-width: 1px;
+  width: 100px;
 }
