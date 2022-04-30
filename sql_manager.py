@@ -242,12 +242,12 @@ def load_user_id(email):
     return user_id
 
 # After the algorithm suggest a daily menu, show the update values, according to what the user ate:
-def load_update_values(date):
+def load_update_values(date,user_id):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "select round(sum(meal_cal),2),round(sum(meal_carb),2),round(sum(meal_protein),2),round(sum(meal_fat),2) " \
-          "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=%s;"
-    mycursor.execute(sql,(date,))
+          "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=%s and rates_user_id=%s;"
+    mycursor.execute(sql,(date,user_id))
     result = mycursor.fetchall()
     # id the user didn't eat anything yet:
     if result == [(None, None, None, None)]:
@@ -296,7 +296,7 @@ meal2 = '150 גרם חזה עוף צלוי עם אפונה ושעועית מוק
 meals_name = eaten_meals('roni_zarfati@gmail.com')
 
 
-def insert_rate_to_db(email,meal_name,rate):
+def insert_rate_to_db(email,meal_name,rate,type):
     mydb = connect()
     mycursor = mydb.cursor()
     user_id = load_user_id(email)
@@ -308,8 +308,8 @@ def insert_rate_to_db(email,meal_name,rate):
     exist = mycursor.fetchall()
     #print(exist)
     if exist == []: # there is no such row:
-        sql2 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, rate, date) VALUES (%s, %s, %s, current_date());"
-        val2 = (user_id, meal_id, rate)
+        sql2 = "INSERT INTO foodSystem.rates (rates_user_id,rates_meal_id,meal_type, rate, date) VALUES (%s, %s, %s,%s, current_date());"
+        val2 = (user_id, meal_id,type, rate)
         mycursor.execute(sql2, val2)
         mydb.commit()
         return "דירוג נשמר"
@@ -421,8 +421,9 @@ def suggest_other_meals(email, meal_cal, meal_type):
 def load_rated_meals(date,user_id):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "select meal_name, meal_cal from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id " \
-          "where date=%s and r.rates_user_id=%s;"
+    sql = "select meal_name, meal_cal,meal_type from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id " \
+          "where date=%s and r.rates_user_id=%s " \
+          "order by meal_type;"
     mycursor.execute(sql,(date,user_id))
     result = mycursor.fetchall()
     # id the user didn't eat anything yet:
@@ -431,7 +432,7 @@ def load_rated_meals(date,user_id):
     else:
         return result
 
-#f = load_rated_meals('2022-04-20',1)
+#f = load_rated_meals('2022-04-30',1)
 #print(f)
 
 # load the journal by an email,
@@ -453,7 +454,7 @@ def load_journal(email):
         h_date = history[0]
         menu = history[1]
         # add to dictionary and sort by dates:
-        info_values[h_date.strftime("%d.%m %A")] = load_update_values(h_date)
+        info_values[h_date.strftime("%d.%m %A")] = load_update_values(h_date,user_id)
         info_values = dict(sorted(info_values.items(), key=lambda item: item[0]))
 
         info_parameters[h_date.strftime("%d.%m %A")] = load_parameters_from_menu(menu)
@@ -462,10 +463,11 @@ def load_journal(email):
         info_meals[h_date.strftime("%d.%m %A")] = load_today_menu(menu)
         info_meals = dict(sorted(info_meals.items(), key=lambda item: item[0]))
     # for today meals:
-    info_values[today.strftime("%d.%m %A")] = load_update_values(today)
+    info_values[today.strftime("%d.%m %A")] = load_update_values(today,user_id)
     info_parameters[today.strftime("%d.%m %A")] = load_parameters_from_menu(1)
     info_meals[today.strftime("%d.%m %A")] = load_rated_meals(today, user_id)
 
+    print(info_meals)
     return(info_values, info_parameters, info_meals)
 
 #p = load_journal('roni_zarfati@gmail.com')

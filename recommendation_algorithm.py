@@ -3,7 +3,7 @@ from math import sqrt
 
 ## RECOMMENDATION ALGORITHM:
 
-# create a user rates dictionary
+# create a user rates dictionary only to users that rated menus
 def create_user_rates_dictionary():
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
@@ -36,24 +36,18 @@ def pearson_correlation(person1, person2):
     for item in dataset[person1]:
         if item in dataset[person2]:
             both_rated[item] = 1
-
     number_of_ratings = len(both_rated)
-
     # Checking for number of ratings in common
     if number_of_ratings == 0:
         return 0
-
     # Add up all the preferences of each user
     person1_preferences_sum = sum([dataset[person1][item] for item in both_rated])
     person2_preferences_sum = sum([dataset[person2][item] for item in both_rated])
-
     # Sum up the squares of preferences of each user
     person1_square_preferences_sum = sum([pow(dataset[person1][item], 2) for item in both_rated])
     person2_square_preferences_sum = sum([pow(dataset[person2][item], 2) for item in both_rated])
-
     # Sum up the product value of both preferences for each item
     product_sum_of_both_users = sum([dataset[person1][item] * dataset[person2][item] for item in both_rated])
-
     # Calculate the pearson score
     numerator_value = product_sum_of_both_users - (
                 person1_preferences_sum * person2_preferences_sum / number_of_ratings)
@@ -65,7 +59,7 @@ def pearson_correlation(person1, person2):
         r = numerator_value / denominator_value
         return r
 
-#correlation = pearson_correlation(1, 3)
+#correlation = pearson_correlation(1, 5)
 #print(correlation)
 
 def get_user_info(user):
@@ -83,7 +77,6 @@ def get_user_info(user):
 #print(b)
 
 def calc_attribute(attribute1,attribute2):
-    print(attribute1,attribute2,abs(attribute1-attribute2))
     return 1 / (abs(attribute1-attribute2)+1)
 
 def gender_attribute(user1,user2):
@@ -191,7 +184,6 @@ def target_attribute(user1,user2):
 def user_parameters_similarity(person1,person2):
     user_info_1 = get_user_info(person1)
     user_info_2 = get_user_info(person2)
-    print(user_info_1,user_info_2)
 
     gender = gender_attribute(user_info_1[0],user_info_2[0])
     age = age_attribute(user_info_1[1],user_info_2[1])
@@ -200,8 +192,6 @@ def user_parameters_similarity(person1,person2):
     activity_level = activity_attribute(user_info_1[4], user_info_2[4])
     diet = diet_attribute(user_info_1[5], user_info_2[5])
     target_weight = target_attribute(user_info_1[6], user_info_2[6])
-
-    print(gender,age,weight,height,activity_level,diet,target_weight)
 
     similarity_attribute = (0.3*gender + 0.2*diet + 0.14*activity_level + 0.09*weight + 0.09*height + 0.09*age + 0.09*target_weight)
     return similarity_attribute
@@ -214,8 +204,28 @@ def weighted_similarity():
     pass
 
 # return a list with menus for a specific user, based on the weighted similarity, and the same diet
-def knn():
-    pass
+def knn(person): # person - that we want to do for him recomendation
+    dataset = create_user_rates_dictionary()
+    for other in dataset:
+        # don't compare me to myself
+        if other == person:
+            continue
+        if person not in dataset.keys(): # new user in the system, without rates
+            weighted_similarity = 1 * user_parameters_similarity(person,other)
+        else:
+            weighted_similarity = 0.7 * user_parameters_similarity(person,other) + 0.3 * pearson_correlation(person,other)
+
+
+
+
+def recommendation_algorithm(person):
+    if person == 1:
+        return 2
+    else:
+        return 3
+
+
+
 
 # check if the recommended menu has any of user allergies
 def check_user_allergy(email,menu_id_recmmond):
@@ -254,5 +264,5 @@ def check_user_allergy(email,menu_id_recmmond):
 #a = check_user_allergy('ariel_cohen@gmail.com',2)
 #print(a)
 
-def recommendation_algorithm():
-    pass
+
+

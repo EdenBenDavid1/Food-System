@@ -4,7 +4,7 @@
 
 {% block content %}
     <div align="center" >
-    <h1 style="text-align: center;">ארוחות {{meal_type}} חלופיות</h1>
+    <h1 class="center" style="text-align: center;">ארוחות {{meal_type}} חלופיות</h1>
     <h2 id="choose-meal" style="text-align: center;">הארוחה שנבחרה להחלפה: {{meal_cal}} קלוריות</h2>
     </div>
     <br /><br />
@@ -28,6 +28,8 @@
 
       </tr>
     </table>
+        <br><br>
+        <a align="center" class="link-bigger" href="{{url_for('daily_menu') }}">חזור לתפריט יומי</a>
     </div>
 
 {% endblock %}

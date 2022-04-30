@@ -103,6 +103,10 @@
 .link{
   color: black;
 }
+.link-bigger{
+  color: black;
+  font-size:18px;
+}
 .find-td2 {
   text-align: right;
   background-color: rgb(242,241,239);
@@ -229,9 +233,12 @@
   width: 35%;
   margin: 0 auto;
   margin-top: 10px;
-  margin-right: 550px;
+  margin-right: 570px;
 }
+.center{
+  margin-right: 90px;
 
+}
 .td_choosen_meal {
   padding-right: 15px;
   margin-top: 5px;
@@ -244,4 +251,7 @@
 
 .td-ate {
   padding-right: 50px;
+}
+.hide{
+  display:none;
 }

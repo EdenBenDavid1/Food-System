@@ -16,7 +16,7 @@
         <tr>
           <td>
             {% if meal[2] == 'בוקר' %}
-            <span class="h2">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
+            <span class="h2" name="type_meal" value="">ארוחת {{meal[2]}}</span>{{meal[1]}} קלוריות
               <hr class="hr-style" />
             <table>
               <div class="daily_div">
@@ -29,6 +29,7 @@
               <td class="td-ate">
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                      <input name="type" type="text" value=1 class="hide">
                     <div class="show-div">
                     <span> דירוג מנה</span>
                     <br>
@@ -40,7 +41,7 @@
                     <br />
                     <button class="rate-btn" type="submit">שמור דירוג</button>
                     </div>
-                    </form>
+                  </form>
                 </td>
                 </table>
               </td>
@@ -60,6 +61,7 @@
               <td class="td-ate">
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                     <input name="type" type="text" value=1 class="hide">
                     <div class="show-div">
                     <span> דירוג ארוחה</span>
                     <br>
@@ -96,6 +98,7 @@
               <td class="td-ate">
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                    <input name="type" type="text" value=2 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
                   <br>
@@ -127,6 +130,7 @@
               <td class="td-ate">
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                      <input name="type" type="text" value=2 class="hide">
                     <div class="show-div">
                     <span> דירוג ארוחה</span>
                     <br>
@@ -163,6 +167,7 @@
               <td class="td-ate">
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                    <input name="type" type="text" value=3 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
                   <br>
@@ -194,6 +199,7 @@
               <td class="td-ate">
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                      <input name="type" type="text" value=3 class="hide">
                     <div class="show-div">
                     <span> דירוג ארוחה</span>
                     <br>
@@ -230,6 +236,7 @@
               <td class="td-ate">
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                    <input name="type" type="text" value=4 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
                   <br>
@@ -261,6 +268,7 @@
               <td class="td-ate">
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                      <input name="type" type="text" value=4 class="hide">
                     <div class="show-div">
                     <span> דירוג ארוחה</span>
                     <br>
