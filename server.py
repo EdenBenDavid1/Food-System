@@ -5,6 +5,7 @@ from flask_cors import CORS
 import sql_manager, recommendation_algorithm
 import json
 from datetime import date
+from email_validator import validate_email, EmailNotValidError
 
 
 # Settings
@@ -33,11 +34,36 @@ def sign_up():
         fname = request.form["fname"]
         lname = request.form["lname"]
         email = request.form["email"]
+        try:
+            email = validate_email(email).email
+        except EmailNotValidError as e:
+            # email is not valid, exception message is human-readable
+            mes=str(e)
+            return render_template("sign_up.html", mes=mes)
         session["email"] = email
         password = request.form["password"]
         session["password"] = password
-        weight = request.form["weight"]
-        height = request.form["height"]
+        weight = int(request.form["weight"])
+        height = int(request.form["height"])
+        try:
+            check_answer = int(weight)
+            assert weight > 25, "הקלד משקל גדול מ25 קילו"
+            assert weight < 270, "הקלד משקל קטן מ270 קילו"
+        except ValueError:
+            mes = 'משקל חייב להיות מספר בקילוגרמים'
+        except AssertionError as e:
+            mes=str(e)
+            return render_template("sign_up.html", mes=mes)
+        try:
+            check_answer = int(height)
+            assert height > 90, "הקלד גובה גדול מ90 ס״מ"
+            assert height < 250, "הקלד גובה קטן מ250 ס״מ"
+        except ValueError:
+            mes = 'גובה חייב להיות מספר בס״מ'
+        except AssertionError as e:
+            mes=str(e)
+            return render_template("sign_up.html", mes=mes)
+
         gender = request.form["gender"]
         birth_date = request.form["birth_date"]
         diet_id = request.form["diet_id"]
@@ -67,11 +93,9 @@ def suggest_algorithm():
         user_id_str = str(user_id)
         today = str(date.today())
         print(session)
-
         if (user_id_str in session) and (today in session[user_id_str][2]):# there is a recommendation for today, for this user
             menu_id = session[user_id_str][1]
             print('already',session)
-
         else:
             menu_id = recommendation_algorithm.recommendation_algorithm(user_id)
             session[user_id_str] = [user_id_str, menu_id, today]
@@ -80,7 +104,6 @@ def suggest_algorithm():
             print(list_name)
             session[list_name] = list_of_meals
             print('new',session)
-
         return redirect(url_for("get_user"))
 
 
@@ -92,10 +115,14 @@ def get_user():
         password = session["password"]
         check = sql_manager.check_login_user(email, password)
         if check == True:
-            first_name, last_name = sql_manager.load_user(email)
-            user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
             user_id = sql_manager.load_user_id(email)
             user_id_str = str(user_id)
+            # check if the user has a recommendation, if not - go to recommend page
+            if user_id_str not in session:
+                return redirect(url_for("suggest_algorithm"))
+            first_name, last_name = sql_manager.load_user(email)
+            user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
+            print(session)
             # load parameters of menu id that was recommended for this user
             menu_id = session[user_id_str][1]
             parameters = sql_manager.load_parameters_from_menu(menu_id)
@@ -165,29 +192,6 @@ def recipe():
 def recipe_result():
     return render_template("recipe_result.html")
 
-## NUTRITION JOURNAL
-@server.route("/nutrition_journal")
-def nutrition_journal():
-    if "email" not in session:
-        return redirect(url_for("login"))
-    email = session["email"]
-    info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    print(info_meals)
-    return render_template("nutrition_journal.html", info_values=info_values)
-
-@server.route("/nutrition_info/<key>")
-def nutrition_info(key):
-    if "email" not in session:
-        return redirect(url_for("login"))
-    email = session["email"]
-    info_values, info_parameters, info_meals = sql_manager.load_journal(email)
-    if (info_meals[key] == []):
-        flash("אין ארוחות להיום", "info")
-        return render_template("nutrition_info.html",info_values=info_values,info_meals=[])
-    else:
-        return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
-                           info_meals=info_meals, key=key)
-
 ## DAILY MENU
 @server.route("/daily_menu", methods=['POST', 'GET'], defaults={'new_meal':None,'meal_cal':None,'meal_type':None}) #after relaod the page / after rate
 @server.route("/daily_menu/<new_meal>/<meal_cal>/<meal_type>", methods = ['POST', 'GET']) #after change meal
@@ -244,6 +248,32 @@ def change_meal(meal_type,meal_cal):
         print(list_of_suggest_meals)
         return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal,list_of_suggest_meals=list_of_suggest_meals)
 
+## NUTRITION JOURNAL
+@server.route("/nutrition_journal")
+def nutrition_journal():
+    if "email" not in session:
+        return redirect(url_for("login"))
+    email = session["email"]
+    user_id_str = str(sql_manager.load_user_id(email))
+    menu_id = session[user_id_str][1]
+    info_values, info_parameters, info_meals = sql_manager.load_journal(email,menu_id)
+    return render_template("nutrition_journal.html", info_values=info_values)
+
+@server.route("/nutrition_info/<key>")
+def nutrition_info(key):
+    if "email" not in session:
+        return redirect(url_for("login"))
+    email = session["email"]
+    user_id_str = str(sql_manager.load_user_id(email))
+    menu_id = session[user_id_str][1]
+    info_values, info_parameters, info_meals = sql_manager.load_journal(email,menu_id)
+    if (info_meals[key] == []):
+        flash("אין ארוחות להיום", "info")
+        return render_template("nutrition_info.html",info_values=info_values,info_meals=[])
+    else:
+        return render_template("nutrition_info.html", info_values=info_values, info_parameters=info_parameters,
+                           info_meals=info_meals, key=key)
+
 ## PROFILE
 @server.route("/my_profile")
 def my_profile():
@@ -274,6 +304,7 @@ def update_weight():
             weight = request.form["weight"]
             print(weight)
             sql_manager.update_wegiht(email, weight)
+            # after change a parameter - new recommendation:
             return redirect(url_for("my_profile"))
         else:
             return render_template("update_weight.html")

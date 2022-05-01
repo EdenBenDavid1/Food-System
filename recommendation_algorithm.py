@@ -76,9 +76,11 @@ def get_user_info(user):
 #b = get_user_info(1)
 #print(b)
 
+# for all calculations:
 def calc_attribute(attribute1,attribute2):
     return 1 / (abs(attribute1-attribute2)+1)
 
+# gender
 def gender_attribute(user1,user2):
     if user1 == user2:
         gender = 1
@@ -86,6 +88,7 @@ def gender_attribute(user1,user2):
         gender = 0
     return gender
 
+# age
 def age_groups(parameter):
     if parameter <= 20:
         return 1
@@ -100,6 +103,7 @@ def age_attribute(user1,user2):
     age = calc_attribute(age1,age2)
     return age
 
+#weight
 def weight_groups(parameter):
     if parameter <= 50:
         return 1
@@ -120,6 +124,7 @@ def weight_attribute(user1,user2):
     weight = calc_attribute(weight1,weight2)
     return weight
 
+# height
 def height_groups(parameter):
     if parameter <= 150:
         return 1
@@ -140,6 +145,7 @@ def height_attribute(user1,user2):
     height = calc_attribute(height1,height2)
     return height
 
+# activity level
 def activity_groups(parameter):
     if parameter == 'ללא אימונים':
         return 1
@@ -158,6 +164,7 @@ def activity_attribute(user1,user2):
     activity_level = calc_attribute(activity_level1,activity_level2)
     return activity_level
 
+# diet
 def diet_attribute(user1,user2):
     if user1 == user2:
         diet = 1
@@ -165,6 +172,7 @@ def diet_attribute(user1,user2):
         diet = 0
     return diet
 
+# weight target
 def target_groups(parameter):
     if parameter == 'להוריד במשקל':
         return 1
@@ -179,7 +187,6 @@ def target_attribute(user1,user2):
     target_weight = calc_attribute(target_weight1,target_weight2)
     return target_weight
 
-# gender, age, height, weight, activity_level, diet_id, gain_keep_lose
 # check the attributes similarity between 2 users
 def user_parameters_similarity(person1,person2):
     user_info_1 = get_user_info(person1)
@@ -225,16 +232,14 @@ def recommendation_algorithm(person):
         return 3
 
 
-
-
 # check if the recommended menu has any of user allergies
-def check_user_allergy(email,menu_id_recmmond):
+def check_user_allergy(email,menu_id_recommend):
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
     user_id = sql_manager.load_user_id(email)
     sql = "SELECT allergy_id,ingreAllergy_fi_id " \
-          "FROM (foodSystem.user_allergies ua join foodSystem.ingredients_in_allergies iia " \
-          "on (ua.allergy_id=iia.ingreAllergy_allergy_id)) " \
+          "FROM foodSystem.user_allergies ua join foodSystem.ingredients_in_allergies iia " \
+          "on ua.allergy_id=iia.ingreAllergy_allergy_id " \
           "where user_id=%s;"
     mycursor.execute(sql, (user_id,))
     food_ingredients = mycursor.fetchall()
@@ -256,7 +261,7 @@ def check_user_allergy(email,menu_id_recmmond):
         all_menus = mycursor.fetchall() # all menus the user can't eat because his allergy
         print("menus the user can't eat:",all_menus)
         for menu in all_menus:
-            if menu[0] == menu_id_recmmond:
+            if menu[0] == menu_id_recommend:
                 return False
             else:
                 return True
@@ -264,5 +269,21 @@ def check_user_allergy(email,menu_id_recmmond):
 #a = check_user_allergy('ariel_cohen@gmail.com',2)
 #print(a)
 
+def check_menu_calories_range(email,menu_id_recommend):
+    mydb = sql_manager.connect()
+    mycursor = mydb.cursor()
+    sql1 = "SELECT cal_targ FROM foodSystem.users where email=%s;"
+    mycursor.execute(sql1, (email,))
+    user_cal = mycursor.fetchall()[0][0]
+    sql2 = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
+    mycursor.execute(sql2, (menu_id_recommend,))
+    menu_cal = mycursor.fetchall()[0][0]
+    if (menu_cal >= user_cal-150) and (menu_cal <= user_cal+150):
+        # if the menu that recommended in the range of calories the user can eat
+        return True
+    else:
+        return False
 
+g = check_menu_calories_range('roni_zarfati@gmail.com',1)
+print(g)
 
