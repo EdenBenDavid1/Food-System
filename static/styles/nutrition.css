@@ -32,14 +32,14 @@
 .nutrition_title {
   margin: 0 auto;
   text-align: center;
-  width: 400px;
+  width: 520px;
 }
 
-.td-days {
+#td-days {
   font-size:18px;
 }
 
-.td-days:hover {
+#td-days:hover {
   border-radius: 15px;
   background-color: rgb(235, 211, 235);
   border-width: 1px;
@@ -103,8 +103,14 @@
 #nutrition-div{
   display: flex;
   flex-direction: column;
-  -width: 500px;
+  -width: 600px;
   width: 100%;
   margin: 0 auto;
   text-align:center;
 }
+#date{
+  font-size:19px;
+  color:#369AA5;
+  font-weight: bold;
+}
+

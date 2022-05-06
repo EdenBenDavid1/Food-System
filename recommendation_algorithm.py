@@ -7,26 +7,27 @@ from math import sqrt
 def create_user_rates_dictionary():
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
-    sql1 = "SELECT user_id FROM foodSystem.users;"
-    mycursor.execute(sql1)
-    all_users_id = mycursor.fetchall()
+    all_users_id = sql_manager.get_all_users()
+    #print(all_users_id)
     all_data = {}
     for user in all_users_id:
-        sql2= "select history_menu_id,avg_rate " \
+        sql1= "select history_menu_id,avg_rate " \
               "FROM (SELECT history_user_id,history_menu_id,avg_rate,date," \
               "(RANK() OVER (PARTITION BY history_user_id,history_menu_id ORDER BY date desc)) as rank_row " \
               "FROM foodSystem.menu_history) as t " \
               "where (t.rank_row=1) and (t.history_user_id=%s);"
-        mycursor.execute(sql2,((user[0]),))
+        mycursor.execute(sql1,((user[0]),))
         history_rates = mycursor.fetchall()
-        inside_dic = {} # every user has his own menus, rebut every user
-        for history in history_rates:
-            inside_dic[history[0]]=history[1] # dict for menu:rate
-            all_data[user[0]] = inside_dic # user has -  menu:rate
-    print(all_data)
+        if history_rates != []:
+            inside_dic = {} # every user has his own menus, rebut every user
+            for history in history_rates:
+                inside_dic[history[0]]=history[1] # dict for menu:rate
+                all_data[user[0]] = inside_dic # user has -  menu:rate
     return all_data
 
-#create_user_rates_dictionary()
+dataset = create_user_rates_dictionary()
+print(dataset)
+
 
 # check the rates correlation between 2 users
 def pearson_correlation(person1, person2):
@@ -59,7 +60,7 @@ def pearson_correlation(person1, person2):
         r = numerator_value / denominator_value
         return r
 
-#correlation = pearson_correlation(1, 5)
+#correlation = pearson_correlation(1, 6)
 #print(correlation)
 
 def get_user_info(user):
@@ -191,7 +192,7 @@ def target_attribute(user1,user2):
 def user_parameters_similarity(person1,person2):
     user_info_1 = get_user_info(person1)
     user_info_2 = get_user_info(person2)
-
+    # all attributes:
     gender = gender_attribute(user_info_1[0],user_info_2[0])
     age = age_attribute(user_info_1[1],user_info_2[1])
     weight = weight_attribute(user_info_1[2],user_info_2[2])
@@ -199,52 +200,78 @@ def user_parameters_similarity(person1,person2):
     activity_level = activity_attribute(user_info_1[4], user_info_2[4])
     diet = diet_attribute(user_info_1[5], user_info_2[5])
     target_weight = target_attribute(user_info_1[6], user_info_2[6])
-
+    # the similarity calculation:
     similarity_attribute = (0.3*gender + 0.2*diet + 0.14*activity_level + 0.09*weight + 0.09*height + 0.09*age + 0.09*target_weight)
     return similarity_attribute
 
-attribute = user_parameters_similarity(10,12)
-print(attribute)
+#attribute = user_parameters_similarity(10,12)
+#print(attribute)
 
-# calc the weighted similarity of the 2 similarities
-def weighted_similarity():
-    pass
 
-# return a list with menus for a specific user, based on the weighted similarity, and the same diet
-def knn(person): # person - that we want to do for him recomendation
+def find_nearest_neighbors(person):
     dataset = create_user_rates_dictionary()
+    neighbors = []
     for other in dataset:
         # don't compare me to myself
         if other == person:
             continue
-        if person not in dataset.keys(): # new user in the system, without rates
-            weighted_similarity = 1 * user_parameters_similarity(person,other)
+
+        if person not in dataset.keys():
+            weighted_similarity = 1 * user_parameters_similarity(person, other)
+            neighbors.append([other,weighted_similarity])
         else:
-            weighted_similarity = 0.7 * user_parameters_similarity(person,other) + 0.3 * pearson_correlation(person,other)
+            sim = pearson_correlation(person, other)
+            # ignore scores of zero or lower
+            if sim <= 0:
+                continue
+            weighted_similarity = 0.7 * user_parameters_similarity(person, other) + 0.3 * pearson_correlation(person,other)
+            neighbors.append([other,weighted_similarity])
 
+    sorted_neighbors = sorted(neighbors, key=lambda neighbors: (neighbors[1], neighbors[0]), reverse=True)
+    return sorted_neighbors
 
+#sorted = find_nearest_neighbors(5)
+#print(sorted)
 
+def predict(sorted_neighbors):
+    dataset = create_user_rates_dictionary()
+    totals = {}
+    simSums = {}
+    for neighbor in sorted_neighbors:
+        other = neighbor[0]
+        weighted_similarity = neighbor[1]
 
-def recommendation_algorithm(person):
-    if person == 1:
-        return 2
-    else:
-        return 3
+        for item in dataset[other]:
+            # weighted_similarity * score
+            totals.setdefault(item, 0)
+            totals[item] += dataset[other][item] * weighted_similarity
+            # sum of similarities
+            simSums.setdefault(item, 0)
+            simSums[item] += weighted_similarity
+
+    # Create the normalized list
+    rankings = [(total / simSums[item], item) for item, total in totals.items()]
+    rankings.sort(reverse=True)
+    # returns the recommended items
+    recommendataions_list = [(recommend_item) for score, recommend_item in rankings]
+    return recommendataions_list
+
+#p = predict(sorted)
+#print(p)
 
 
 # check if the recommended menu has any of user allergies
-def check_user_allergy(email,menu_id_recommend):
+def check_user_allergy(user_id,menu_id_recommend):
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
-    user_id = sql_manager.load_user_id(email)
     sql = "SELECT allergy_id,ingreAllergy_fi_id " \
           "FROM foodSystem.user_allergies ua join foodSystem.ingredients_in_allergies iia " \
           "on ua.allergy_id=iia.ingreAllergy_allergy_id " \
           "where user_id=%s;"
     mycursor.execute(sql, (user_id,))
     food_ingredients = mycursor.fetchall()
-    print(food_ingredients)
-    if food_ingredients == []: # the user has not allergy, he can use the recommended menu
+    #print(food_ingredients)
+    if food_ingredients == []: # the user has no allergy, he can use the recommended menu
         return True
     else: # the user has 1 or more allergies:
         food_id_list = []
@@ -259,22 +286,27 @@ def check_user_allergy(email,menu_id_recommend):
                "where fi_id IN {};".format(t)
         mycursor.execute(sql2)
         all_menus = mycursor.fetchall() # all menus the user can't eat because his allergy
-        print("menus the user can't eat:",all_menus)
+        #print("menus the user can't eat:",all_menus)
+        menuInList = False
         for menu in all_menus:
-            if menu[0] == menu_id_recommend:
-                return False
-            else:
-                return True
+            if menu_id_recommend == menu[0]:
+                menuInList = True
+        if menuInList == True: ## the menu in the list, the user can't eat it.
+            return False
+        else:
+            return True
 
-#a = check_user_allergy('ariel_cohen@gmail.com',2)
+#a = check_user_allergy(2,3)
 #print(a)
 
-def check_menu_calories_range(email,menu_id_recommend):
+# check if the recommended menu fits to the user calories
+def check_menu_calories_range(user_id,menu_id_recommend):
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
-    sql1 = "SELECT cal_targ FROM foodSystem.users where email=%s;"
-    mycursor.execute(sql1, (email,))
+    sql1 = "SELECT cal_targ FROM foodSystem.users where user_id=%s;"
+    mycursor.execute(sql1, (user_id,))
     user_cal = mycursor.fetchall()[0][0]
+    #print(user_cal)
     sql2 = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
     mycursor.execute(sql2, (menu_id_recommend,))
     menu_cal = mycursor.fetchall()[0][0]
@@ -284,6 +316,42 @@ def check_menu_calories_range(email,menu_id_recommend):
     else:
         return False
 
-g = check_menu_calories_range('roni_zarfati@gmail.com',1)
-print(g)
+#g = check_menu_calories_range(4,3)
+#print(g)
 
+# check if the recommended menu fits to the user diet
+def check_menu_diet(user_id,menu_id_recommend):
+    mydb = sql_manager.connect()
+    mycursor = mydb.cursor()
+    user_diet = sql_manager.get_diet_for_user(user_id)
+    sql = "select dietMenu_diet_id from foodSystem.diet_for_menu where dietMenu_menu_id = %s;"
+    mycursor.execute(sql, (menu_id_recommend,))
+    diets_for_this_menu = mycursor.fetchall()
+    userDietInList = False
+    for diet in diets_for_this_menu:
+        if user_diet == diet[0]:
+            userDietInList = True
+    if userDietInList == True: # the user can eat this menu, this menu in his diet
+        return True
+    else:
+        return False
+
+#t =check_menu_diet(1,4)
+#print(t)
+
+def recommendation_choose_menu_for_user(person):
+    nearest_neighbors = find_nearest_neighbors(person)
+    recommended_menus_list = predict(nearest_neighbors)
+    print(recommended_menus_list)
+    for menu in recommended_menus_list:
+        check_allergy = check_user_allergy(person,menu)
+        print('allergy',check_allergy)
+        check_calories = check_menu_calories_range(person,menu)
+        print('calories',check_calories)
+        print('--')
+        #check_diet = check_menu_diet(person,menu)
+        if check_allergy == True and check_calories == True:
+            return menu
+
+c = recommendation_choose_menu_for_user(1)
+print(c)

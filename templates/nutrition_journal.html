@@ -9,7 +9,7 @@
         <table class="nutrition_title">
             <tr>
                 {% for key in info_values %}
-                <td class="td-days"><span id="date1" onclick="window.location.href='{{ url_for( 'nutrition_info', key=key) }}';">{{key}}</span></td>
+                <td id="td-days"><span id="date1" onclick="window.location.href='{{ url_for( 'nutrition_info', key=key)}}';">{{key}}</span></td>
                 {% endfor %}
             </tr>
         </table><br>

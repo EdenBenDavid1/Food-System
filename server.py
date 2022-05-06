@@ -97,7 +97,7 @@ def suggest_algorithm():
             menu_id = session[user_id_str][1]
             print('already',session)
         else:
-            menu_id = recommendation_algorithm.recommendation_algorithm(user_id)
+            menu_id = recommendation_algorithm.recommendation_choose_menu_for_user(user_id)
             session[user_id_str] = [user_id_str, menu_id, today]
             list_of_meals = sql_manager.load_today_menu(menu_id)
             list_name = 'meals user ' + user_id_str

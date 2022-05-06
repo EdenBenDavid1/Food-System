@@ -14,6 +14,7 @@
 
         {% for value_v in info_values[key] %}
             {% for value_p in info_parameters[key] %}
+            <p id="date">{{key}}</p><br>
     <table class="center">
         <tr>
             <td style="font-size: 18px;">קלוריות</td>
@@ -38,7 +39,7 @@
        <table id="class_info" align="center" style="width: 600px">
 		<tr style="padding-bottom: 30px;">
 			<td style="margin-left: 15px;" >
-                <span class="h2">ארוחה {{value_m[2]}}</span> {{value_m[1]}} קלוריות
+                <span class="h2">ארוחת {{value_m[2]}}</span> {{value_m[1]}} קלוריות
                 <hr class="hr-style">
                 <table>
                 <div class="div-hover">

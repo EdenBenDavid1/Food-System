@@ -156,6 +156,9 @@
 }
 #big-table{
   height:90px;
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
 }
 .hr-style {
   width: 65%;
@@ -182,4 +185,10 @@
   border-radius: 15px;
   border-width: 1px;
   width: 100px;
+}
+#div-all{
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
+
 }
