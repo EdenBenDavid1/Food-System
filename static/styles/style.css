@@ -233,7 +233,7 @@
   width: 35%;
   margin: 0 auto;
   margin-top: 10px;
-  margin-right: 570px;
+  -margin-right: 570px;
 }
 .center{
   margin-right: 90px;

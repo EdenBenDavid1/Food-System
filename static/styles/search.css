@@ -60,7 +60,14 @@
 #find_div_info {
   width: 30%;
   margin: 0 auto;
-  text-align:center;
+  text-align: center !important;
+  align:center;
+
+}
+#table_of_dishes{
+  width: 500px;
+  align: center !important;
+  -margin-left: 150px;
 }
 
 .center {
@@ -75,11 +82,10 @@
 
 .find-table {
   border-radius: 15px;
-  border-width: 0.5px;
   text-align: center;
-  border-style: solid;
+  border: 1px solid #369AA5;
   width: 90%;
-  margin-left: 3px;
+  margin-left: 30px;
   font-size: 17px;
 }
 
@@ -100,10 +106,12 @@
 
 #find_div_info {
   -display: flex;
-  -flex-direction: column;
-  width: 400px;
+  flex-direction: column;
+  align: center;
+  width: 500px;
   margin: 0 auto;
-  -padding-left: 12px;
+  padding-right: 20px;
+  background-color:
 }
 .div_buttons{
   text-align:center;
@@ -128,7 +136,7 @@
   border-radius: 4px;
 }
 .btn {
-  width: 50%;
+  width: 230px;
   margin-top: 8px;
   border: none;
   color: white;
@@ -148,6 +156,12 @@
 .find-big-table-td hr {
   margin-bottom: 4px;
 }
+
+#find-table-first-row{
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
+ }
 .head-find {
   text-align: right;
   padding-right: 4px;
@@ -166,11 +180,13 @@
 }
 .find-td2 {
   text-align: right;
-  background-color: #F1C583;
+  background-color: rgb(242,241,239);
   border-radius: 15px;
   border-width: 1px;
   width: 80px;
   padding-top: 0px;
+  color:#0F8C9A;
+  font-weight: bold;
 }
 .find-continue {
   width: 280px;
@@ -181,7 +197,7 @@
 }
 
 .find-td-ingre {
-  background-color: #D5D5D5;
+  background-color: rgb(242,241,239);
   border-radius: 15px;
   border-width: 1px;
   width: 100px;
@@ -190,5 +206,4 @@
   padding-top: 0px;
   margin-top: 0px;
   display:flex;
-
 }

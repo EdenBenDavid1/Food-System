@@ -13,6 +13,31 @@ def connect():
         database='FoodSystem')
     return mydb
 
+def calc_age(birth_str):
+    today = date.today()
+    birth_date = datetime.strptime(str(birth_str), '%Y-%m-%d').date()
+    year_difference = ((today-birth_date).days)/365
+    return round(year_difference,0)
+#calc_age('1996-04-25')
+
+
+## calc user calories base on BMR formula:
+def calc_user_calories(gender,birth_date,height,weight,gain_keep_lose,activity_level):
+    activity_level_dict = {'ללא אימונים': 1.2, '1-3 אימונים בשבוע': 1.375, '4-5 אימונים בשבוע': 1.55,
+                           '6-7 אימונים בשבוע': 1.725, 'עבודה פיזית': 1.9}
+    weight_goal_dict = {'להוריד במשקל': 0.8, 'לשמור על המשקל': 1, 'לעלות במשקל': 1.2}
+    age = calc_age(birth_date)
+    if gender == 'נקבה':
+        cal_targ = round((9.247 * float(weight) + 3.098 * float(height) - 4.330 * age + 447.593) * \
+                         activity_level_dict[activity_level] * weight_goal_dict[gain_keep_lose], 2)
+    else:
+        cal_targ = round((13.397 * weight + 4.799 * height - 5.677 * age + 88.362) * \
+                         activity_level_dict[activity_level] * weight_goal_dict[gain_keep_lose], 2)
+    return cal_targ
+
+#cal = calc_user_calories('נקבה','1996-02-28',153,50,'להוריד במשקל','1-3 אימונים בשבוע')
+#print(cal)
+
 def get_user_new_cal_targ(user_id):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -23,14 +48,30 @@ def get_user_new_cal_targ(user_id):
                                   user_parameters[4], user_parameters[5])
     return cal_targ
 
+def get_user_cal_targ(user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT cal_targ FROM foodSystem.users where user_id=%s;"
+    mycursor.execute(sql, (user_id,))
+    user_cal = mycursor.fetchall()[0][0]
+    return user_cal
+
+def get_meal_cal(menu_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
+    mycursor.execute(sql, (menu_id,))
+    menu_cal = mycursor.fetchall()[0][0]
+    return menu_cal
+
+
 def update_user_cal_targ(cal_targ,user_id):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql2 = "update foodSystem.users set cal_targ =%s WHERE user_id = %s;"
+    sql = "update foodSystem.users set cal_targ =%s WHERE user_id = %s;"
     val = (cal_targ, user_id)
-    mycursor.execute(sql2, val)
+    mycursor.execute(sql, val)
     mydb.commit()
-
 
 def get_all_users():
     mydb = connect()
@@ -45,11 +86,10 @@ def get_all_users():
 def calc_all_users_calories():
     all_users_id = get_all_users()
     for user in all_users_id:
-        cal_targ = get_user_new_cal_targ(user)
-        update_user_cal_targ(cal_targ,user)
+        cal_targ = get_user_new_cal_targ(user[0])
+        update_user_cal_targ(cal_targ,user[0])
 
-#calc_all_users_calories()
-
+calc_all_users_calories()
 
 
 # get meal_id from meal_name
@@ -149,30 +189,6 @@ def check_login_user(email,password):
 #print(s)
 
 ## SIGN_UP:
-def calc_age(birth_str):
-    today = date.today()
-    birth_date = datetime.strptime(str(birth_str), '%Y-%m-%d').date()
-    year_difference = ((today-birth_date).days)/365
-    return round(year_difference,0)
-#calc_age('1996-04-25')
-
-## calc user calories base on BMR formula:
-def calc_user_calories(gender,birth_date,height,weight,gain_keep_lose,activity_level):
-    activity_level_dict = {'ללא אימונים': 1.2, '1-3 אימונים בשבוע': 1.375, '4-5 אימונים בשבוע': 1.55,
-                           '6-7 אימונים בשבוע': 1.725, 'עבודה פיזית': 1.9}
-    weight_goal_dict = {'להוריד במשקל': 0.8, 'לשמור על המשקל': 1, 'לעלות במשקל': 1.2}
-    age = calc_age(birth_date)
-    if gender == 'נקבה':
-        cal_targ = round((9.247 * float(weight) + 3.098 * float(height) - 4.330 * age + 447.593) * \
-                         activity_level_dict[activity_level] * weight_goal_dict[gain_keep_lose], 2)
-    else:
-        cal_targ = round((13.397 * weight + 4.799 * height - 5.677 * age + 88.362) * \
-                         activity_level_dict[activity_level] * weight_goal_dict[gain_keep_lose], 2)
-    return cal_targ
-
-#cal = calc_user_calories('נקבה','1996-02-28',153,50,'להוריד במשקל','1-3 אימונים בשבוע')
-#print(cal)
-
 def check_if_email_exist(email):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -408,6 +424,18 @@ def get_diet_for_user(user_id):
     return diet_id
 
 ## CHANGE MEAL
+def get_user_allergy_ingredients(user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT allergy_id,ingreAllergy_fi_id " \
+          "FROM foodSystem.user_allergies ua join foodSystem.ingredients_in_allergies iia " \
+          "on ua.allergy_id=iia.ingreAllergy_allergy_id " \
+          "where user_id=%s;"
+    mycursor.execute(sql, (user_id,))
+    food_ingredients = mycursor.fetchall()
+    return food_ingredients
+
+
 def suggest_other_meals(email, meal_cal, meal_type):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -424,6 +452,12 @@ def suggest_other_meals(email, meal_cal, meal_type):
     val = (diet_id, meal_cal, meal_cal, meal_type)
     mycursor.execute(sql, val)
     list_of_meals = mycursor.fetchall()
+
+    food_ingredients = get_user_allergy_ingredients(user_id)
+
+
+
+
     return list_of_meals
 
 

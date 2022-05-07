@@ -47,7 +47,7 @@ def sign_up():
         height = int(request.form["height"])
         try:
             check_answer = int(weight)
-            assert weight > 25, "הקלד משקל גדול מ25 קילו"
+            assert weight > 40, "הקלד משקל גדול מ40 קילו"
             assert weight < 270, "הקלד משקל קטן מ270 קילו"
         except ValueError:
             mes = 'משקל חייב להיות מספר בקילוגרמים'

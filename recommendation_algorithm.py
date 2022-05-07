@@ -204,7 +204,7 @@ def user_parameters_similarity(person1,person2):
     similarity_attribute = (0.3*gender + 0.2*diet + 0.14*activity_level + 0.09*weight + 0.09*height + 0.09*age + 0.09*target_weight)
     return similarity_attribute
 
-#attribute = user_parameters_similarity(10,12)
+#attribute = user_parameters_similarity(5,37)
 #print(attribute)
 
 
@@ -260,17 +260,13 @@ def predict(sorted_neighbors):
 #print(p)
 
 
+
 # check if the recommended menu has any of user allergies
 def check_user_allergy(user_id,menu_id_recommend):
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
-    sql = "SELECT allergy_id,ingreAllergy_fi_id " \
-          "FROM foodSystem.user_allergies ua join foodSystem.ingredients_in_allergies iia " \
-          "on ua.allergy_id=iia.ingreAllergy_allergy_id " \
-          "where user_id=%s;"
-    mycursor.execute(sql, (user_id,))
-    food_ingredients = mycursor.fetchall()
-    #print(food_ingredients)
+    food_ingredients = sql_manager.get_user_allergy_ingredients(user_id)
+    print(food_ingredients)
     if food_ingredients == []: # the user has no allergy, he can use the recommended menu
         return True
     else: # the user has 1 or more allergies:
@@ -278,13 +274,13 @@ def check_user_allergy(user_id,menu_id_recommend):
         for food in food_ingredients:
             food_id_list.append(food[1]) # all the food ingredients in a list
         t = tuple(food_id_list)
-        sql2 = "select distinct(menu_id) " \
+        sql = "select distinct(menu_id) " \
                "from (((foodSystem.menus m " \
                "join foodSystem.meals_in_menu mim on m.menu_id=mim.mealsInMenu_menu_id) " \
                "join  foodSystem.dish_in_meal dim on mim.mealsInMenu_meal_id=dim.dishInMeal_meal_id) " \
                "join foodSystem.ingredients_in_dish ind on dim.dishInMeal_dish_id=ind.dish_id)" \
                "where fi_id IN {};".format(t)
-        mycursor.execute(sql2)
+        mycursor.execute(sql)
         all_menus = mycursor.fetchall() # all menus the user can't eat because his allergy
         #print("menus the user can't eat:",all_menus)
         menuInList = False
@@ -301,15 +297,9 @@ def check_user_allergy(user_id,menu_id_recommend):
 
 # check if the recommended menu fits to the user calories
 def check_menu_calories_range(user_id,menu_id_recommend):
-    mydb = sql_manager.connect()
-    mycursor = mydb.cursor()
-    sql1 = "SELECT cal_targ FROM foodSystem.users where user_id=%s;"
-    mycursor.execute(sql1, (user_id,))
-    user_cal = mycursor.fetchall()[0][0]
-    #print(user_cal)
-    sql2 = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
-    mycursor.execute(sql2, (menu_id_recommend,))
-    menu_cal = mycursor.fetchall()[0][0]
+    user_cal = sql_manager.get_user_cal_targ(user_id)
+    menu_cal = sql_manager.get_meal_cal(menu_id_recommend)
+    #print(menu_cal)
     if (menu_cal >= user_cal-150) and (menu_cal <= user_cal+150):
         # if the menu that recommended in the range of calories the user can eat
         return True
@@ -339,19 +329,59 @@ def check_menu_diet(user_id,menu_id_recommend):
 #t =check_menu_diet(1,4)
 #print(t)
 
+def find_menu_in_other_way(user_id):
+    mydb = sql_manager.connect()
+    mycursor = mydb.cursor()
+    user_diet = sql_manager.get_diet_for_user(user_id)
+    sql1 = "select dietMenu_menu_id from foodSystem.diet_for_menu where dietMenu_diet_id = %s;"
+    mycursor.execute(sql1, (user_diet,))
+    all_menus = mycursor.fetchall()
+    #print(all_menus)
+    menus_fits = []
+    for menu in all_menus:
+        menu_cal = check_menu_calories_range(user_id,menu[0])
+        check_allergy = check_user_allergy(user_id,menu[0])
+        if menu_cal == True and check_allergy == True: # if the calories in range of 150, and allergy is right, add it to list
+            menus_fits.append(menu[0])
+    if menus_fits != []:
+        return menus_fits[0]
+
+
+#menu = find_menu_in_other_way(45)
+#print(menu)
+
+
+
 def recommendation_choose_menu_for_user(person):
     nearest_neighbors = find_nearest_neighbors(person)
-    recommended_menus_list = predict(nearest_neighbors)
-    print(recommended_menus_list)
-    for menu in recommended_menus_list:
-        check_allergy = check_user_allergy(person,menu)
-        print('allergy',check_allergy)
-        check_calories = check_menu_calories_range(person,menu)
-        print('calories',check_calories)
-        print('--')
-        #check_diet = check_menu_diet(person,menu)
-        if check_allergy == True and check_calories == True:
-            return menu
+    if nearest_neighbors == []: # the algorithm dosen't find nearest neighbors:
+        menu = find_menu_in_other_way(person)
+        return menu
+    else:
+        print('nigboers',nearest_neighbors)
+        recommended_menus_list = predict(nearest_neighbors)
+        print(recommended_menus_list)
+        only_alleries_diet = []
+        found = False
+        for menu in recommended_menus_list:
+            check_allergy = check_user_allergy(person,menu)
+            print(menu)
+            print('allergy',check_allergy)
+            check_calories = check_menu_calories_range(person,menu)
+            print('calories',check_calories)
+            check_diet = check_menu_diet(person,menu)
+            print('diet',check_diet)
+            print('--')
+            # if we can't find a menu that is fit - we will seggest this menu even if the calories don't fit :
+            if check_calories == False and check_allergy == True and check_diet == True:
+                only_alleries_diet.append(menu)
+            if check_allergy == True and check_calories == True and check_diet == True:
+                found = True
+                return menu
+        print(only_alleries_diet)
+        if found == False:
+            return only_alleries_diet[0]
+
 
 c = recommendation_choose_menu_for_user(1)
 print(c)

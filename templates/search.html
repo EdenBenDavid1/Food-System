@@ -23,32 +23,34 @@
     <br />
     <br />
     <h2 class="center">רכיבים/ מנות פופלריות</h2>
-    <div id="find_div_info">
-      <table>
+    <div id="find_div_info" align="center">
+      <table id="table_of_dishes" align="center">
         <tr>
-          <td align="center" colspan="2"></td>
+          <td align="center" colspan="2"><br></td>
         </tr>
         <tr>
-          <td><input value="אורז" class="find-table" /></td>
-          <td><input value="אורז-מלא" class="find-table" /></td>
-          <td><input value="חזה עוף" class="find-table" /></td>
-          <td><input value="עוף בתנור" class="find-table" /></td>
+          <td><input type="button" value="אורז" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='אורז' )}}';"/></td>
+          <td><input type="button" value="חזה עוף" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='חזה עוף' )}}';"/></td>
+          <td><input type="button" value="ביצים" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='ביצים' )}}';"/></td>
+          <td><input type="button" value="ירקות" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='ירקות' )}}';"/></td>
         </tr>
         <tr>
-          <td><input value="ביצה קשה" class="find-table" /></td>
-          <td><input value="חביתה" class="find-table" /></td>
-          <td><input value="מקושקשת" class="find-table" /></td>
-          <td><input value="לחם קלוי" class="find-table" /></td>
+          <td><input type="button" value="אבוקדו" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='אבוקדו' )}}';"/></td>
+          <td><input type="button" value="לחם" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='לחם' )}}';"/></td>
+          <td><input type="button" value="סלמון" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='סלמון' )}}';"/></td>
+          <td><input type="button" value="גבינה" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='גבינה' )}}';"/></td>
         </tr>
         <tr>
-          <td><input type="text" value="סלט" class="find-table" /></td>
-          <td><input type="text" value="מוקפץ" class="find-table" /></td>
-          <td><input type="text" value="בשר" class="find-table" /></td>
-          <td><input type="text" value="סלמון" class="find-table" /></td>
+          <td><input type="button" value="חביתה" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='חביתה' )}}';"/></td>
+          <td><input type="button" value="שעועית" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='שעועית' )}}';"/></td>
+          <td><input type="button" value="סלט" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='סלט' )}}';"/></td>
+          <td><input type="button" value="טונה" class="find-table" onclick="window.location.href='{{ url_for( 'search_result', search_value='טונה' )}}';"/></td>
         </tr>
       </table>
         <br><br><br>
-      <input type=button class="btn" value="לפענוח מתכון לחץ כאן" onclick="window.location.href='{{ url_for( 'recipe') }}';"></input>
     </div>
+
+    <div align="center"><input type=button class="btn" value="לפענוח מתכון לחץ כאן" onclick="window.location.href='{{ url_for( 'recipe') }}';"></input></div>
+
 
 {% endblock %}
