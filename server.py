@@ -91,13 +91,16 @@ def suggest_algorithm():
         email = session["email"]
         user_id = sql_manager.load_user_id(email)
         user_id_str = str(user_id)
+        print('user_id',user_id_str)
         today = str(date.today())
         print(session)
+        #session.clear()
         if (user_id_str in session) and (today in session[user_id_str][2]):# there is a recommendation for today, for this user
             menu_id = session[user_id_str][1]
             print('already',session)
         else:
             menu_id = recommendation_algorithm.recommendation_choose_menu_for_user(user_id)
+            print(menu_id)
             session[user_id_str] = [user_id_str, menu_id, today]
             list_of_meals = sql_manager.load_today_menu(menu_id)
             list_name = 'meals user ' + user_id_str
@@ -205,8 +208,8 @@ def daily_menu(new_meal,meal_cal,meal_type):
         if request.method == 'POST': #the user press save rate
             meal = request.form["checkMeal"]
             rate = request.form["rate"]
-            print(session)
             type = request.form["type"]
+            print(session)
             print(type)
             return redirect(url_for("insert_rate", meal=meal, rate=rate, type=type))
         else:
@@ -217,11 +220,11 @@ def daily_menu(new_meal,meal_cal,meal_type):
                 meal_type_dict = {'בוקר': 0, 'צהריים': 1, 'ביניים': 2, 'ערב': 3}
                 list_of_meals = session[list_name]
                 for meal in list_of_meals:
-                    if meal[2] == meal_type:
+                    if meal[2] == meal_type: # find the type of the replaced meal
                         index = meal_type_dict[meal_type]
-                        list_of_meals[index] = (new_meal, meal_cal, meal_type)
+                        list_of_meals[index] = (new_meal, meal_cal, meal_type) # replace this meal with the older
                         print('the meals', list_of_meals)
-                        session[list_name] = list_of_meals
+                        session[list_name] = list_of_meals #update the session
             if meal_type == None:
                 list_of_meals = session[list_name]
                 print(list_of_meals)
@@ -244,9 +247,9 @@ def change_meal(meal_type,meal_cal):
         return redirect(url_for("login"))
     else:
         email = session["email"]
-        list_of_suggest_meals = sql_manager.suggest_other_meals(email,meal_cal,meal_type)
-        print(list_of_suggest_meals)
-        return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal,list_of_suggest_meals=list_of_suggest_meals)
+        dict_of_suggest_meals = sql_manager.suggest_other_meals(email,meal_cal,meal_type)
+        print(dict_of_suggest_meals)
+        return render_template("change_meal.html", meal_type=meal_type, meal_cal=meal_cal,dict_of_suggest_meals=dict_of_suggest_meals)
 
 ## NUTRITION JOURNAL
 @server.route("/nutrition_journal")

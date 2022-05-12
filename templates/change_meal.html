@@ -12,14 +12,14 @@
     <table align="center" id="table_choosen_meal">
       <tr>
         <td>
-          {% for meal in list_of_suggest_meals %}
+          {% for meal_id in dict_of_suggest_meals %}
           <table>
             <td class="find-td">
-              <br />{{meal[0]}} <br /><br /><a class="cal">{{meal[1]}} קלוריות</a>
+              <br />{{dict_of_suggest_meals[meal_id][0]}} <br /><br /><a class="cal">{{dict_of_suggest_meals[meal_id][1]}} קלוריות</a>
             </td>
 
             <td class="td_choosen_meal">
-              <a class="link" href="{{url_for('daily_menu',new_meal=meal[0],meal_cal=meal[1],meal_type=meal_type) }}">בחר ארוחה</a>
+              <a class="link" href="{{url_for('daily_menu',new_meal=dict_of_suggest_meals[meal_id][0],meal_cal=dict_of_suggest_meals[meal_id][1],meal_type=meal_type) }}">בחר ארוחה</a>
             </td>
               <br>
           </table>
@@ -30,6 +30,8 @@
     </table>
         <br><br>
         <a align="center" class="link-bigger" href="{{url_for('daily_menu') }}">חזור לתפריט יומי</a>
+        <br><br>
+
     </div>
 
 {% endblock %}

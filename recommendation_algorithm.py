@@ -60,7 +60,7 @@ def pearson_correlation(person1, person2):
         r = numerator_value / denominator_value
         return r
 
-#correlation = pearson_correlation(1, 6)
+#correlation = pearson_correlation(27, 6)
 #print(correlation)
 
 def get_user_info(user):
@@ -260,19 +260,14 @@ def predict(sorted_neighbors):
 #print(p)
 
 
-
 # check if the recommended menu has any of user allergies
 def check_user_allergy(user_id,menu_id_recommend):
     mydb = sql_manager.connect()
     mycursor = mydb.cursor()
-    food_ingredients = sql_manager.get_user_allergy_ingredients(user_id)
-    print(food_ingredients)
-    if food_ingredients == []: # the user has no allergy, he can use the recommended menu
+    food_id_list = sql_manager.get_user_allergy_ingredients(user_id)
+    if food_id_list == []: # the user has no allergy, he can use the recommended menu
         return True
     else: # the user has 1 or more allergies:
-        food_id_list = []
-        for food in food_ingredients:
-            food_id_list.append(food[1]) # all the food ingredients in a list
         t = tuple(food_id_list)
         sql = "select distinct(menu_id) " \
                "from (((foodSystem.menus m " \
@@ -300,7 +295,7 @@ def check_menu_calories_range(user_id,menu_id_recommend):
     user_cal = sql_manager.get_user_cal_targ(user_id)
     menu_cal = sql_manager.get_meal_cal(menu_id_recommend)
     #print(menu_cal)
-    if (menu_cal >= user_cal-150) and (menu_cal <= user_cal+150):
+    if (menu_cal >= user_cal-220) and (menu_cal <= user_cal+220):
         # if the menu that recommended in the range of calories the user can eat
         return True
     else:
@@ -326,7 +321,7 @@ def check_menu_diet(user_id,menu_id_recommend):
     else:
         return False
 
-#t =check_menu_diet(1,4)
+#t =check_menu_diet(2,26)
 #print(t)
 
 def find_menu_in_other_way(user_id):
@@ -336,29 +331,31 @@ def find_menu_in_other_way(user_id):
     sql1 = "select dietMenu_menu_id from foodSystem.diet_for_menu where dietMenu_diet_id = %s;"
     mycursor.execute(sql1, (user_diet,))
     all_menus = mycursor.fetchall()
-    #print(all_menus)
-    menus_fits = []
+    print(all_menus)
     for menu in all_menus:
+        print(menu)
         menu_cal = check_menu_calories_range(user_id,menu[0])
+        print('calories',menu_cal)
         check_allergy = check_user_allergy(user_id,menu[0])
-        if menu_cal == True and check_allergy == True: # if the calories in range of 150, and allergy is right, add it to list
-            menus_fits.append(menu[0])
-    if menus_fits != []:
-        return menus_fits[0]
+        print('allergies',check_allergy)
+        print("--")
+        if menu_cal == True and check_allergy == True: # if the calories in range of 220, and allergy is right, add it to list
+            return menu[0]
 
 
-#menu = find_menu_in_other_way(45)
+
+#menu = find_menu_in_other_way(6)
 #print(menu)
 
 
 
 def recommendation_choose_menu_for_user(person):
     nearest_neighbors = find_nearest_neighbors(person)
+    print('neighbors',nearest_neighbors)
     if nearest_neighbors == []: # the algorithm dosen't find nearest neighbors:
         menu = find_menu_in_other_way(person)
         return menu
     else:
-        print('nigboers',nearest_neighbors)
         recommended_menus_list = predict(nearest_neighbors)
         print(recommended_menus_list)
         only_alleries_diet = []
@@ -383,5 +380,5 @@ def recommendation_choose_menu_for_user(person):
             return only_alleries_diet[0]
 
 
-c = recommendation_choose_menu_for_user(1)
-print(c)
+#c = recommendation_choose_menu_for_user(27)
+#print(c)
