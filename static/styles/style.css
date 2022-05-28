@@ -180,19 +180,6 @@
   border-radius: 4px;
 }
 
-#table-decipher2 {
-  height: 300px;
-  width: 800px;
-  margin: 0 auto;
-  border-width: 2px;
-  border: 5px solid rgb(54, 154, 165);
-  overflow: hidden;
-}
-
-.th-decipher {
-  background-color: aliceblue;
-  width: 33%;
-}
 .data:hover {
   cursor: pointer;
   box-shadow: 0px 0px 15px #aaa;
@@ -212,17 +199,6 @@
   padding-top: 6px;
 }
 
-#div_scroll {
-  overflow: scroll;
-  width: 30%;
-  height: 300px;
-  margin: 0 auto;
-}
-
-#txtComment {
-  height: 300px;
-  width: 800px;
-}
 #table_choosen_meal {
   margin: 0 auto;
   width: 55%;

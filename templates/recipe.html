@@ -1,32 +1,159 @@
 {% extends 'base.html' %}
-{% block css %} {{ url_for('static',filename='styles/style.css') }} {% endblock %}
+{% block css %} {{ url_for('static',filename='styles/search.css') }} {% endblock %}
 {% block title %}RECIPE{% endblock %}
 
 {% block content %}
-
-    <div style="width: 30%" class="center">
-      <h1 style="text-align: center">פענוח מתכון</h1>
-      <span
-        >ניתן לקבל את הערך התזונתי של כל מתכון.<br />העתיקו את המצרכים של המתכון
-        לתיבה,<br />ונציג לכם פלט של הערך התזונתי.</span>
+    <div align="center" style="width: 900px;" class="center">
+      <h1 class="center" style="text-align: center">פענוח מתכון</h1>
+      <br><span
+        >ניתן לקבל את הערך התזונתי של כל מתכון.<br />בחרו את המצרכים של המתכון
+        בתיבות,<br />ונציג לכם פלט של הערך התזונתי.</span>
         <br>
-      <hr class="hr-style" />
+      <hr class="hr-style"/>
         <br>
-    </div>
     <h2 id="h-decipher">מצרכי המתכון:</h2>
-    <br />
+
     <form type="text" method="POST" >
-    <div id="div_scroll">
-      <textarea id="txtComment" name="text"></textarea>
-    </div>
+
     <br />
+        <div align="center">
+            <a>יש לבחור את סוג הרכיב וכמות השימוש</a>
+            <br><br>
+        <table align="center">
+         <tr><td>
+        <select name="1" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num1" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+         <tr><td>
+        <select name="2" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num2" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="3" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num3" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="4" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num4" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="5" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num5" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="6" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num6" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="7" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num7" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="8" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num8" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="9" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num9" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+            <tr><td>
+        <select name="10" class="selectpicker form-control">
+                  <option value="">בחר רכיב</option>
+                    {% for ingre in all_ingredietns %}
+                  <option value="{{ ingre[0] }}">{{ ingre[1] }}, {{ ingre[2] }}</option>
+                  {% endfor %}
+         </select>
+         </td>
+         <td>
+         <input type="number" class="num_ingre" name="num10" min="1" max="10" placeholder="כמות מרכיב זה" />
+         </td>
+         </tr>
+
+        </table>
+        </div>
+        <br><br>
     <div style="width: 30%" class="center">
       <span class="center"> כמות מנות שנוצרות:</span>
-      <input type="number" id="number" name="number" min="1" max="100" /> כמות
+      <input type="number" id="number" name="meals_number" min="1" max="20" />
       <br /><br />
-      <input type="submit" id="button-decopher" value="פענוח מתכון"></input>
+      <input type="submit" id="button-decopher" value="פענוח מתכון">
     </div>
+    </form>
+
         <br><br>
+
         <div>
         {% block recipe_result %}
         {% endblock %}

@@ -77,7 +77,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  text-align:center;
 }
 
 .find-table {
@@ -175,8 +174,10 @@
   display:flex;
 }
 .hr-style {
-  width: 65%;
+  width: 50%;
   border-top: 3px solid black;
+  margin: auto;
+  text-align: center;
 }
 .find-td2 {
   text-align: right;
@@ -206,4 +207,61 @@
   padding-top: 0px;
   margin-top: 0px;
   display:flex;
+}
+#h-decipher {
+  text-decoration-color: rgb(98, 157, 68);
+  color: rgb(54, 154, 165);
+  font-size: x-large;
+  margin-left: 15px;
+  font-weight: bold;
+  margin: 0 auto;
+  text-align: center;
+  width: 30%;
+}
+#button-decopher {
+  width: 250px;
+  margin-top: 8px;
+  border: none;
+  color: white;
+  padding: 5px 15px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #FFB30F;
+  border-radius: 4px;
+}
+#txtComment {
+  height: 200px;
+  width: 500px;
+}
+#div_scroll {
+  overflow: scroll;
+  width: 50%;
+  height: 200px;
+  margin: 0 auto;
+}
+#number{
+  width:110px;
+  align:center;
+  text-align:center;
+  margin: 0 auto;
+
+}
+#table-decipher2 {
+  height: 200px;
+  width: 600px;
+  margin: 0 auto;
+  border-width: 2px;
+  border: 5px solid rgb(54, 154, 165);
+  overflow: hidden;
+}
+
+.th-decipher {
+  background-color: aliceblue;
+  width: 33%;
+}
+.num_ingre{
+  width:100px;
 }

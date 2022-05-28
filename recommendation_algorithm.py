@@ -1,5 +1,6 @@
 import sql_manager
 from math import sqrt
+from flask import session
 
 ## RECOMMENDATION ALGORITHM:
 
@@ -25,8 +26,8 @@ def create_user_rates_dictionary():
                 all_data[user[0]] = inside_dic # user has -  menu:rate
     return all_data
 
-dataset = create_user_rates_dictionary()
-print(dataset)
+#dataset = create_user_rates_dictionary()
+#print(dataset)
 
 
 # check the rates correlation between 2 users
@@ -60,7 +61,7 @@ def pearson_correlation(person1, person2):
         r = numerator_value / denominator_value
         return r
 
-#correlation = pearson_correlation(27, 6)
+#correlation = pearson_correlation(69, 10)
 #print(correlation)
 
 def get_user_info(user):
@@ -188,7 +189,7 @@ def target_attribute(user1,user2):
     target_weight = calc_attribute(target_weight1,target_weight2)
     return target_weight
 
-# check the attributes similarity between 2 users
+# check attributes similarity between 2 users
 def user_parameters_similarity(person1,person2):
     user_info_1 = get_user_info(person1)
     user_info_2 = get_user_info(person2)
@@ -204,12 +205,13 @@ def user_parameters_similarity(person1,person2):
     similarity_attribute = (0.3*gender + 0.2*diet + 0.14*activity_level + 0.09*weight + 0.09*height + 0.09*age + 0.09*target_weight)
     return similarity_attribute
 
-#attribute = user_parameters_similarity(5,37)
+#attribute = user_parameters_similarity(10,82)
 #print(attribute)
 
 
 def find_nearest_neighbors(person):
     dataset = create_user_rates_dictionary()
+    print(dataset)
     neighbors = []
     for other in dataset:
         # don't compare me to myself
@@ -230,7 +232,7 @@ def find_nearest_neighbors(person):
     sorted_neighbors = sorted(neighbors, key=lambda neighbors: (neighbors[1], neighbors[0]), reverse=True)
     return sorted_neighbors
 
-#sorted = find_nearest_neighbors(5)
+#sorted = find_nearest_neighbors(86)
 #print(sorted)
 
 def predict(sorted_neighbors):
@@ -242,7 +244,7 @@ def predict(sorted_neighbors):
         weighted_similarity = neighbor[1]
 
         for item in dataset[other]:
-            # weighted_similarity * score
+            # score * weighted_similarity
             totals.setdefault(item, 0)
             totals[item] += dataset[other][item] * weighted_similarity
             # sum of similarities
@@ -295,7 +297,7 @@ def check_menu_calories_range(user_id,menu_id_recommend):
     user_cal = sql_manager.get_user_cal_targ(user_id)
     menu_cal = sql_manager.get_meal_cal(menu_id_recommend)
     #print(menu_cal)
-    if (menu_cal >= user_cal-220) and (menu_cal <= user_cal+220):
+    if (menu_cal >= user_cal-200) and (menu_cal <= user_cal+200):
         # if the menu that recommended in the range of calories the user can eat
         return True
     else:
@@ -342,17 +344,14 @@ def find_menu_in_other_way(user_id):
         if menu_cal == True and check_allergy == True: # if the calories in range of 220, and allergy is right, add it to list
             return menu[0]
 
-
-
 #menu = find_menu_in_other_way(6)
 #print(menu)
 
 
-
-def recommendation_choose_menu_for_user(person):
+def recommend_menu_for_user(person):
     nearest_neighbors = find_nearest_neighbors(person)
     print('neighbors',nearest_neighbors)
-    if nearest_neighbors == []: # the algorithm dosen't find nearest neighbors:
+    if nearest_neighbors == []: # the algorithm doesn't find nearest neighbors:
         menu = find_menu_in_other_way(person)
         return menu
     else:
@@ -380,5 +379,6 @@ def recommendation_choose_menu_for_user(person):
             return only_alleries_diet[0]
 
 
-#c = recommendation_choose_menu_for_user(27)
+#c = recommend_menu_for_user(82)
 #print(c)
+

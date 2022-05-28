@@ -1,42 +1,32 @@
-{% extends 'recipe.html' %}
+{% extends 'base.html' %}
+{% block css %} {{ url_for('static',filename='styles/search.css') }} {% endblock %}
+{% block title %}RECIPE RESULT{% endblock %}
 
-{% block recipe_result %}
+{% block content %}
 
+      <h1 class="center" style="text-align: center">תוצאות פענוח מתכון</h1>
+        <br><br>
         <table id="table-decipher2">
             <tr>
             <td colspan="3" style="text-align: center;">
-                <span class="center">המתכון בריא,<br>ויתווסף למאגר הארוחות</span> 
 
             </td>
         </tr>
         <tr>
            <th class="th-decipher">סימן תזונתי</th> 
-           <th class="th-decipher">למנה/יחידה</th> 
-           <th class="th-decipher">ל100 גרם</th> 
-            
+           <th class="th-decipher">למנה</th>
+
         </tr>
+            {% for key,value in values.items() %}
         <tr>
-           <td>קלוריות</td> 
-           <td>555</td> 
-           <td>136</td>           
+           <td>{{ key }}</td>
+           <td>{{ value }}</td>
         </tr>
-        <tr>
-           <td>פחמימות</td> 
-           <td>63</td> 
-           <td>15</td>           
-        </tr>
-        <tr>
-           <td>חלבונים</td> 
-           <td>36.51</td> 
-           <td>8.93</td>           
-        </tr>
-        <tr>
-            <td>שומנים</td> 
-            <td>18.31</td> 
-            <td>4.48</td>           
-         </tr>
- 
+            {% endfor %}
+
+
     </table> 
    <br><br>
+    <div align="center"><input type=button class="btn" value="חזרה לפענוח מתכון" onclick="window.location.href='{{ url_for( 'recipe') }}';"></div>
 
 {% endblock %}

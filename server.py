@@ -10,7 +10,6 @@ from email_validator import validate_email, EmailNotValidError
 
 # Settings
 server = Flask(__name__, template_folder='templates')
-CORS(server)
 server.secret_key = "program"
 
 ## WELCOME
@@ -95,11 +94,12 @@ def suggest_algorithm():
         today = str(date.today())
         print(session)
         #session.clear()
+        #session['69'][2] = '2022-05-25'
         if (user_id_str in session) and (today in session[user_id_str][2]):# there is a recommendation for today, for this user
             menu_id = session[user_id_str][1]
             print('already',session)
         else:
-            menu_id = recommendation_algorithm.recommendation_choose_menu_for_user(user_id)
+            menu_id = recommendation_algorithm.recommend_menu_for_user(user_id)
             print(menu_id)
             session[user_id_str] = [user_id_str, menu_id, today]
             list_of_meals = sql_manager.load_today_menu(menu_id)
@@ -182,18 +182,29 @@ def search_result(search_value):
 @server.route("/recipe", methods=['POST', 'GET'])
 def recipe():
     if request.method == 'POST':
-        ingredients = request.form["text"]
-        meal_number = request.form["number"]
-        print(ingredients)
-        # calc the calories:
-        return redirect(url_for("recipe_result"))
+        user_ingredients = []
+        for index in range(1,11):
+            index = str(index)
+            ingredient = request.form[index]
+            amount = request.form['num'+index]
+            if ingredient != '':
+                user_ingredients += [(ingredient,amount)]
+        print(user_ingredients)
+        meals_number = float(request.form["meals_number"])
+        values = sql_manager.calc_recipe_values(user_ingredients,meals_number)
+        print(values)
+        return redirect(url_for("recipe_result", values=values))
     else:
-        return render_template("recipe.html")
-
+        all_ingredietns = sql_manager.get_all_ingredients()
+        return render_template("recipe.html",all_ingredietns=all_ingredietns)
+import json
+import ast
 ## RECIPE RESULT
-@server.route("/recipe_result")
-def recipe_result():
-    return render_template("recipe_result.html")
+@server.route("/recipe_result/<values>")
+def recipe_result(values):
+    # convert the string to dictionary
+    values = ast.literal_eval(values)
+    return render_template("recipe_result.html", values=values)
 
 ## DAILY MENU
 @server.route("/daily_menu", methods=['POST', 'GET'], defaults={'new_meal':None,'meal_cal':None,'meal_type':None}) #after relaod the page / after rate
@@ -214,9 +225,9 @@ def daily_menu(new_meal,meal_cal,meal_type):
             return redirect(url_for("insert_rate", meal=meal, rate=rate, type=type))
         else:
             meal_name_that_eaten = sql_manager.eaten_meals(email)
-            print('the new', new_meal, meal_cal)
             # replace the old meal with new one
-            if meal_type != None:
+            if meal_type != None: # after change meal
+                print('the new', new_meal, meal_cal)
                 meal_type_dict = {'בוקר': 0, 'צהריים': 1, 'ביניים': 2, 'ערב': 3}
                 list_of_meals = session[list_name]
                 for meal in list_of_meals:
@@ -225,7 +236,7 @@ def daily_menu(new_meal,meal_cal,meal_type):
                         list_of_meals[index] = (new_meal, meal_cal, meal_type) # replace this meal with the older
                         print('the meals', list_of_meals)
                         session[list_name] = list_of_meals #update the session
-            if meal_type == None:
+            if meal_type == None: # after reload page
                 list_of_meals = session[list_name]
                 print(list_of_meals)
             return render_template("daily_menu.html", list_of_meals=list_of_meals, meal_name_that_eaten=meal_name_that_eaten)
@@ -306,7 +317,7 @@ def update_weight():
         if request.method == 'POST':
             weight = request.form["weight"]
             print(weight)
-            sql_manager.update_wegiht(email, weight)
+            sql_manager.update_weight(email, weight)
             # after change a parameter - new recommendation:
             return redirect(url_for("my_profile"))
         else:
