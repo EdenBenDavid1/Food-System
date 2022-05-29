@@ -208,7 +208,7 @@
   margin-top: 0px;
   display:flex;
 }
-#h-decipher {
+.h-decipher {
   text-decoration-color: rgb(98, 157, 68);
   color: rgb(54, 154, 165);
   font-size: x-large;
@@ -232,16 +232,7 @@
   background-color: #FFB30F;
   border-radius: 4px;
 }
-#txtComment {
-  height: 200px;
-  width: 500px;
-}
-#div_scroll {
-  overflow: scroll;
-  width: 50%;
-  height: 200px;
-  margin: 0 auto;
-}
+
 #number{
   width:110px;
   align:center;
@@ -259,9 +250,23 @@
 }
 
 .th-decipher {
-  background-color: aliceblue;
+  background-color: rgb(242,241,239);
   width: 33%;
+  font-size:20px;
 }
 .num_ingre{
-  width:100px;
+  width:150px;
+  font-size:15px;
+}
+.option-size{
+  font-size:15px;
+}
+#ingre-table{
+  align:center;
+  width: 270px;
+  margin: 0 auto;
+  border-width: 2px;
+  text-align:center;
+  overflow: hidden;
+
 }

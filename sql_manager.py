@@ -255,8 +255,7 @@ def load_parameters_from_menu(menu):
 
 #parameters = load_parameters_from_menu(1)
 #print(parameters)
-#for para in parameters:
-#    print(para)
+
 
 # return the user_id to an email
 def load_user_id(email):
@@ -344,10 +343,7 @@ def insert_rate_to_db(email,meal_name,rate,type):
 
 #rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
 #print(rate)
-#insert_rate_to_db()
-#now = datetime.now()
-#current_time = now.strftime("%H:%M:%S")
-#print(current_time)
+
 
 def create_new_menu_in_db():
     mydb = connect()
@@ -600,32 +596,67 @@ def get_all_ingredients():
     result = mycursor.fetchall()
     return result
 
-#get_all_ingredients()
+#l = get_all_ingredients()
+#print(l)
 
-def calc_recipe_values(all_ingredients_amout,meals_number):
+def calc_recipe_values(user_ingredients,meals_number):
     mydb = connect()
     mycursor = mydb.cursor()
     nutrition_values = {'קלוריות':0,'פחמימות':0,'שומנים':0,'חלבונים':0}
     # [('3', '1'), ('6', '2')]
-    for food_amount in all_ingredients_amout:
-        print(food_amount[0])
-        fi_id = food_amount[0]
+    for ingredient_amount in user_ingredients:
+        # food_amount[0] - ingredient id, food_amount[1] - amount
+        print(ingredient_amount[0])
+        fi_id = ingredient_amount[0]
         sql = "SELECT fi_cal,fi_carb,fi_fat,fi_protein FROM foodSystem.food_ingredients " \
           "where fi_id =%s;"
         mycursor.execute(sql,(fi_id,))
         values = mycursor.fetchall() # all values per 1 food ingredient
         print(values)
         for val in values:
-            nutrition_values['קלוריות'] += (val[0] * float(food_amount[1]))
-            nutrition_values['פחמימות'] += val[1] * float(food_amount[1])
-            nutrition_values['שומנים'] += val[2] * float(food_amount[1])
-            nutrition_values['חלבונים'] += val[3] * float(food_amount[1])
-
+            nutrition_values['קלוריות'] += (val[0] * float(ingredient_amount[1]))
+            nutrition_values['פחמימות'] += val[1] * float(ingredient_amount[1])
+            nutrition_values['שומנים'] += val[2] * float(ingredient_amount[1])
+            nutrition_values['חלבונים'] += val[3] * float(ingredient_amount[1])
     for key,value in nutrition_values.items():
         nutrition_values[key] = round(value/meals_number,2)
     return nutrition_values
 
 #calc_recipe_values(all_ingredients_amout,2)
+
+def show_recipe_ingredients(user_ingredients):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    ingredients_id = []
+    amount = []
+    all_ingre_to_show = []
+    for food_amount in user_ingredients:
+        ingredients_id.append(food_amount[0])
+        amount.append(food_amount[1])
+
+    if len(ingredients_id)>1: # a few ingredients
+        t = tuple(ingredients_id)
+        sql = "SELECT fi_name,fi_amount FROM foodSystem.food_ingredients " \
+              "where fi_id IN {};".format(t)
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        print('result a few', result)
+    else: # only 1 ingredient
+        sql = "SELECT fi_name,fi_amount FROM foodSystem.food_ingredients " \
+              "where fi_id=%s;"
+        mycursor.execute(sql,(ingredients_id[0],))
+        result = mycursor.fetchall()
+        print('result 1', result)
+    i = 0
+    for r in result:
+        all_ingre_to_show += [(r[0],r[1],'בכמות',amount[i])]
+        i += 1
+    return (all_ingre_to_show)
+
+#g = show_recipe_ingredients([('3', '1'), ('6', '2')])
+#print(g)
+#for ingre in g:
+#    print(ingre)
 
 ## SEARCH
 def load_ingredient(search_value):
@@ -655,12 +686,6 @@ def load_dish(search_value):
     return result
 
 #ingredient=load_ingredient('דבש')
-#for ing in ingredient:
-#    print(ing[0])
-
-#dish = load_dish('מבושל')
-#for d in dish:
-#    print(d[0], d[1])
 
 def load_meal(search_value):
     mydb = connect()

@@ -1,6 +1,5 @@
 import sql_manager
 from math import sqrt
-from flask import session
 
 ## RECOMMENDATION ALGORITHM:
 
@@ -289,8 +288,8 @@ def check_user_allergy(user_id,menu_id_recommend):
         else:
             return True
 
-#a = check_user_allergy(2,3)
-#print(a)
+a = check_user_allergy(2,3)
+print(a)
 
 # check if the recommended menu fits to the user calories
 def check_menu_calories_range(user_id,menu_id_recommend):

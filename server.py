@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, url_for
 from flask import request, redirect, session, flash
-from flask_cors import CORS
 import sql_manager, recommendation_algorithm
 import json
 from datetime import date
 from email_validator import validate_email, EmailNotValidError
-
+import ast
 
 # Settings
 server = Flask(__name__, template_folder='templates')
@@ -181,6 +180,9 @@ def search_result(search_value):
 ## RECIPE
 @server.route("/recipe", methods=['POST', 'GET'])
 def recipe():
+    all_ingredietns = sql_manager.get_all_ingredients()
+    print(all_ingredietns)
+    # if the user press the button of decipher
     if request.method == 'POST':
         user_ingredients = []
         for index in range(1,11):
@@ -189,16 +191,28 @@ def recipe():
             amount = request.form['num'+index]
             if ingredient != '':
                 user_ingredients += [(ingredient,amount)]
-        print(user_ingredients)
-        meals_number = float(request.form["meals_number"])
-        values = sql_manager.calc_recipe_values(user_ingredients,meals_number)
-        print(values)
-        return redirect(url_for("recipe_result", values=values))
+                print(user_ingredients)
+        meals_number = request.form["meals_number"]
+        # the user didn't choose anything
+        if user_ingredients == []:
+            flash("יש לבחור ערכים בתיבות", "info")
+            return render_template("recipe.html",all_ingredietns=all_ingredietns)
+        # the user didn't choose anything
+        elif meals_number == '':
+            flash("יש להקליד ערך לכמות המנות הנוצרות בתיבה מטה", "info")
+            return render_template("recipe.html", all_ingredietns=all_ingredietns)
+        else: # the user chose correct
+            meals_number = float(meals_number)
+            values = sql_manager.calc_recipe_values(user_ingredients,meals_number)
+            ingre_show = sql_manager.show_recipe_ingredients(user_ingredients)
+            session['recipe'] = ingre_show
+            print(ingre_show)
+            print(values)
+            return redirect(url_for("recipe_result", values=values))
     else:
-        all_ingredietns = sql_manager.get_all_ingredients()
         return render_template("recipe.html",all_ingredietns=all_ingredietns)
-import json
-import ast
+
+
 ## RECIPE RESULT
 @server.route("/recipe_result/<values>")
 def recipe_result(values):
