@@ -9,7 +9,6 @@
   background-color: #2F2E2E;
   height: 2.5rem;
 }
-
 .navbar-brand:hover {
   text-shadow: 2px 1px 2px rgb(249,181,66);
   font-weight: bold;
@@ -24,47 +23,7 @@
   height: 100%;
   padding: 6px;
 }
-
-.welcom-text {
-  text-align: center;
-  font-weight: bold;
-  font-size: xx-large;
-  padding-top: 2rem;
-  color: rgb(0,0,0);
-}
-
-.index-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.index-main-table {
-  margin-top: 1rem;
-  width: 60%;
-  font-size: 20px;
-}
-
-.index-main-table td {
-  min-width: 100px;
-  text-align: center;
-  align-items: center;
-}
-.index-main-table p {
-  text-align: center;
-  border-style: solid;
-  padding: 6px;
-  border-radius: 15px;
-  border-width: 2px;
-  border-color: rgb(142, 228, 121);
-}
-.enter-detailes {
-  width: 250px;
-  height: 20px;
-  border-radius: 10px;
-}
-#welcom_image {
+#welcome_image {
   vertical-align: middle;
   text-align: center;
   width: 329px;
@@ -78,6 +37,13 @@
   padding-top: 50px;
   color: rgb(0,0,0);
 }
+
+.enter-detailes {
+  width: 250px;
+  height: 20px;
+  border-radius: 10px;
+}
+
 #button{
   border: none;
   color: white;

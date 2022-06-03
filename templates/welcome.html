@@ -8,11 +8,10 @@
      
      <div style="text-align: center">
       <img src="{{url_for('static', filename='styles/health2U.png')}}" id="welcome_image" >
-      <br>
+      <br><br>
 
-      <form type="text" method="POST" >
+      <form type="text" method="POST">
       <input name="email" type="text" placeholder="אימייל" class="enter-detailes"><br><br>
-
       <input name="password" type="password" placeholder="סיסמה" class="enter-detailes"><br><br>
       {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -21,12 +20,12 @@
             {% endfor %}
           {% endif %}
       {% endwith %}
-          <br>
+      <br>
 
       <input id="button" type="submit" value="התחבר"/>
         <br><br>
       אין לך משתמש? <a class="link" href="{{url_for('sign_up')}}" >לחץ כאן </a>
-         </form>
+      </form>
 
 
 {% endblock %}

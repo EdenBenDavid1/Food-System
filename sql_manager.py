@@ -18,8 +18,8 @@ def calc_age(birth_str):
     birth_date = datetime.strptime(str(birth_str), '%Y-%m-%d').date()
     year_difference = ((today-birth_date).days)/365
     return round(year_difference,0)
-#calc_age('1996-04-25')
 
+#calc_age('1996-04-25')
 
 ## calc user calories base on BMR formula:
 def calc_user_calories(gender,birth_date,height,weight,gain_keep_lose,activity_level):
@@ -64,7 +64,6 @@ def get_meal_cal(menu_id):
     menu_cal = mycursor.fetchall()[0][0]
     return menu_cal
 
-
 def update_user_cal_targ(cal_targ,user_id):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -80,7 +79,6 @@ def get_all_users():
     mycursor.execute(sql1)
     all_users_id = mycursor.fetchall()
     return all_users_id
-
 
 # calc all users calories
 def calc_all_users_calories():
@@ -274,7 +272,7 @@ def load_update_values(date,user_id):
           "from foodSystem.rates r join foodSystem.meals m on r.rates_meal_id=m.meal_id where date=%s and rates_user_id=%s;"
     mycursor.execute(sql,(date,user_id))
     result = mycursor.fetchall()
-    # id the user didn't eat anything yet:
+    # if the user didn't eat anything yet:
     if result == [(None, None, None, None)]:
         result = [(0,0,0,0)]
     return result
@@ -481,7 +479,6 @@ def suggest_other_meals(email, meal_cal, meal_type):
             if food_id[0] in food_ingredients_user_cant_eat:
                 list_of_meals.pop(meal_id)
                 break
-
     return list_of_meals
 
 #f = suggest_other_meals('ariel_cohen@gmail.com',350,'בוקר')
@@ -574,7 +571,7 @@ def load_user_profile(email):
 #user=load_user_profile('roni_zarfati@gmail.com')
 #print(user)
 
-# change the weight and calculate new calory target
+# change the weight and calculate new caloric target
 def update_weight(email, weight):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -587,7 +584,7 @@ def update_weight(email, weight):
 
 #update_weight('roni_zarfati@gmail.com',57)
 
-# RECIPE
+## RECIPE
 def get_all_ingredients():
     mydb = connect()
     mycursor = mydb.cursor()
@@ -599,6 +596,7 @@ def get_all_ingredients():
 #l = get_all_ingredients()
 #print(l)
 
+
 def calc_recipe_values(user_ingredients,meals_number):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -608,16 +606,19 @@ def calc_recipe_values(user_ingredients,meals_number):
         # food_amount[0] - ingredient id, food_amount[1] - amount
         print(ingredient_amount[0])
         fi_id = ingredient_amount[0]
+        amount = ingredient_amount[1]
+        if amount == '':
+            amount = 1
         sql = "SELECT fi_cal,fi_carb,fi_fat,fi_protein FROM foodSystem.food_ingredients " \
           "where fi_id =%s;"
         mycursor.execute(sql,(fi_id,))
         values = mycursor.fetchall() # all values per 1 food ingredient
         print(values)
         for val in values:
-            nutrition_values['קלוריות'] += (val[0] * float(ingredient_amount[1]))
-            nutrition_values['פחמימות'] += val[1] * float(ingredient_amount[1])
-            nutrition_values['שומנים'] += val[2] * float(ingredient_amount[1])
-            nutrition_values['חלבונים'] += val[3] * float(ingredient_amount[1])
+            nutrition_values['קלוריות'] += (val[0] * float(amount))
+            nutrition_values['פחמימות'] += val[1] * float(amount)
+            nutrition_values['שומנים'] += val[2] * float(amount)
+            nutrition_values['חלבונים'] += val[3] * float(amount)
     for key,value in nutrition_values.items():
         nutrition_values[key] = round(value/meals_number,2)
     return nutrition_values
@@ -662,7 +663,7 @@ def show_recipe_ingredients(user_ingredients):
 def load_ingredient(search_value):
     mydb = connect()
     mycursor = mydb.cursor()
-    sql = "SELECT fi_name,fi_amount,fi_cal,fi_carb,fi_fat,fi_protein,fi_sugar" \
+    sql = "SELECT fi_name,fi_amount,fi_cal,fi_carb,fi_fat,fi_protein" \
           " FROM foodSystem.food_ingredients where fi_name like %s;"
     search_value = ['%' + search_value + ' %']
     mycursor.execute(sql, search_value)
@@ -678,7 +679,7 @@ def load_dish(search_value):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT dish_name,dish_cal,dish_carb,dish_fat,dish_protein FROM foodSystem.dishes where dish_name like %s;"
-    search_value = ['%'+search_value+ ' %']
+    search_value = ['%'+ search_value + ' %']
     mycursor.execute(sql, search_value)
     result = mycursor.fetchall()
     if result == []:

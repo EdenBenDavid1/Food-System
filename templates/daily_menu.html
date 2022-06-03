@@ -22,13 +22,20 @@
               <div class="daily_div">
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                {% if meal_name_that_eaten == [] %}
+                {% if meal[0] in meal_name_that_eaten %}
+                    <td class="td-ate">
+                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
+                  </td>
+                  </table>
+                </td>
+              </tr>
+              {% else %}
                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                 </td>
               </div>
               <td class="td-ate">
                   <form type="text" method="POST"><br>
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                       <input name="type" type="text" value=1 class="hide">
                     <div class="show-div">
                     <span> דירוג מנה</span>
@@ -46,41 +53,9 @@
                 </table>
               </td>
             </tr>
-                  {% else %}
-                    {% if meal[0] in meal_name_that_eaten %}
-                  <td class="td-ate">
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
-                  </td>
-                  </table>
-                </td>
-              </tr>
-                {% else %}
-                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
-                </td>
-              </div>
-              <td class="td-ate">
-                  <form type="text" method="POST"><br>
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
-                     <input name="type" type="text" value=1 class="hide">
-                    <div class="show-div">
-                    <span> דירוג ארוחה</span>
-                    <br>
-                    <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
-                    <input type="radio" name="rate" value="2">2
-                    <input type="radio" name="rate" value="3">3
-                    <input type="radio" name="rate" value="4">4
-                    <input type="radio" name="rate" value="5">5
-                    <br />
-                    <button class="rate-btn" type="submit">שמור דירוג</button>
-                    </div>
-                    </form>
-                  </td>
-                  </table>
-                  </td>
-                  </tr>
-              {% endif %}
-            {% endif %}
         {% endif %}
+        {% endif %}
+
         <tr><td></td></tr>
         <tr>
           <td>
@@ -91,13 +66,20 @@
               <div>
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meal_name_that_eaten == [] %}
+                  {% if meal[0] in meal_name_that_eaten %}
+                    <td class="td-ate">
+                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
+                  </td>
+                  </table>
+                </td>
+              </tr>
+                {% else %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                   </td>
                 </div>
               <td class="td-ate">
                 <form type="text" method="POST"><br>
-                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=2 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
@@ -115,41 +97,9 @@
                 </table>
               </td>
             </tr>
-                {% else %}
-                    {% if meal[0] in meal_name_that_eaten %}
-                  <td class="td-ate">
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
-                  </td>
-                  </table>
-                </td>
-              </tr>
-                {% else %}
-                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
-                </td>
-              </div>
-              <td class="td-ate">
-                  <form type="text" method="POST"><br>
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
-                      <input name="type" type="text" value=2 class="hide">
-                    <div class="show-div">
-                    <span> דירוג ארוחה</span>
-                    <br>
-                    <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
-                    <input type="radio" name="rate" value="2">2
-                    <input type="radio" name="rate" value="3">3
-                    <input type="radio" name="rate" value="4">4
-                    <input type="radio" name="rate" value="5">5
-                    <br />
-                    <button class="rate-btn" type="submit">שמור דירוג</button>
-                    </div>
-                    </form>
-                  </td>
-                  </table>
-                  </td>
-                  </tr>
-              {% endif %}
             {% endif %}
         {% endif %}
+
         <tr><td></td></tr>
         <tr>
           <td>
@@ -160,13 +110,20 @@
               <div class="daily_div">
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meal_name_that_eaten == [] %}
+                  {% if meal[0] in meal_name_that_eaten %}
+                   <td class="td-ate">
+                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
+                  </td>
+                  </table>
+                </td>
+              </tr>
+                  {% else %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                 </td>
               </div>
               <td class="td-ate">
                 <form type="text" method="POST"><br>
-                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=3 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
@@ -184,41 +141,9 @@
                 </table>
               </td>
             </tr>
-              {% else %}
-                    {% if meal[0] in meal_name_that_eaten %}
-                  <td class="td-ate">
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
-                  </td>
-                  </table>
-                </td>
-              </tr>
-                  {% else %}
-                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
-                </td>
-              </div>
-              <td class="td-ate">
-                  <form type="text" method="POST"><br>
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
-                      <input name="type" type="text" value=3 class="hide">
-                    <div class="show-div">
-                    <span> דירוג ארוחה</span>
-                    <br>
-                    <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
-                    <input type="radio" name="rate" value="2">2
-                    <input type="radio" name="rate" value="3">3
-                    <input type="radio" name="rate" value="4">4
-                    <input type="radio" name="rate" value="5">5
-                    <br />
-                    <button class="rate-btn" type="submit">שמור דירוג</button>
-                    </div>
-                    </form>
-                  </td>
-                  </table>
-                  </td>
-                  </tr>
-              {% endif %}
             {% endif %}
         {% endif %}
+
         <tr><td></td></tr>
         <tr>
           <td>
@@ -229,13 +154,20 @@
               <div>
                 <td class="find-td">
                   {{meal[0]}}<br /><br>
-                  {% if meal_name_that_eaten == [] %}
+                  {% if meal[0] in meal_name_that_eaten %}
+                      <td class="td-ate">
+                      <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
+                      </td>
+                      </table>
+                    </td>
+                  </tr>
+                {% else %}
                     <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
                   </td>
                 </div>
               <td class="td-ate">
                 <form type="text" method="POST"><br>
-                <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
+                <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=4 class="hide">
                 <div class="show-div">
                 <span> דירוג ארוחה</span>
@@ -253,41 +185,10 @@
                 </table>
               </td>
             </tr>
-              {% else %}
-                    {% if meal[0] in meal_name_that_eaten %}
-                  <td class="td-ate">
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}" checked/>אכלתי<br /><br>
-                  </td>
-                  </table>
-                </td>
-              </tr>
-            {% else %}
-                    <a class="link" href="{{url_for('change_meal', meal_type=meal[2],meal_cal=meal[1]) }}"> החלף ארוחה</a>
-                </td>
-              </div>
-              <td class="td-ate">
-                  <form type="text" method="POST"><br>
-                  <input name="checkMeal" type="checkbox" value="{{meal[0]}}"/>אכלתי<br /><br>
-                      <input name="type" type="text" value=4 class="hide">
-                    <div class="show-div">
-                    <span> דירוג ארוחה</span>
-                    <br>
-                    <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
-                    <input type="radio" name="rate" value="2">2
-                    <input type="radio" name="rate" value="3">3
-                    <input type="radio" name="rate" value="4">4
-                    <input type="radio" name="rate" value="5">5
-                    <br />
-                    <button class="rate-btn" type="submit">שמור דירוג</button>
-                    </div>
-                    </form>
-                  </td>
-                  </table>
-                  </td>
-                  </tr>
-                {% endif %}
             {% endif %}
         {% endif %}
+
+
       </table>
       {% endfor %}
     </div>

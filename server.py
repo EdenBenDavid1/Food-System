@@ -5,7 +5,7 @@ import sql_manager, recommendation_algorithm
 import json
 from datetime import date
 from email_validator import validate_email, EmailNotValidError
-import ast
+import ast # cast string to dict
 
 # Settings
 server = Flask(__name__, template_folder='templates')
@@ -16,69 +16,85 @@ server.secret_key = "program"
 def login():
     if request.method == 'POST':
         email = request.form["email"]
-        session["email"] = email
         password = request.form["password"]
-        session["password"] = password
-        return redirect(url_for("suggest_algorithm"))
+        check = sql_manager.check_login_user(email, password)
+        # there is no such user with this email and password:
+        if check == False:
+            flash("Wrong email or password", "info")
+            return render_template("welcome.html")
+        else:
+            session["email"] = email
+            session["password"] = password
+            return redirect(url_for("suggest_algorithm"))
     else:
         if "email" in session:
             return redirect(url_for("suggest_algorithm"))
+        # the user must login
         return render_template("welcome.html")
 
 ## SIGN UP
 @server.route("/sign_up", methods=['POST', 'GET'])
 def sign_up():
     if request.method == 'POST':
+        # Get values from form
         fname = request.form["fname"]
         lname = request.form["lname"]
         email = request.form["email"]
-        try:
-            email = validate_email(email).email
-        except EmailNotValidError as e:
-            # email is not valid, exception message is human-readable
-            mes=str(e)
-            return render_template("sign_up.html", mes=mes)
-        session["email"] = email
-        password = request.form["password"]
-        session["password"] = password
-        weight = int(request.form["weight"])
-        height = int(request.form["height"])
-        try:
-            check_answer = int(weight)
-            assert weight > 40, "הקלד משקל גדול מ40 קילו"
-            assert weight < 270, "הקלד משקל קטן מ270 קילו"
-        except ValueError:
-            mes = 'משקל חייב להיות מספר בקילוגרמים'
-        except AssertionError as e:
-            mes=str(e)
-            return render_template("sign_up.html", mes=mes)
-        try:
-            check_answer = int(height)
-            assert height > 90, "הקלד גובה גדול מ90 ס״מ"
-            assert height < 250, "הקלד גובה קטן מ250 ס״מ"
-        except ValueError:
-            mes = 'גובה חייב להיות מספר בס״מ'
-        except AssertionError as e:
-            mes=str(e)
-            return render_template("sign_up.html", mes=mes)
-
         gender = request.form["gender"]
         birth_date = request.form["birth_date"]
         diet_id = request.form["diet_id"]
         activity_level = request.form["activity_level"]
         weight_goal = request.form["weight_goal"]
         allergies = request.form.getlist("allergies")
+        password = request.form["password"]
+        weight = request.form["weight"]
+        height = request.form["height"]
+
+        # Validate values
+        validation_errors = []
+        # email validate
+        try:
+            email = validate_email(email).email
+        except EmailNotValidError as e:
+            # email is not valid
+            validation_errors.append(str(e))
+        # weight validate
+        if weight.isnumeric():
+            if int(weight) < 40:
+                validation_errors.append("הקלד משקל גדול מ40 קילו")
+            if int(weight) > 101:
+                validation_errors.append("הקלד משקל קטן מ101 קילו")
+        else:
+            validation_errors.append("משקל חייב להיות מספר בקילוגרמים")
+        # height validate
+        if height.isnumeric():
+            if int(height) < 90:
+                validation_errors.append("הקלד גובה גדול מ90 ס״מ")
+            if int(height) > 201:
+                validation_errors.append("הקלד גובה קטן מ201 ס״מ")
+        else:
+            validation_errors.append("גובה חייב להיות מספר בס״מ")
+        # if there are errors
+        if validation_errors:
+            return render_template("sign_up.html", mes=validation_errors)
+
+        # Business Logic
         if allergies == []:
-            allergies.append('1') # none allergy
-        print(allergies)
-        user = sql_manager.create_new_user(fname,lname,email,password,gender,birth_date,height,weight,diet_id,weight_goal,activity_level,allergies)
-        if user == True: ## A new user was created
+            allergies.append('1')  # none allergy
+        user = sql_manager.create_new_user(fname,lname,email,password,gender,birth_date,height,weight,diet_id,
+                                           weight_goal,activity_level,allergies)
+        # A new user was created
+        if user == True:
+            session["email"] = email
+            session["password"] = password
             return redirect(url_for("suggest_algorithm"))
-        else: ## the email is already exist
-            mes = "המייל קיים, יש לבחור מייל אחר"
-            return render_template("sign_up.html",mes=mes)
+        # the email is already exist
+        else:
+            mes = ["המייל קיים, יש לבחור מייל אחר"]
+            return render_template("sign_up.html", mes=mes)
     else:
-        return render_template("sign_up.html",mes=None)
+        return render_template("sign_up.html", mes=[])
+
 
 ## SEGGEST ALGORITHM:
 @server.route("/suggest_algorithm")
@@ -93,19 +109,18 @@ def suggest_algorithm():
         today = str(date.today())
         print(session)
         #session.clear()
-        #session['69'][2] = '2022-05-25'
-        if (user_id_str in session) and (today in session[user_id_str][2]):# there is a recommendation for today, for this user
+        # There is a recommendation for today, for this user
+        if (user_id_str in session) and (today in session[user_id_str][2]):
             menu_id = session[user_id_str][1]
-            print('already',session)
+            print('already recommended',menu_id,session)
         else:
             menu_id = recommendation_algorithm.recommend_menu_for_user(user_id)
             print(menu_id)
             session[user_id_str] = [user_id_str, menu_id, today]
             list_of_meals = sql_manager.load_today_menu(menu_id)
-            list_name = 'meals user ' + user_id_str
-            print(list_name)
-            session[list_name] = list_of_meals
-            print('new',session)
+            meals_of_user = 'meals user ' + user_id_str
+            session[meals_of_user] = list_of_meals
+            print('new recommend',session)
         return redirect(url_for("get_user"))
 
 
@@ -114,29 +129,22 @@ def suggest_algorithm():
 def get_user():
     if "email" in session and "password" in session:
         email = session["email"]
-        password = session["password"]
-        check = sql_manager.check_login_user(email, password)
-        if check == True:
-            user_id = sql_manager.load_user_id(email)
-            user_id_str = str(user_id)
-            # check if the user has a recommendation, if not - go to recommend page
-            if user_id_str not in session:
-                return redirect(url_for("suggest_algorithm"))
-            first_name, last_name = sql_manager.load_user(email)
-            user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
-            print(session)
-            # load parameters of menu id that was recommended for this user
-            menu_id = session[user_id_str][1]
-            parameters = sql_manager.load_parameters_from_menu(menu_id)
-            today = str(date.today())
-            values = sql_manager.load_update_values(today,user_id)
-            remain_cal = round(parameters[0][0] - values[0][0],2)
-            return render_template("home.html", user=user, parameters=parameters, values=values, remain_cal=remain_cal)
-        else:
-            session.pop("email", None)
-            session.pop("password", None)
-            flash("Wrong email or password", "info")
-            return redirect(url_for("login"))
+        user_id = sql_manager.load_user_id(email)
+        user_id_str = str(user_id)
+        # check if the user has a recommendation, if not - go to recommend page
+        if user_id_str not in session:
+            return redirect(url_for("suggest_algorithm"))
+
+        first_name, last_name = sql_manager.load_user(email)
+        user = json.dumps(first_name + " " + last_name, ensure_ascii=False).encode('utf8')
+        print(session)
+        # load parameters of menu id that was recommended for this user
+        menu_id = session[user_id_str][1]
+        parameters = sql_manager.load_parameters_from_menu(menu_id)
+        today = str(date.today())
+        values = sql_manager.load_update_values(today,user_id)
+        remain_cal = round(parameters[0][0] - values[0][0],2)
+        return render_template("home.html", user=user, parameters=parameters, values=values, remain_cal=remain_cal)
     else:
         return redirect(url_for("login"))
 
@@ -150,14 +158,14 @@ def logout():
 ## SEARCH
 @server.route("/search", methods=['POST', 'GET'])
 def search():
+    # when we press search button
     if request.method == 'POST':
-        print("check")
         search_value = request.form["item"]
         if search_value != "":
             ingredients = sql_manager.load_ingredient(search_value)
             dishes = sql_manager.load_dish(search_value)
             meals = sql_manager.load_meal(search_value)
-            print(ingredients, dishes, meals)
+            # there isn't any value to this search value in db:
             if (ingredients == False) and (dishes == False) and (meals== False):
                 flash("ערך לא קיים", "info")
                 return render_template("search.html")
@@ -175,13 +183,13 @@ def search_result(search_value):
     ingredients = sql_manager.load_ingredient(search_value)
     dishes = sql_manager.load_dish(search_value)
     meals = sql_manager.load_meal(search_value)
-    return render_template("search_result.html", search_value=search_value,ingredients=ingredients,dishes=dishes, meals=meals)
+    return render_template("search_result.html", search_value=search_value, ingredients=ingredients, dishes=dishes, meals=meals)
 
 ## RECIPE
 @server.route("/recipe", methods=['POST', 'GET'])
 def recipe():
     all_ingredietns = sql_manager.get_all_ingredients()
-    print(all_ingredietns)
+
     # if the user press the button of decipher
     if request.method == 'POST':
         user_ingredients = []
@@ -189,18 +197,22 @@ def recipe():
             index = str(index)
             ingredient = request.form[index]
             amount = request.form['num'+index]
+            # the user chose ingredients:
             if ingredient != '':
                 user_ingredients += [(ingredient,amount)]
-                print(user_ingredients)
+        print(user_ingredients)
         meals_number = request.form["meals_number"]
-        # the user didn't choose anything
+
+        # the user didn't choose ingredients
         if user_ingredients == []:
             flash("יש לבחור ערכים בתיבות", "info")
             return render_template("recipe.html",all_ingredietns=all_ingredietns)
-        # the user didn't choose anything
+
+        # the user didn't choose meals number
         elif meals_number == '':
             flash("יש להקליד ערך לכמות המנות הנוצרות בתיבה מטה", "info")
             return render_template("recipe.html", all_ingredietns=all_ingredietns)
+
         else: # the user chose correct
             meals_number = float(meals_number)
             values = sql_manager.calc_recipe_values(user_ingredients,meals_number)
@@ -211,7 +223,6 @@ def recipe():
             return redirect(url_for("recipe_result", values=values))
     else:
         return render_template("recipe.html",all_ingredietns=all_ingredietns)
-
 
 ## RECIPE RESULT
 @server.route("/recipe_result/<values>")
@@ -235,7 +246,6 @@ def daily_menu(new_meal,meal_cal,meal_type):
             rate = request.form["rate"]
             type = request.form["type"]
             print(session)
-            print(type)
             return redirect(url_for("insert_rate", meal=meal, rate=rate, type=type))
         else:
             meal_name_that_eaten = sql_manager.eaten_meals(email)

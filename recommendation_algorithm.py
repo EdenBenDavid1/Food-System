@@ -288,8 +288,8 @@ def check_user_allergy(user_id,menu_id_recommend):
         else:
             return True
 
-a = check_user_allergy(2,3)
-print(a)
+#a = check_user_allergy(2,3)
+#print(a)
 
 # check if the recommended menu fits to the user calories
 def check_menu_calories_range(user_id,menu_id_recommend):
@@ -378,6 +378,6 @@ def recommend_menu_for_user(person):
             return only_alleries_diet[0]
 
 
-#c = recommend_menu_for_user(82)
+#c = recommend_menu_for_user(19)
 #print(c)
 
