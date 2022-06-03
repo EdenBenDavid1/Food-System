@@ -18,17 +18,17 @@
 
           <table class="find-continue">
             {% if ingredients != False %}
-            {% for ingre in ingredients %}
-            <tr>
-            <td class="find-td2">{{ingre[0]}}<br />{{ingre[1]}}<br /></td>
-            <td class="find-td-ingre">
-              <span>קלוריות - {{ingre[2]}}</span><br />
-              <span>פחמימות- {{ingre[3]}} גרם</span><br />
-              <span>חלבונים- {{ingre[4]}} גרם</span><br />
-              <span>שומנים- {{ingre[5]}} גרם</span><br>
-            </td>
-            </tr>
-            {% endfor %}
+              {% for ingre in ingredients %}
+              <tr>
+              <td class="find-td2">{{ingre[0]}}<br />{{ingre[1]}}<br /></td>
+              <td class="find-td-ingre">
+                <span>קלוריות - {{ingre[2]}}</span><br />
+                <span>פחמימות- {{ingre[3]}} גרם</span><br />
+                <span>חלבונים- {{ingre[4]}} גרם</span><br />
+                <span>שומנים- {{ingre[5]}} גרם</span><br>
+              </td>
+              </tr>
+              {% endfor %}
             {% endif %}
           </table>
         </td>
@@ -39,18 +39,18 @@
 
           <table class="find-continue">
             {% if dishes != False %}
-            {% for dish in dishes %}
-            <tr>
-            <td class="find-td2">{{dish[0]}}<br />1 מנה<br /></td>
-            <td class="find-td-ingre">
-              <span>קלוריות- {{dish[1]}}</span><br />
-              <span>פחמימות- {{dish[2]}} גרם</span><br />
-              <span>חלבונים- {{dish[3]}} גרם</span><br />
-              <span>שומנים- {{dish[4]}} גרם</span><br>
-            <br>
-            </td>
-            </tr>
-            {% endfor %}
+              {% for dish in dishes %}
+              <tr>
+              <td class="find-td2">{{dish[0]}}<br />1 מנה<br /></td>
+              <td class="find-td-ingre">
+                <span>קלוריות- {{dish[1]}}</span><br />
+                <span>פחמימות- {{dish[2]}} גרם</span><br />
+                <span>חלבונים- {{dish[3]}} גרם</span><br />
+                <span>שומנים- {{dish[4]}} גרם</span><br>
+              <br>
+              </td>
+              </tr>
+              {% endfor %}
             {% endif %}
           </table>
         </td>
@@ -60,18 +60,18 @@
           <hr class="hr-style" style="width: 100%" />
           <table class="find-continue">
             {% if meals != False %}
-            {% for meal in meals %}
-            <tr>
-            <td class="find-td2">{{meal[0]}}<br />1 ארוחה<br />
-            </td>
-            <td class="find-td-ingre">
-              <span>קלוריות- {{meal[1]}}</span><br />
-              <span>פחמימות- {{meal[2]}} גרם</span><br />
-              <span>חלבונים- {{meal[3]}} גרם</span><br />
-              <span>שומנים- {{meal[4]}} גרם</span><br><br>
-            </td>
-            </tr>
-            {% endfor %}
+              {% for meal in meals %}
+              <tr>
+              <td class="find-td2">{{meal[0]}}<br />1 ארוחה<br />
+              </td>
+              <td class="find-td-ingre">
+                <span>קלוריות- {{meal[1]}}</span><br />
+                <span>פחמימות- {{meal[2]}} גרם</span><br />
+                <span>חלבונים- {{meal[3]}} גרם</span><br />
+                <span>שומנים- {{meal[4]}} גרם</span><br><br>
+              </td>
+              </tr>
+              {% endfor %}
             {% endif %}
           </table>
         </td>

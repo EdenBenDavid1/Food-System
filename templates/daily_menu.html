@@ -7,10 +7,8 @@
       <br>
     <h1 style="text-align:center" >תפריט יומי</h1>
     <br />
-    {% if mes != None %}
-    <h3 align="center" style="color:#B30412">{{mes}}</h3>
-    {% endif %}
     <br />
+
       {% for meal in list_of_meals %}
       <table align="center" style="width: 500px">
         <tr>
@@ -20,7 +18,7 @@
               <hr class="hr-style" />
             <table>
               <div class="daily_div">
-                <td class="find-td">
+                <td class="meals">
                   {{meal[0]}}<br /><br>
                 {% if meal[0] in meal_name_that_eaten %}
                     <td class="td-ate">
@@ -37,7 +35,7 @@
                   <form type="text" method="POST"><br>
                   <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                       <input name="type" type="text" value=1 class="hide">
-                    <div class="show-div">
+                    <div>
                     <span> דירוג מנה</span>
                     <br>
                     <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
@@ -64,7 +62,7 @@
             <hr class="hr-style" />
             <table>
               <div>
-                <td class="find-td">
+                <td class="meals">
                   {{meal[0]}}<br /><br>
                   {% if meal[0] in meal_name_that_eaten %}
                     <td class="td-ate">
@@ -81,7 +79,7 @@
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=2 class="hide">
-                <div class="show-div">
+                <div>
                 <span> דירוג ארוחה</span>
                   <br>
                   <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
@@ -108,7 +106,7 @@
             <hr class="hr-style" />
             <table>
               <div class="daily_div">
-                <td class="find-td">
+                <td class="meals">
                   {{meal[0]}}<br /><br>
                   {% if meal[0] in meal_name_that_eaten %}
                    <td class="td-ate">
@@ -125,7 +123,7 @@
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=3 class="hide">
-                <div class="show-div">
+                <div>
                 <span> דירוג ארוחה</span>
                   <br>
                   <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1
@@ -152,7 +150,7 @@
             <hr class="hr-style" />
             <table>
               <div>
-                <td class="find-td">
+                <td class="meals">
                   {{meal[0]}}<br /><br>
                   {% if meal[0] in meal_name_that_eaten %}
                       <td class="td-ate">
@@ -169,7 +167,7 @@
                 <form type="text" method="POST"><br>
                 <input name="checkMeal" type="checkbox" value="{{meal[0]}}" required/>אכלתי<br /><br>
                     <input name="type" type="text" value=4 class="hide">
-                <div class="show-div">
+                <div>
                 <span> דירוג ארוחה</span>
                   <br>
                   <input type="radio" name="rate" value="1" style="margin-bottom: 6px" >1

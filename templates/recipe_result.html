@@ -11,8 +11,8 @@
             {% for ingre in session['recipe'] %}
             <tr>
                 <td style="font-size:20px;">
-                {% for word in ingre %}
-                    {{ word }}
+                {% for line in ingre %}
+                    {{ line }}
                 {% endfor %}
                 </td>
             </tr>

@@ -13,6 +13,24 @@ def connect():
         database='FoodSystem')
     return mydb
 
+# for the recommendation
+def get_user_cal_targ(user_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT cal_targ FROM foodSystem.users where user_id=%s;"
+    mycursor.execute(sql, (user_id,))
+    user_cal = mycursor.fetchall()[0][0]
+    return user_cal
+
+# for the recommendation
+def get_meal_cal(menu_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
+    mycursor.execute(sql, (menu_id,))
+    menu_cal = mycursor.fetchall()[0][0]
+    return menu_cal
+
 def calc_age(birth_str):
     today = date.today()
     birth_date = datetime.strptime(str(birth_str), '%Y-%m-%d').date()
@@ -38,6 +56,8 @@ def calc_user_calories(gender,birth_date,height,weight,gain_keep_lose,activity_l
 #cal = calc_user_calories('נקבה','1996-02-28',153,50,'להוריד במשקל','1-3 אימונים בשבוע')
 #print(cal)
 
+
+# after update profile / to calc all users
 def get_user_new_cal_targ(user_id):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -48,22 +68,7 @@ def get_user_new_cal_targ(user_id):
                                   user_parameters[4], user_parameters[5])
     return cal_targ
 
-def get_user_cal_targ(user_id):
-    mydb = connect()
-    mycursor = mydb.cursor()
-    sql = "SELECT cal_targ FROM foodSystem.users where user_id=%s;"
-    mycursor.execute(sql, (user_id,))
-    user_cal = mycursor.fetchall()[0][0]
-    return user_cal
-
-def get_meal_cal(menu_id):
-    mydb = connect()
-    mycursor = mydb.cursor()
-    sql = "SELECT menu_cal FROM foodSystem.menus where menu_id=%s;"
-    mycursor.execute(sql, (menu_id,))
-    menu_cal = mycursor.fetchall()[0][0]
-    return menu_cal
-
+# after update profile / to calc all users
 def update_user_cal_targ(cal_targ,user_id):
     mydb = connect()
     mycursor = mydb.cursor()
@@ -282,7 +287,7 @@ def load_update_values(date,user_id):
 #    print(val)
 
 ## DAILY MENU
-def load_today_menu(menu):
+def load_meals_from_menu(menu):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT ml.meal_name,ml.meal_cal,mt.type_name " \
@@ -296,7 +301,7 @@ def load_today_menu(menu):
     result = mycursor.fetchall()
     return result
 
-#l = load_today_menu(2)
+#l = load_meals_from_menu(2)
 #print(l)
 
 # after the user ate meal, he can't check "ate" again and can't change this meal:
@@ -317,45 +322,36 @@ def eaten_meals(email):
     else:
         return meals_name
 
+# insert rate
 def insert_rate_to_db(email,meal_name,rate,type):
     mydb = connect()
     mycursor = mydb.cursor()
     user_id = load_user_id(email)
     meal_id = get_meal_id(meal_name)
-    sql1 = "SELECT rates_user_id, rates_meal_id, rate, date FROM foodSystem.rates " \
-           "where rates_user_id=%s and rates_meal_id=%s and date=current_date();"
-    val2 = (user_id, meal_id)
-    mycursor.execute(sql1, val2)
-    exist = mycursor.fetchall()
-    if exist == []: # there is no such row:
-        sql2 = "INSERT INTO foodSystem.rates (rates_user_id,rates_meal_id,meal_type, rate, date) VALUES (%s, %s, %s,%s, current_date());"
-        val2 = (user_id, meal_id,type, rate)
-        mycursor.execute(sql2, val2)
-        mydb.commit()
-        return "דירוג נשמר"
-    else:
-        if (int(rate) == (exist[0][2])):
-            return "כבר דירגת ארוחה זו"
-        else:
-            return "קיים דירוג אחר עבור ארוחה זו"
+    sql2 = "INSERT INTO foodSystem.rates (rates_user_id, rates_meal_id, meal_type, rate, date) VALUES (%s, %s, %s,%s, current_date());"
+    val2 = (user_id, meal_id, type, rate)
+    mycursor.execute(sql2, val2)
+    mydb.commit()
+    return "דירוג נשמר"
 
 #rate = insert_rate_to_db('roni_zarfati@gmail.com','יוגורט עם דבש',4)
 #print(rate)
 
-
+# create a new menu id, menu name row
 def create_new_menu_in_db():
     mydb = connect()
     mycursor = mydb.cursor()
-    sql1 = "SELECT menu_id FROM foodSystem.menus ORDER BY menu_id DESC LIMIT 1;" # get the last menu number
+    # get the last menu number:
+    sql1 = "SELECT menu_id FROM foodSystem.menus ORDER BY menu_id DESC LIMIT 1;"
     mycursor.execute(sql1)
     last_menu_id = mycursor.fetchall()[0][0]
     new_menu_id = last_menu_id + 1
-    sql2 = "insert into foodSystem.menus (menu_id,menu_name) VALUES (%s,%s);"  # create a new menu
+    # create a new menu:
+    sql2 = "insert into foodSystem.menus (menu_id,menu_name) VALUES (%s,%s);"
     new_menu_name = ('תפריט מספר' + ' ' + str(new_menu_id))
     mycursor.execute(sql2, (new_menu_id,new_menu_name))
     mydb.commit()
     return new_menu_id
-
 
 def get_diet_for_user(user_id):
     mydb = connect()
@@ -365,20 +361,31 @@ def get_diet_for_user(user_id):
     diet_id = mycursor.fetchall()[0][0]
     return diet_id
 
-def insert_into_menu_history(user_id, menu, avg_rate,menu_exist):
+def insert_into_menu_history(user_id, menu, avg_rate, menu_exist):
     mydb = connect()
     mycursor = mydb.cursor()
-    diet_id = get_diet_for_user(user_id)
     sql1 = "insert into foodSystem.menu_history (history_user_id,history_menu_id,date,avg_rate)" \
            "VALUES (%s,%s,current_date(),%s);"
     val1 = (user_id, menu, avg_rate)
     mycursor.execute(sql1, val1)
     mydb.commit()
-    if menu_exist == False: # this is a new menu, and we need to add it to the diet_for_menu table
+    # this is a new menu, and we need to add it to the diet_for_menu table
+    if menu_exist == False:
+        diet_id = get_diet_for_user(user_id)
         sql2 = "insert into foodSystem.diet_for_menu(dietMenu_menu_id, dietMenu_diet_id) values(%s,%s);"
         val2 = (menu,diet_id)
         mycursor.execute(sql2, val2)
         mydb.commit()
+
+def insert_into_meals_in_menu(new_menu_id, meal_id, meal_type_id):
+    mydb = connect()
+    mycursor = mydb.cursor()
+    sql = "insert into foodSystem.meals_in_menu " \
+          "(mealsInMenu_menu_id, mealsInMenu_meal_id, mealsInMenu_meal_type_id) " \
+           "VALUES (%s,%s,%s);"
+    val = (new_menu_id, meal_id, meal_type_id)
+    mycursor.execute(sql, val)
+    mydb.commit()
 
 
 # insert menu to history table:
@@ -387,11 +394,12 @@ def insert_menu_to_history(email):
     mycursor = mydb.cursor()
     user_id = load_user_id(email)
     # check if there are 4 meals today for this user:
-    sql1 = "SELECT rates_meal_id,meal_type, rate FROM foodSystem.rates where rates_user_id=%s and date=current_date()" \
+    sql1 = "SELECT rates_meal_id, meal_type, rate FROM foodSystem.rates " \
+           "where rates_user_id=%s and date=current_date()" \
            "order by meal_type;"
     mycursor.execute(sql1, (user_id,))
+    # meals = [(meal_id, type, rate)(...)]
     meals = mycursor.fetchall()
-    print(meals)
     if len(meals) == 4:
         avg_rate = (meals[0][2] + meals[1][2] + meals[2][2] + meals[3][2]) / 4
         # check if there is a menu from this 4 meals:
@@ -402,24 +410,22 @@ def insert_menu_to_history(email):
         val = (meals[0][0], meals[1][0], meals[2][0], meals[3][0])
         mycursor.execute(sql2, val)
         menus = mycursor.fetchall()
-        print(menus)
+        #print(menus)
         menu_exist = False
         for menu in menus:
-            if menu[1] == 4: # there is a menu with the 4 meals that eaten
+            # there is a menu with the 4 meals that eaten:
+            if menu[1] == 4:
                 menu_exist = True
-                insert_into_menu_history(user_id,menu[0],avg_rate,menu_exist)
+                insert_into_menu_history(user_id,menu[0],avg_rate, menu_exist)
                 print("תפריט רגיל נכנס להיסטוריה")
-        if menu_exist == False: # there isn't exist menu with this 4 meals
+        # there isn't exist menu with this 4 meals
+        if menu_exist == False:
             new_menu_id = create_new_menu_in_db()
-            for meals_in_menu in meals: # insert meals in menu
-                sql3 = "insert into foodSystem.meals_in_menu (mealsInMenu_menu_id,mealsInMenu_meal_id,mealsInMenu_meal_type_id) " \
-                "VALUES (%s,%s,%s);"
-                val3 = ((new_menu_id),meals_in_menu[0],meals_in_menu[1])
-                mycursor.execute(sql3,val3)
-                mydb.commit()
-            calc_menus_table() # calc the nutrition values for the new menu
-            # insert the new menu to history table
-            insert_into_menu_history(user_id, new_menu_id, avg_rate,menu_exist)
+            for meals_in_menu in meals:  # insert meals in menu
+                insert_into_meals_in_menu(new_menu_id, meals_in_menu[0], meals_in_menu[1])
+            # calc the nutrition values for the new menu:
+            calc_menus_table()
+            insert_into_menu_history(user_id, new_menu_id, avg_rate, menu_exist)
             print("תפריט לאחר שינוי נכנס להיסטוריה")
     else:
         print("עוד לא נאכלו 4 ארוחות")
@@ -442,8 +448,8 @@ def get_user_allergy_ingredients(user_id):
         food_ingredients.append(fi_id[0])
     return food_ingredients
 
-def get_other_meals_list(diet_id,meal_cal, meal_type):
-    list_of_meals = {}
+def get_other_meals_list(diet_id, meal_cal, meal_type):
+    dict_of_suggest_meals = {}
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT distinct(meal_id),meal_name,meal_cal FROM (((foodSystem.diet_for_meal dfm " \
@@ -456,10 +462,10 @@ def get_other_meals_list(diet_id,meal_cal, meal_type):
     val = (diet_id, meal_cal, meal_cal, meal_type)
     mycursor.execute(sql, val)
     list_m = mycursor.fetchall()
-    print(list_m)
+    #print(list_m)
     for meal in list_m:
-        list_of_meals[meal[0]] = [meal[1],meal[2]] # create a dictionary, key- meal_id, value- meal_name,meal_cal
-    return list_of_meals
+        dict_of_suggest_meals[meal[0]] = [meal[1],meal[2]] # create a dictionary, key- meal_id, value- meal_name,meal_cal
+    return dict_of_suggest_meals
 
 def suggest_other_meals(email, meal_cal, meal_type):
     mydb = connect()
@@ -467,19 +473,19 @@ def suggest_other_meals(email, meal_cal, meal_type):
     user_id = load_user_id(email)
     diet_id = get_diet_for_user(user_id)
     food_ingredients_user_cant_eat = get_user_allergy_ingredients(user_id)
-    list_of_meals = get_other_meals_list(diet_id,meal_cal, meal_type)
+    dict_of_suggest_meals = get_other_meals_list(diet_id, meal_cal, meal_type)
     # check if user can eat the meal, regards to allergies:
-    for meal_id in list(list_of_meals): # to avoid dictionary changed size during iteration
+    for meal_id in list(dict_of_suggest_meals): # to avoid dictionary changed size during iteration
         sql = "select distinct(fi_id) " \
                "from foodSystem.dish_in_meal dim join foodSystem.ingredients_in_dish iid on dim.dishInMeal_dish_id = iid.dish_id " \
                "where dishInMeal_meal_id = %s;"
         mycursor.execute(sql, (meal_id,))
-        food_id_from_meal = mycursor.fetchall() # list of ingredients that combine this meal
+        food_id_from_meal = mycursor.fetchall() # list of ingredients that create this meal
         for food_id in food_id_from_meal:
             if food_id[0] in food_ingredients_user_cant_eat:
-                list_of_meals.pop(meal_id)
+                dict_of_suggest_meals.pop(meal_id)
                 break
-    return list_of_meals
+    return dict_of_suggest_meals
 
 #f = suggest_other_meals('ariel_cohen@gmail.com',350,'בוקר')
 #print(f)
@@ -524,7 +530,7 @@ def load_journal(email,menu_id_recommended):
         # add to dictionary:
         info_values[h_date.strftime("%d.%m %A")] = load_update_values(h_date,user_id)
         info_parameters[h_date.strftime("%d.%m %A")] = load_parameters_from_menu(menu)
-        info_meals[h_date.strftime("%d.%m %A")] = load_today_menu(menu)
+        info_meals[h_date.strftime("%d.%m %A")] = load_meals_from_menu(menu)
     # for today meals and sort by dates:
     info_values[today.strftime("%d.%m %A")] = load_update_values(today,user_id)
     info_values = dict(sorted(info_values.items(), reverse=True, key=lambda item: item[0]))
@@ -535,7 +541,7 @@ def load_journal(email,menu_id_recommended):
     info_meals[today.strftime("%d.%m %A")] = load_rated_meals(today, user_id)
     info_meals = dict(sorted(info_meals.items(), reverse=True, key=lambda item: item[0]))
 
-    return(info_values, info_parameters, info_meals)
+    return (info_values, info_parameters, info_meals)
 
 #p = load_journal('roni_zarfati@gmail.com')
 
@@ -603,22 +609,22 @@ def calc_recipe_values(user_ingredients,meals_number):
     nutrition_values = {'קלוריות':0,'פחמימות':0,'שומנים':0,'חלבונים':0}
     # [('3', '1'), ('6', '2')]
     for ingredient_amount in user_ingredients:
-        # food_amount[0] - ingredient id, food_amount[1] - amount
-        print(ingredient_amount[0])
+        # ingredient_amount[0]: ingredient id, ingredient_amount[1]: amount
         fi_id = ingredient_amount[0]
         amount = ingredient_amount[1]
+        # if the user didn't type amount
         if amount == '':
             amount = 1
         sql = "SELECT fi_cal,fi_carb,fi_fat,fi_protein FROM foodSystem.food_ingredients " \
           "where fi_id =%s;"
         mycursor.execute(sql,(fi_id,))
         values = mycursor.fetchall() # all values per 1 food ingredient
-        print(values)
         for val in values:
             nutrition_values['קלוריות'] += (val[0] * float(amount))
             nutrition_values['פחמימות'] += val[1] * float(amount)
             nutrition_values['שומנים'] += val[2] * float(amount)
             nutrition_values['חלבונים'] += val[3] * float(amount)
+    # calc recipe nutrition per one meal:
     for key,value in nutrition_values.items():
         nutrition_values[key] = round(value/meals_number,2)
     return nutrition_values
@@ -634,25 +640,26 @@ def show_recipe_ingredients(user_ingredients):
     for food_amount in user_ingredients:
         ingredients_id.append(food_amount[0])
         amount.append(food_amount[1])
-
-    if len(ingredients_id)>1: # a few ingredients
+    # a few ingredients:
+    if len(ingredients_id) > 1:
         t = tuple(ingredients_id)
         sql = "SELECT fi_name,fi_amount FROM foodSystem.food_ingredients " \
               "where fi_id IN {};".format(t)
         mycursor.execute(sql)
-        result = mycursor.fetchall()
-        print('result a few', result)
+        ingre_name_amount = mycursor.fetchall()
+        print('result a few', ingre_name_amount)
     else: # only 1 ingredient
         sql = "SELECT fi_name,fi_amount FROM foodSystem.food_ingredients " \
               "where fi_id=%s;"
         mycursor.execute(sql,(ingredients_id[0],))
-        result = mycursor.fetchall()
-        print('result 1', result)
+        ingre_name_amount = mycursor.fetchall()
+        print('result 1', ingre_name_amount)
     i = 0
-    for r in result:
-        all_ingre_to_show += [(r[0],r[1],'בכמות',amount[i])]
+    for name_amount in ingre_name_amount:
+        # create a list of names to show on page
+        all_ingre_to_show += [(name_amount[0],name_amount[1],'בכמות',amount[i])]
         i += 1
-    return (all_ingre_to_show)
+    return all_ingre_to_show
 
 #g = show_recipe_ingredients([('3', '1'), ('6', '2')])
 #print(g)

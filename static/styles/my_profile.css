@@ -9,7 +9,6 @@
   background-color: #2F2E2E;
   height: 2.5rem;
 }
-
 .navbar-brand {
   color: white;
   font-size: 22px;
@@ -20,38 +19,25 @@
   height: 100%;
   padding: 6px;
 }
-
 .navbar-brand:hover {
   text-shadow: 2px 1px 2px rgb(249,181,66);
   font-weight: bold;
 }
 
-.style_img {
-  float: left;
-  padding-top: 6px;
-}
 
 .my-profile-head-content {
   margin: 0 auto;
   text-align: center;
-  -align-items: center;
-  -display: flex;
   flex-direction: column;
-  -width: 100%;
 }
-
 .my-profile-username {
   color: #FFB30F;
-}
-.link{
-  color: black;
 }
 .my-profile-icons-bar {
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
 }
-
 .my_profile_td div {
   margin: 4px;
   padding: 4px;
@@ -65,30 +51,22 @@
   width: 7rem;
   box-shadow: 1px 3px 2px #aaa;
 }
-
-.my_profile_td span {
-  color: #369AA5;
-  font-size:19px;
-}
 .my-profile-icon {
   padding-top: 8px;
   padding-bottom: 8px;
   width: 30px;
   height: 30px;
 }
-
-#type_of_food {
-  color: black;
-  font-weight: bold;
+.my_profile_td span {
+  color: #369AA5;
+  font-size:19px;
 }
-
 .hr-style {
   width: 40%;
   border-top: 3px solid black;
   margin: auto;
   text-align: center;
 }
-
 .my-profile-main-content {
   display: flex;
   justify-content: center;
@@ -96,11 +74,9 @@
   margin: 0 auto;
   text-align:center;
 }
-
 .my-profile-main-content table {
   width: 35%;
 }
-
 .first-col-td {
   display: flex;
   justify-content: space-between;
@@ -111,16 +87,20 @@
   font-size: 18px;
   font-weight: 400;
 }
-.From_db {
+.from_db {
   color: #369AA5;
 }
+.link{
+  color: black;
+}
+
+
 
 .center {
   margin: 0 auto;
   text-align: center;
 }
-
-#h-decipher {
+#header-weight {
   text-decoration-color: rgb(98, 157, 68);
   color: #369AA5;
   font-size: x-large;
@@ -129,6 +109,11 @@
   margin: 0 auto;
   text-align: center;
   width: 50%;
+}
+.enter-detailes {
+  width: 180px;
+  height: 20px;
+  border-radius: 15px;
 }
 #button{
   border: none;
@@ -144,10 +129,4 @@
   border-radius: 4px;
   width: 150px;
   height: 35px;
-}
-
-.enter-detailes {
-  width: 180px;
-  height: 20px;
-  border-radius: 15px;
 }

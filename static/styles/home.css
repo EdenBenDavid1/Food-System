@@ -31,20 +31,21 @@
   padding-top: 2rem;
   color: #369AA5;
 }
-
+#user-name{
+  align:center;
+  text-align:center;
+}
 .index-content {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
-
 .index-main-table {
   margin-top: 1rem;
   width: 60%;
   font-size: 20px;
 }
-
 .index-main-table tdt {
   min-width: 100px;
   text-align: center;

@@ -8,7 +8,6 @@
   background-color: #2F2E2E;
   height: 2.5rem;
 }
-
 .navbar-brand {
   color: white;
   font-size: 22px;
@@ -19,18 +18,11 @@
   height: 100%;
   padding: 6px;
 }
-
 .navbar-brand:hover {
   text-shadow: 2px 1px 2px rgb(249,181,66);
   font-weight: bold;
 }
 
-#header {
-  text-align: center !important;
-  font-size: larger;
-  width: 50%;
-  justify-content: center;
-}
 
 #find_div {
   display: flex;
@@ -39,7 +31,6 @@
   margin: 0 auto;
   text-align:center;
 }
-
 #input-search {
   border-radius: 18px;
   width: 30%;
@@ -54,69 +45,6 @@
   border-radius: 18px;
   -background-color: gainsboro;
 }
-.buttons{
-  width: 150px;
-}
-#find_div_info {
-  width: 30%;
-  margin: 0 auto;
-  text-align: center !important;
-  align:center;
-
-}
-#table_of_dishes{
-  width: 500px;
-  align: center !important;
-  -margin-left: 150px;
-}
-
-.center {
-  margin: 0 auto;
-  text-align: center;
-  align: center;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.find-table {
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid #369AA5;
-  width: 90%;
-  margin-left: 30px;
-  font-size: 17px;
-}
-
-.find-table:hover {
-  background-color: #369AA5;
-}
-
-#button_style {
-  margin: 0 auto;
-  border-radius: 15px;
-  background-color: aliceblue;
-}
-
-#div_overflow {
-  overflow-x: auto;
-  margin: 0 auto;
-}
-
-#find_div_info {
-  -display: flex;
-  flex-direction: column;
-  align: center;
-  width: 500px;
-  margin: 0 auto;
-  padding-right: 20px;
-  background-color:
-}
-.div_buttons{
-  text-align:center;
-  width:150px;
-}
-
 .find-btn {
   -margin: 150px;
   -justify-content: center;
@@ -134,6 +62,40 @@
   background-color: #FFB30F;
   border-radius: 4px;
 }
+#find_div_info {
+  -display: flex;
+  flex-direction: column;
+  align: center;
+  width: 500px;
+  margin: 0 auto;
+  padding-right: 20px;
+  background-color:
+  text-align: center !important;
+}
+.center {
+  margin: 0 auto;
+  text-align: center;
+  align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+#table_of_dishes{
+  width: 500px;
+  align: center !important;
+  -margin-left: 150px;
+}
+.find-table {
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #369AA5;
+  width: 90%;
+  margin-left: 30px;
+  font-size: 17px;
+}
+.find-table:hover {
+  background-color: #369AA5;
+}
 .btn {
   width: 230px;
   margin-top: 8px;
@@ -147,6 +109,23 @@
   border-radius: 4px;
 }
 
+
+#div-all{
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
+}
+#big-table{
+  height:90px;
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
+}
+#find-table-first-row{
+  padding-top: 0px;
+  margin-top: 0px;
+  display:flex;
+ }
 .find-big-table-td {
   width: 33%;
   padding-left: 15px;
@@ -155,29 +134,24 @@
 .find-big-table-td hr {
   margin-bottom: 4px;
 }
-
-#find-table-first-row{
-  padding-top: 0px;
-  margin-top: 0px;
-  display:flex;
- }
 .head-find {
   text-align: right;
   padding-right: 4px;
   font-size: x-large;
   font-weight: bold;
 }
-#big-table{
-  height:90px;
-  padding-top: 0px;
-  margin-top: 0px;
-  display:flex;
-}
 .hr-style {
   width: 50%;
   border-top: 3px solid black;
   margin: auto;
   text-align: center;
+}
+.find-continue {
+  width: 280px;
+  -height: 6rem;
+  padding-right: 4px;
+  margin-left: 0px;
+  padding-left: 14px;
 }
 .find-td2 {
   text-align: right;
@@ -189,25 +163,14 @@
   color:#0F8C9A;
   font-weight: bold;
 }
-.find-continue {
-  width: 280px;
-  -height: 6rem;
-  padding-right: 4px;
-  margin-left: 0px;
-  padding-left: 14px;
-}
-
 .find-td-ingre {
   background-color: rgb(242,241,239);
   border-radius: 15px;
   border-width: 1px;
   width: 100px;
 }
-#div-all{
-  padding-top: 0px;
-  margin-top: 0px;
-  display:flex;
-}
+
+
 .h-decipher {
   text-decoration-color: rgb(98, 157, 68);
   color: rgb(54, 154, 165);
@@ -217,6 +180,19 @@
   margin: 0 auto;
   text-align: center;
   width: 30%;
+}
+.option-size{
+  font-size:15px;
+}
+.num_ingre{
+  width:150px;
+  font-size:15px;
+}
+#number{
+  width:110px;
+  align:center;
+  text-align:center;
+  margin: 0 auto;
 }
 #button-decopher {
   width: 250px;
@@ -233,12 +209,14 @@
   border-radius: 4px;
 }
 
-#number{
-  width:110px;
-  align:center;
-  text-align:center;
-  margin: 0 auto;
 
+#ingre-table{
+  align:center;
+  width: 270px;
+  margin: 0 auto;
+  border-width: 2px;
+  text-align:center;
+  overflow: hidden;
 }
 #table-decipher2 {
   height: 200px;
@@ -248,25 +226,8 @@
   border: 5px solid rgb(54, 154, 165);
   overflow: hidden;
 }
-
 .th-decipher {
   background-color: rgb(242,241,239);
   width: 33%;
   font-size:20px;
-}
-.num_ingre{
-  width:150px;
-  font-size:15px;
-}
-.option-size{
-  font-size:15px;
-}
-#ingre-table{
-  align:center;
-  width: 270px;
-  margin: 0 auto;
-  border-width: 2px;
-  text-align:center;
-  overflow: hidden;
-
 }

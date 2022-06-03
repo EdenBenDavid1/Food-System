@@ -14,7 +14,7 @@
               <div>
                 <h4>תזונה<br /><br /></h4>
                 <img class="my-profile-icon" src="{{url_for('static', filename='styles/fork_icon.png')}}" />
-                <span id="amount_of_cal"><b>{{diet.decode('utf8')[1:-1]}}</b></span>
+                <span><b>{{diet.decode('utf8')[1:-1]}}</b></span>
               </div>
             </td>
             <br><br>
@@ -22,7 +22,7 @@
               <div>
                 <h4>כמות קלוריות<br />יומית</h4>
                 <img class="my-profile-icon" src="{{url_for('static', filename='styles/fire.png')}}" />
-                <span id="amount_of_cal"><b>{{targ}}</b></span>
+                <span><b>{{targ}}</b></span>
               </div>
             </td>
           </tr>
@@ -45,41 +45,41 @@
         <tr>
           <td class="first-col-td">
             <a class="link" href="{{url_for('update_weight')}}"> משקל </a>
-            <a class="From_db">{{weight}}</a>
+            <a class="from_db">{{weight}}</a>
           </td>
         </tr>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
           <td class="first-col-td">
             <span> גובה </span>
-            <span class="From_db">{{height}}</span>
+            <span class="from_db">{{height}}</span>
           </td>
         </tr>
         <tr>
          <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
           <td class="first-col-td">
             <span> תאריך לידה </span>
-            <span class="From_db">{{birth_date}}</span>
+            <span class="from_db">{{birth_date}}</span>
           </td>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
           <td class="first-col-td">
             <span> מגדר </span>
-            <span class="From_db">{{gender}}</span>
+            <span class="from_db">{{gender}}</span>
           </td>
         </tr>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
           <td class="first-col-td">
             <span> רמת פעילות </span>
-            <span class="From_db">{{activity.decode('utf8')[1:-1]}}</span>
+            <span class="from_db">{{activity.decode('utf8')[1:-1]}}</span>
           </td>
         </tr>
         <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
         <tr>
           <td class="first-col-td">
             <span> אלרגיות </span>
-            <span class="From_db">{{allergy_val.decode('utf8')[1:-2]}}</span>
+            <span class="from_db">{{allergy_val.decode('utf8')[1:-2]}}</span>
           </td>
         </tr>
       </table>

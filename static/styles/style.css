@@ -23,29 +23,13 @@
   text-shadow: 2px 1px 2px rgb(249,181,66);
   font-weight: bold;
 }
-.show-div{
-   -display:none
-}
-.enter-detailes {
-  width: 200px;
-  border-radius: 15px;
-}
 
-#div-find-search {
-  width: 40%;
-}
-#div-find-search input {
-  width: 65%;
-  height: 30px;
-  padding: 8px;
-}
 
-.find-big-table-td {
-  width: 33%;
-  padding-left: 15px;
-}
-.find-big-table-td hr {
-  margin-bottom: 4px;
+.daily_div {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
 }
 .td {
   border-radius: 15px;
@@ -56,13 +40,36 @@
   text-align: center;
   width: 33%;
 }
-
 .h2 {
   text-decoration-color: rgb(98, 157, 68);
   color: #369AA5;
   font-size: x-large;
   margin-left: 15px;
   font-weight: bold;
+}
+.hr-style {
+  align: center
+  width: 30%;
+  border-top: 3px solid black;
+}
+.meals {
+  border-radius: 10px;
+  width: 140px;
+  height: 70px;
+  padding-right: 10px;
+  background-color: rgb(242,241,239);
+  font-size: 17px;
+  padding: 10px;
+  -spacing: 15px;
+}
+.td-ate {
+  padding-right: 50px;
+}
+.link{
+  color: black;
+}
+.hide{
+  display:none;
 }
 .rate-btn{
   border: none;
@@ -78,130 +85,12 @@
   width: 100px;
   height: 30px;
 }
-.hr-style {
-  align: center
-  width: 30%;
-  border-top: 3px solid black;
-}
-.daily_div {
-  display: flex;
-  flex-direction: column;
-  width: 500px;
-  margin: 0 auto;
-}
 
-.find-td {
-  border-radius: 10px;
-  width: 140px;
-  height: 70px;
-  padding-right: 10px;
-  background-color: rgb(242,241,239);
-  font-size: 17px;
-  padding: 10px;
-  -spacing: 15px;
-}
-.link{
-  color: black;
-}
-.link-bigger{
-  color: black;
-  font-size:18px;
-}
-.find-td2 {
-  text-align: right;
-  background-color: rgb(242,241,239);
-  border-radius: 15px;
-  border-width: 1px;
-  width: 40%;
-  padding-top: 0px;
-}
-
-#button-find {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 8px;
-}
 
 .center {
   margin: 0 auto;
   text-align: center;
-}
-
-.find-continue {
-  border-radius: 15px;
-  border-width: 1px;
-  width: 16rem;
-  height: 6rem;
-  background-color: rgb(242,241,239);
-  padding-right: 4px;
-}
-
-.head-find {
-  text-align: right;
-  padding-right: 4px;
-  font-size: x-large;
-  font-weight: bold;
-}
-
-.find-td-ingre {
-  margin-left: 0px;
-  padding-left: 14px;
-}
-#h-decipher {
-  text-decoration-color: rgb(98, 157, 68);
-  color: rgb(54, 154, 165);
-  font-size: x-large;
-  margin-left: 15px;
-  font-weight: bold;
-  margin: 0 auto;
-  text-align: right;
-  width: 30%;
-}
-
-.div-decipher-center {
-  width: 30%;
-  margin: 0 auto;
-  text-align: center;
-}
-
-#button-decopher {
-  width: 50%;
-  margin-top: 8px;
-  border: none;
-  color: white;
-  padding: 5px 15px 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #FFB30F;
-  border-radius: 4px;
-}
-
-.data:hover {
-  cursor: pointer;
-  box-shadow: 0px 0px 15px #aaa;
-  -text-align: center;
-  text-decoration: underline;
-}
-.user_name {
-  text-align: center;
-}
-
-.col-container {
-  display: grid; /* Make the container element behave like a table */
-  width: 100%;
-}
-.style_img {
-  float: left;
-  padding-top: 6px;
-}
-
-#table_choosen_meal {
-  margin: 0 auto;
-  width: 55%;
+  margin-right: 90px;
 }
 #choose-meal {
   border-radius: 18px;
@@ -211,23 +100,20 @@
   margin-top: 10px;
   -margin-right: 570px;
 }
-.center{
-  margin-right: 90px;
-
+#table_choose_meal {
+  margin: 0 auto;
+  width: 55%;
 }
-.td_choosen_meal {
+.cal{
+  color: #25939F;
+}
+.td_choose_meal {
   padding-right: 15px;
   margin-top: 5px;
   width: 80px;
   margin-left: 15px;
 }
-.cal{
-  color: #25939F;
-}
-
-.td-ate {
-  padding-right: 50px;
-}
-.hide{
-  display:none;
+.link-bigger{
+  color: black;
+  font-size:23px;
 }

@@ -23,13 +23,13 @@
   height: 100%;
   padding: 6px;
 }
+
 #welcome_image {
   vertical-align: middle;
   text-align: center;
   width: 329px;
   height: 53px;
 }
-
 .welcome {
   text-align: center;
   font-weight: bold;
@@ -37,13 +37,11 @@
   padding-top: 50px;
   color: rgb(0,0,0);
 }
-
 .enter-detailes {
   width: 250px;
   height: 20px;
   border-radius: 10px;
 }
-
 #button{
   border: none;
   color: white;
