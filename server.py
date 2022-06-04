@@ -20,7 +20,7 @@ def login():
         check = sql_manager.check_login_user(email, password)
         # there is no such user with this email and password:
         if check == False:
-            flash("Wrong email or password", "info")
+            flash("אימייל או סיסמא שגויים", "info")
             return render_template("welcome.html")
         else:
             session["email"] = email

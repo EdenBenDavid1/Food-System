@@ -378,6 +378,6 @@ def recommend_menu_for_user(person):
             return only_alleries_diet[0]
 
 
-#c = recommend_menu_for_user(19)
+#c = recommend_menu_for_user(89)
 #print(c)
 

@@ -637,6 +637,7 @@ def show_recipe_ingredients(user_ingredients):
     ingredients_id = []
     amount = []
     all_ingre_to_show = []
+    user_ingredients = sorted(user_ingredients, key=lambda t: (t[0], t[1]))
     for food_amount in user_ingredients:
         ingredients_id.append(food_amount[0])
         amount.append(food_amount[1])
@@ -661,7 +662,7 @@ def show_recipe_ingredients(user_ingredients):
         i += 1
     return all_ingre_to_show
 
-#g = show_recipe_ingredients([('3', '1'), ('6', '2')])
+#g = show_recipe_ingredients([('6', '1'), ('3', '2')])
 #print(g)
 #for ingre in g:
 #    print(ingre)
@@ -672,15 +673,15 @@ def load_ingredient(search_value):
     mycursor = mydb.cursor()
     sql = "SELECT fi_name,fi_amount,fi_cal,fi_carb,fi_fat,fi_protein" \
           " FROM foodSystem.food_ingredients where fi_name like %s;"
-    search_value = ['%' + search_value + ' %']
+    search_value = ['%' + search_value + '%']
     mycursor.execute(sql, search_value)
     result = mycursor.fetchall()
     if result == []:
         return False
     return result
 
-#g=load_ingredient('אורז')
-#print(g[0])
+#g=load_ingredient('או')
+#print(g)
 
 def load_dish(search_value):
     mydb = connect()
