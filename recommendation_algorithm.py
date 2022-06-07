@@ -333,6 +333,8 @@ def find_menu_in_other_way(user_id):
     mycursor.execute(sql1, (user_diet,))
     all_menus = mycursor.fetchall()
     print(all_menus)
+    only_alleries_diet = []
+    found = False
     for menu in all_menus:
         print(menu)
         menu_cal = check_menu_calories_range(user_id,menu[0])
@@ -340,8 +342,13 @@ def find_menu_in_other_way(user_id):
         check_allergy = check_user_allergy(user_id,menu[0])
         print('allergies',check_allergy)
         print("--")
+        if menu_cal == False and check_allergy == True:
+            only_alleries_diet.append(menu)
         if menu_cal == True and check_allergy == True: # if the calories in range of 220, and allergy is right, add it to list
+            found = True
             return menu[0]
+    if found == False:
+        return only_alleries_diet[0][0]
 
 #menu = find_menu_in_other_way(6)
 #print(menu)
@@ -378,6 +385,6 @@ def recommend_menu_for_user(person):
             return only_alleries_diet[0]
 
 
-#c = recommend_menu_for_user(89)
+#c = recommend_menu_for_user(12)
 #print(c)
 

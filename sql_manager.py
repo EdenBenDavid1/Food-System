@@ -687,7 +687,7 @@ def load_dish(search_value):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT dish_name,dish_cal,dish_carb,dish_fat,dish_protein FROM foodSystem.dishes where dish_name like %s;"
-    search_value = ['%'+ search_value + ' %']
+    search_value = ['%'+ search_value + '%']
     mycursor.execute(sql, search_value)
     result = mycursor.fetchall()
     if result == []:
@@ -700,7 +700,7 @@ def load_meal(search_value):
     mydb = connect()
     mycursor = mydb.cursor()
     sql = "SELECT meal_name,meal_cal,meal_carb,meal_fat,meal_protein FROM foodSystem.meals where meal_name like %s;"
-    search_value = ['%' + search_value + ' %']
+    search_value = ['%' + search_value + '%']
     mycursor.execute(sql, search_value)
     result = mycursor.fetchall()
     if result == []:

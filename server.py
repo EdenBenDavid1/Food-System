@@ -108,7 +108,7 @@ def suggest_algorithm():
         print('user_id',user_id_str)
         today = str(date.today())
         print(session)
-        #session.clear()
+        session.clear()
         # There is a recommendation for today, for this user
         if (user_id_str in session) and (today in session[user_id_str][2]):
             menu_id = session[user_id_str][1]
